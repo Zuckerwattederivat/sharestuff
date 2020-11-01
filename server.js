@@ -16,7 +16,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // response to get request
-app.get('/', (req, res) => res.json({ msg: 'Welcome to the iNomad API...' }));
+app.get('/', (req, res) => res.json({ msg: 'Welcome to the sharestuff API...' }));
 
 // define routes
 app.use('/api/users', require('./routes/users'));

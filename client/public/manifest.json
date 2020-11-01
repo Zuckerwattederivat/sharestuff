@@ -1,0 +1,7 @@
+{
+  "short_name": "sharestuff",
+  "name": "sharestuff | Rent stuff from and to people near you",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone"
+}
