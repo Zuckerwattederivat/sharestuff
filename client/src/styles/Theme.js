@@ -11,6 +11,11 @@ function getTheme(theme) {
 				light: '#0DF97C',
 				main: '#0BD068',
 				dark: '#089349'
+			},
+			grayCustom: {
+				light: '#606060',
+				main: '#404040',
+				dark: '#292929'
 			}
 		}
 	});
