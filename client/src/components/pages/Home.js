@@ -3,7 +3,7 @@ import React from 'react';
 
 // Home Component
 const Home = () => {
-	return <div>.</div>;
+	return <div>lorem</div>;
 };
 
 // export Home Component

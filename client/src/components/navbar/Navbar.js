@@ -1,19 +1,16 @@
 // Node Modules
 import React, { Fragment, useState, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Link, IconButton, Badge, Toolbar, Typography, Menu, MenuItem, Divider } from '@material-ui/core';
+import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
 import {
 	Menu as MenuIcon,
 	Mail as MailIcon,
 	Notifications as NotificationsIcon,
-	Person as PersonIcon,
-	Settings as SettingsIcon,
-	Lock as LockIcon,
-	LockOpen as LockOpenIcon,
-	PersonAdd as PersonAddIcon,
 	AccountCircle as AccountCircleIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+// Components
+import UserMenu from './UserMenu';
 // Context
 import AuthContext from '../../context/auth/authContext';
 // Assets
@@ -27,13 +24,10 @@ const useStyles = makeStyles(theme => ({
 		flexGrow: 1
 	},
 	navbar: {
-		padding: '0.5em 1em',
-		boxShadow: 'none',
+		padding: '0.2em 1em',
+		background: theme.palette.background.default,
 		[theme.breakpoints.up('sm')]: {
 			padding: '0.5em 2em'
-		},
-		[theme.breakpoints.up('xl')]: {
-			background: theme.palette.background.default
 		}
 	},
 	logoCont: {
@@ -44,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	logo: {
-		maxWidth: '34px',
+		maxWidth: '20px',
 		height: 'auto',
 		marginRight: '1em'
 	},
@@ -67,20 +61,11 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginLeft: '0.7em',
 		color: '#fff'
-	},
-	userMenu: {
-		top: '40px'
-	},
-	divider: {
-		margin: '0.3em'
-	},
-	dropdownIcons: {
-		marginRight: '0.3em'
 	}
 }));
 
 // Navbar Component
-const Navbar = () => {
+const Navbar = props => {
 	// styling classes
 	const classes = useStyles();
 
@@ -100,48 +85,12 @@ const Navbar = () => {
 	const handleUserMenuOpen = e => setAnchorEl(e.currentTarget);
 	const handleMenuClose = () => setAnchorEl(null);
 
+	// menu id
 	const menuId = 'primary-user-account-menu';
-	const renderUserMenu = (
-		<Menu
-			className='userMenu'
-			anchorEl={anchorEl}
-			anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-			getContentAnchorEl={null}
-			id={menuId}
-			keepMounted
-			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-			open={isUserMenuOpen}
-			onClose={handleMenuClose}
-		>
-			{isAuthenticated ? (
-				[
-					<MenuItem key='profile' onClick={handleMenuClose}>
-						<PersonIcon fontSize='small' className={classes.dropdownIcons} /> Profile
-					</MenuItem>,
-					<MenuItem key='account' onClick={handleMenuClose}>
-						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
-					</MenuItem>,
-					<Divider className={classes.divider} variant='middle' />,
-					<MenuItem key='logout' color='secondary' onClick={handleMenuClose}>
-						<LockIcon fontSize='small' className={classes.dropdownIcons} /> Logout
-					</MenuItem>
-				]
-			) : (
-				[
-					<MenuItem key='register' onClick={handleMenuClose}>
-						<PersonAddIcon fontSize='small' className={classes.dropdownIcons} /> Register
-					</MenuItem>,
-					<MenuItem key='login' onClick={handleMenuClose}>
-						<LockOpenIcon fontSize='small' className={classes.dropdownIcons} /> Login
-					</MenuItem>
-				]
-			)}
-		</Menu>
-	);
 
 	return (
 		<div className={classes.grow}>
-			<AppBar className={classes.navbar} color='transparent' position='sticky'>
+			<AppBar className={classes.navbar} color='transparent' position='fixed'>
 				<Toolbar>
 					<Link className={classes.logoCont} component={RouterLink} to='/'>
 						<img className={classes.logo} src={logoPrimary} alt='logo' />
@@ -182,7 +131,7 @@ const Navbar = () => {
 					</div>
 				</Toolbar>
 			</AppBar>
-			{renderUserMenu}
+			<UserMenu isUserMenuOpen={isUserMenuOpen} handleMenuClose={handleMenuClose} anchorEl={anchorEl} />
 		</div>
 	);
 };
