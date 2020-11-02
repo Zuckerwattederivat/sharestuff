@@ -1,6 +1,6 @@
 // Node Modules
 import React from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
 
 // theme
 function getTheme(theme) {

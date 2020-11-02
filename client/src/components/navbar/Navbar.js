@@ -1,29 +1,39 @@
 // Node Modules
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Link, IconButton, Badge, Toolbar, Typography, Menu, MenuItem, Divider } from '@material-ui/core';
 import {
 	Menu as MenuIcon,
 	Mail as MailIcon,
 	Notifications as NotificationsIcon,
-	AccountCircle
+	Person as PersonIcon,
+	Settings as SettingsIcon,
+	Lock as LockIcon,
+	LockOpen as LockOpenIcon,
+	PersonAdd as PersonAddIcon,
+	AccountCircle as AccountCircleIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+// Context
+import AuthContext from '../../context/auth/authContext';
 // Assets
 import logoWhite from '../../assets/logo/logo-white.svg';
 import logoPrimary from '../../assets/logo/logo-primary.svg';
 import logoBlack from '../../assets/logo/logo-black.svg';
 
-// use styles
+// define styles
 const useStyles = makeStyles(theme => ({
 	grow: {
 		flexGrow: 1
 	},
 	navbar: {
-		padding: '1.5em 1em',
+		padding: '0.5em 1em',
 		boxShadow: 'none',
 		[theme.breakpoints.up('sm')]: {
-			padding: '1em 2em'
+			padding: '0.5em 2em'
+		},
+		[theme.breakpoints.up('xl')]: {
+			background: theme.palette.background.default
 		}
 	},
 	logoCont: {
@@ -57,6 +67,15 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginLeft: '0.7em',
 		color: '#fff'
+	},
+	userMenu: {
+		top: '40px'
+	},
+	divider: {
+		margin: '0.3em'
+	},
+	dropdownIcons: {
+		marginRight: '0.3em'
 	}
 }));
 
@@ -65,8 +84,60 @@ const Navbar = () => {
 	// styling classes
 	const classes = useStyles();
 
-	// state
-	const [ isAuthenticated, setAuthenticated ] = useState(true);
+	// auth context
+	const authContext = useContext(AuthContext);
+	// destructure auth context
+	const { isAuthenticated } = authContext;
+
+	// anchor state
+	const [ anchorEl, setAnchorEl ] = useState(null);
+
+	// menus open?
+	const isUserMenuOpen = Boolean(anchorEl);
+	const isMenuOpen = Boolean(anchorEl);
+
+	// handle menus open/ close
+	const handleUserMenuOpen = e => setAnchorEl(e.currentTarget);
+	const handleMenuClose = () => setAnchorEl(null);
+
+	const menuId = 'primary-user-account-menu';
+	const renderUserMenu = (
+		<Menu
+			className='userMenu'
+			anchorEl={anchorEl}
+			anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+			getContentAnchorEl={null}
+			id={menuId}
+			keepMounted
+			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+			open={isUserMenuOpen}
+			onClose={handleMenuClose}
+		>
+			{isAuthenticated ? (
+				[
+					<MenuItem key='profile' onClick={handleMenuClose}>
+						<PersonIcon fontSize='small' className={classes.dropdownIcons} /> Profile
+					</MenuItem>,
+					<MenuItem key='account' onClick={handleMenuClose}>
+						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
+					</MenuItem>,
+					<Divider className={classes.divider} variant='middle' />,
+					<MenuItem key='logout' color='secondary' onClick={handleMenuClose}>
+						<LockIcon fontSize='small' className={classes.dropdownIcons} /> Logout
+					</MenuItem>
+				]
+			) : (
+				[
+					<MenuItem key='register' onClick={handleMenuClose}>
+						<PersonAddIcon fontSize='small' className={classes.dropdownIcons} /> Register
+					</MenuItem>,
+					<MenuItem key='login' onClick={handleMenuClose}>
+						<LockOpenIcon fontSize='small' className={classes.dropdownIcons} /> Login
+					</MenuItem>
+				]
+			)}
+		</Menu>
+	);
 
 	return (
 		<div className={classes.grow}>
@@ -98,12 +169,12 @@ const Navbar = () => {
 						<IconButton
 							edge='end'
 							aria-label='account of current user'
-							// aria-controls={menuId}
+							aria-controls={menuId}
 							aria-haspopup='true'
-							// onClick={handleProfileMenuOpen}
+							onClick={handleUserMenuOpen}
 							color='inherit'
 						>
-							<AccountCircle />
+							<AccountCircleIcon />
 						</IconButton>
 						<IconButton edge='end' className={classes.menuButton} color='inherit' aria-label='open drawer'>
 							<MenuIcon />
@@ -111,6 +182,7 @@ const Navbar = () => {
 					</div>
 				</Toolbar>
 			</AppBar>
+			{renderUserMenu}
 		</div>
 	);
 };
