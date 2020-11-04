@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, Typography } from '@material-ui/core';
-import { Home as HomeIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import NavbarContext from '../../context/navbar/navbarContext';

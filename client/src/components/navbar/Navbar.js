@@ -7,6 +7,7 @@ import {
 	Menu as MenuIcon,
 	Mail as MailIcon,
 	Home as HomeIcon,
+	LocalMall as LocalMallIcon,
 	Map as MapIcon,
 	Info as InfoIcon,
 	Help as HelpIcon,
@@ -83,6 +84,12 @@ const mainMenuLinks = [
 		href: '/',
 		icon: <HomeIcon />,
 		linkName: 'Home'
+	},
+	{
+		id: 'products',
+		href: '/products',
+		icon: <LocalMallIcon />,
+		linkName: 'Find Products'
 	},
 	{
 		id: 'local',
