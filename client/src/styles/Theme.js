@@ -12,6 +12,10 @@ function getTheme(theme) {
 				main: '#0BD068',
 				dark: '#089349'
 			},
+			background: {
+				default: '#333333',
+				custom: '#212121'
+			},
 			grayCustom: {
 				light: '#606060',
 				main: '#404040',

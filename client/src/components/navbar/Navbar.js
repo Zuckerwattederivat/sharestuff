@@ -24,10 +24,10 @@ const useStyles = makeStyles(theme => ({
 		flexGrow: 1
 	},
 	navbar: {
-		padding: '0.2em 1em',
-		background: theme.palette.background.default,
-		[theme.breakpoints.up('sm')]: {
-			padding: '0.5em 2em'
+		padding: '0.3em 0',
+		boxShadow: 'none',
+		[theme.breakpoints.up('xl')]: {
+			backgroundColor: theme.palette.background.default
 		}
 	},
 	logoCont: {
@@ -38,12 +38,12 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	logo: {
-		maxWidth: '20px',
+		maxWidth: '34px',
 		height: 'auto',
 		marginRight: '1em'
 	},
 	title: {
-		letterSpacing: '0.05em',
+		letterSpacing: theme.spacing(0.2),
 		fontWeight: 900,
 		fontSize: '1.5rem',
 		color: 'white',
@@ -61,6 +61,11 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginLeft: '0.7em',
 		color: '#fff'
+	},
+	itemsResponsivePosition: {
+		[theme.breakpoints.down('xs')]: {
+			display: 'none'
+		}
 	}
 }));
 
@@ -103,12 +108,16 @@ const Navbar = props => {
 					<div className={classes.sectionUser}>
 						{isAuthenticated && (
 							<Fragment>
-								<IconButton aria-label='show new messages' color='inherit'>
+								<IconButton className={classes.itemsResponsivePosition} aria-label='show new messages' color='inherit'>
 									<Badge badgeContent={4} color='secondary'>
 										<MailIcon />
 									</Badge>
 								</IconButton>
-								<IconButton aria-label='show new notifications' color='inherit'>
+								<IconButton
+									className={classes.itemsResponsivePosition}
+									aria-label='show new notifications'
+									color='inherit'
+								>
 									<Badge badgeContent={17} color='secondary'>
 										<NotificationsIcon />
 									</Badge>

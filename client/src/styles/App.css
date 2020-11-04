@@ -1,3 +1,9 @@
 body {
 	background-color: #181818 !important;
 }
+
+.wrapper {
+	max-width: 1920px !important;
+	margin: 0 auto !important;
+	background-color: #212121;
+}

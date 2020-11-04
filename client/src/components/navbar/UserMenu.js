@@ -2,6 +2,8 @@
 import React, { useContext, useState } from 'react';
 import { Menu, MenuItem, Divider } from '@material-ui/core';
 import {
+	Message as MessageIcon,
+	Notifications as NotificationsIcon,
 	Person as PersonIcon,
 	Settings as SettingsIcon,
 	Lock as LockIcon,
@@ -22,6 +24,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	dropdownIcons: {
 		marginRight: '0.3em'
+	},
+	itemsResponsivePosition: {
+		[theme.breakpoints.up('sm')]: {
+			display: 'none'
+		}
 	}
 }));
 
@@ -52,13 +59,19 @@ const UserMenu = props => {
 		>
 			{isAuthenticated ? (
 				[
+					<MenuItem className={classes.itemsResponsivePosition} key='messages' onClick={props.handleMenuClose}>
+						<MessageIcon fontSize='small' className={classes.dropdownIcons} /> Messages
+					</MenuItem>,
+					<MenuItem className={classes.itemsResponsivePosition} key='notifications' onClick={props.handleMenuClose}>
+						<NotificationsIcon fontSize='small' className={classes.dropdownIcons} /> Notifications
+					</MenuItem>,
 					<MenuItem key='profile' onClick={props.handleMenuClose}>
 						<PersonIcon fontSize='small' className={classes.dropdownIcons} /> Profile
 					</MenuItem>,
 					<MenuItem key='account' onClick={props.handleMenuClose}>
 						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
 					</MenuItem>,
-					<Divider className={classes.divider} variant='middle' />,
+					<Divider key='divider' className={classes.divider} variant='middle' />,
 					<MenuItem key='logout' color='secondary' onClick={props.handleMenuClose}>
 						<LockIcon fontSize='small' className={classes.dropdownIcons} /> Logout
 					</MenuItem>
