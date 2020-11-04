@@ -49,7 +49,7 @@ const UserMenu = props => {
 	// destructure context
 	const { anchorEl, handleUserMenuClose } = navbarContext;
 
-	// save current state of user menu
+	// user menu open?
 	const isUserMenuOpen = Boolean(anchorEl);
 
 	return (

@@ -1,11 +1,12 @@
 import React, { useReducer } from 'react';
 import NavbarContext from './navbarContext';
 import navbarReducer from './navbarReducer';
-import { SET_ANCHOREL, SET_SCROLLED } from '../types';
+import { SET_ANCHOREL, SET_MAIN_MENU_OPEN, SET_SCROLLED } from '../types';
 
 const NavbarState = props => {
 	// initial state
 	const initialState = {
+		mainMenuOpen: false,
 		anchorEl: null,
 		scrolled: {
 			scrolledUp: true,
@@ -16,6 +17,9 @@ const NavbarState = props => {
 
 	// destructure reducer
 	const [ state, dispatch ] = useReducer(navbarReducer, initialState);
+
+	// toggle main menu
+	const toggleMainMenu = mainMenuOpen => dispatch({ type: SET_MAIN_MENU_OPEN, payload: mainMenuOpen });
 
 	// open menu
 	const handleUserMenuOpen = e => dispatch({ type: SET_ANCHOREL, payload: e.currentTarget });
@@ -36,8 +40,10 @@ const NavbarState = props => {
 	return (
 		<NavbarContext.Provider
 			value={{
+				mainMenuOpen: state.mainMenuOpen,
 				anchorEl: state.anchorEl,
 				scrolled: state.scrolled,
+				toggleMainMenu,
 				handleUserMenuOpen,
 				handleUserMenuClose,
 				setScrolled

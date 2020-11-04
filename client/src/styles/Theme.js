@@ -21,6 +21,9 @@ function getTheme(theme) {
 				main: '#404040',
 				dark: '#292929'
 			}
+		},
+		drawer: {
+			width: '240px'
 		}
 	});
 }

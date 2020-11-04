@@ -1,16 +1,22 @@
 // Node Modules
 import React, { Fragment, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
 import {
 	Menu as MenuIcon,
 	Mail as MailIcon,
+	Home as HomeIcon,
+	Map as MapIcon,
+	Info as InfoIcon,
+	Help as HelpIcon,
 	Notifications as NotificationsIcon,
 	AccountCircle as AccountCircleIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Components
 import UserMenu from './UserMenu';
+import MainMenu from './MainMenu';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
@@ -70,8 +76,36 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+// main menu links
+const mainMenuLinks = [
+	{
+		id: 'home',
+		href: '/',
+		icon: <HomeIcon />,
+		linkName: 'Home'
+	},
+	{
+		id: 'local',
+		href: '/local',
+		icon: <MapIcon />,
+		linkName: 'Near You'
+	},
+	{
+		id: 'about',
+		href: '/about',
+		icon: <InfoIcon />,
+		linkName: 'About'
+	},
+	{
+		id: 'help',
+		href: '/help',
+		icon: <HelpIcon />,
+		linkName: 'FAQ'
+	}
+];
+
 // Navbar Component
-const Navbar = () => {
+const Navbar = props => {
 	// styling classes
 	const classes = useStyles();
 
@@ -83,7 +117,7 @@ const Navbar = () => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { handleUserMenuOpen } = navbarContext;
+	const { toggleMainMenu, handleUserMenuOpen } = navbarContext;
 
 	// user menu id
 	const menuId = 'primary-user-account-menu';
@@ -95,8 +129,8 @@ const Navbar = () => {
 					<Link className={classes.logoCont} component={RouterLink} to='/'>
 						<img className={classes.logo} src={logoPrimary} alt='logo' />
 						<Typography className={classes.title} variant='h6' noWrap>
-							<span className={classes.titleSpan1}>Share</span>
-							<span className={classes.titleSpan2}>Stuff</span>
+							<span className={classes.titleSpan1}>{props.title1}</span>
+							<span className={classes.titleSpan2}>{props.title2}</span>
 						</Typography>
 					</Link>
 					<div className={classes.grow} />
@@ -129,15 +163,34 @@ const Navbar = () => {
 						>
 							<AccountCircleIcon />
 						</IconButton>
-						<IconButton edge='end' className={classes.menuButton} color='inherit' aria-label='open drawer'>
+						<IconButton
+							onClick={() => toggleMainMenu(true)}
+							edge='end'
+							className={classes.menuButton}
+							color='inherit'
+							aria-label='open drawer'
+						>
 							<MenuIcon />
 						</IconButton>
 					</div>
 				</Toolbar>
 			</AppBar>
 			<UserMenu menuId={menuId} />
+			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} />
 		</div>
 	);
+};
+
+// PropTypes
+Navbar.propTypes = {
+	title1: PropTypes.string.isRequired,
+	title2: PropTypes.string.isRequired
+};
+
+// Default Props
+Navbar.defaultProps = {
+	title1: 'Share',
+	title2: 'Stuff'
 };
 
 // export Navbar Component

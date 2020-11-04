@@ -7,7 +7,7 @@ import HeroImage from '../../assets/hero/hero-4.jpg';
 // define styles
 const useStyles = makeStyles(theme => ({
 	hero: {
-		height: '100vh',
+		height: '95vh',
 		backgroundImage: `url(${HeroImage})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover'
@@ -19,13 +19,13 @@ const useStyles = makeStyles(theme => ({
 		left: 0,
 		top: 0,
 		minWidth: '100%',
-		minHeight: '100vh'
+		minHeight: '95vh'
 	},
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '100vh',
+		height: '95vh',
 		maxWidth: '700px'
 	},
 	title: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 	shape: {
 		position: 'relative',
 		zIndex: 20,
-		top: '-70px',
+		top: '-50px',
 		bottom: 0,
 		left: 0,
 		width: '100%',
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		display: 'block',
 		width: 'calc(144% + 1.3px)',
-		height: '70px'
+		height: '50px'
 	},
 	shapeFill: {
 		fill: '#212121'
