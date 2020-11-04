@@ -1,5 +1,5 @@
 // Node Modules
-import React, { Fragment, useState, useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
 import {
@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserMenu from './UserMenu';
 // Context
 import AuthContext from '../../context/auth/authContext';
+import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import logoWhite from '../../assets/logo/logo-white.svg';
 import logoPrimary from '../../assets/logo/logo-primary.svg';
@@ -70,27 +71,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Navbar Component
-const Navbar = props => {
+const Navbar = () => {
 	// styling classes
 	const classes = useStyles();
 
-	// auth context
+	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
 	const { isAuthenticated } = authContext;
 
-	// anchor state
-	const [ anchorEl, setAnchorEl ] = useState(null);
+	// load navbar context
+	const navbarContext = useContext(NavbarContext);
+	// destructure context
+	const { handleUserMenuOpen } = navbarContext;
 
-	// menus open?
-	const isUserMenuOpen = Boolean(anchorEl);
-	const isMenuOpen = Boolean(anchorEl);
-
-	// handle menus open/ close
-	const handleUserMenuOpen = e => setAnchorEl(e.currentTarget);
-	const handleMenuClose = () => setAnchorEl(null);
-
-	// menu id
+	// user menu id
 	const menuId = 'primary-user-account-menu';
 
 	return (
@@ -140,7 +135,7 @@ const Navbar = props => {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<UserMenu isUserMenuOpen={isUserMenuOpen} handleMenuClose={handleMenuClose} anchorEl={anchorEl} />
+			<UserMenu menuId={menuId} />
 		</div>
 	);
 };
