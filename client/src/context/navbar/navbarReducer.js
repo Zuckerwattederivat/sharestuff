@@ -1,11 +1,13 @@
-import { SET_MAIN_MENU_OPEN, SET_ANCHOREL, SET_SCROLLED } from '../types';
+import { SET_MAIN_MENU, SET_ANCHOREL, SET_REGISTER, SET_SCROLLED } from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
-		case SET_MAIN_MENU_OPEN:
+		case SET_MAIN_MENU:
 			return { ...state, mainMenuOpen: action.payload };
 		case SET_ANCHOREL:
 			return { ...state, anchorEl: action.payload };
+		case SET_REGISTER:
+			return { ...state, registerOpen: action.payload };
 		case SET_SCROLLED:
 			return {
 				...state,

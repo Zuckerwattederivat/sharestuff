@@ -13,7 +13,6 @@ function getTheme(theme) {
 				dark: '#089349'
 			},
 			background: {
-				default: '#333333',
 				custom: '#212121'
 			},
 			grayCustom: {

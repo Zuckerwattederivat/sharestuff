@@ -18,13 +18,12 @@ import { makeStyles } from '@material-ui/core/styles';
 // Components
 import UserMenu from './UserMenu';
 import MainMenu from './MainMenu';
+import Register from '../auth/Register';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
-import logoWhite from '../../assets/logo/logo-white.svg';
 import logoPrimary from '../../assets/logo/logo-primary.svg';
-import logoBlack from '../../assets/logo/logo-black.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -98,16 +97,16 @@ const mainMenuLinks = [
 		linkName: 'Near You'
 	},
 	{
-		id: 'about',
-		href: '/about',
-		icon: <InfoIcon />,
-		linkName: 'About'
-	},
-	{
 		id: 'help',
 		href: '/help',
 		icon: <HelpIcon />,
 		linkName: 'FAQ'
+	},
+	{
+		id: 'about',
+		href: '/about',
+		icon: <InfoIcon />,
+		linkName: 'About'
 	}
 ];
 
@@ -124,7 +123,7 @@ const Navbar = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { toggleMainMenu, handleUserMenuOpen } = navbarContext;
+	const { setMainMenuOpen, handleUserMenuOpen } = navbarContext;
 
 	// user menu id
 	const menuId = 'primary-user-account-menu';
@@ -171,7 +170,7 @@ const Navbar = props => {
 							<AccountCircleIcon />
 						</IconButton>
 						<IconButton
-							onClick={() => toggleMainMenu(true)}
+							onClick={() => setMainMenuOpen(true)}
 							edge='end'
 							className={classes.menuButton}
 							color='inherit'
@@ -183,6 +182,7 @@ const Navbar = props => {
 				</Toolbar>
 			</AppBar>
 			<UserMenu menuId={menuId} />
+			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} />
 		</div>
 	);

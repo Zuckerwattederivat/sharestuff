@@ -10,14 +10,12 @@ import NavbarContext from '../../context/navbar/navbarContext';
 // define styles
 const useStyles = makeStyles(theme => ({
 	drawerContainer: {
-		width: theme.drawer.width
+		width: theme.drawer.width,
+		height: '100%',
+		background: theme.palette.background.custom
 	},
 	drawerHeading: {
 		padding: theme.spacing(2)
-	},
-	topDivider: {
-		marginTop: theme.spacing(2),
-		marginBottom: theme.spacing(2)
 	},
 	titleSpan1: {
 		color: theme.palette.primary.main
@@ -32,13 +30,13 @@ const MainMenu = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { mainMenuOpen, toggleMainMenu } = navbarContext;
+	const { mainMenuOpen, setMainMenuOpen } = navbarContext;
 
 	// ListItem
 	const MenuItem = props => {
 		return (
 			<ListItem
-				onClick={() => toggleMainMenu(false)}
+				onClick={() => setMainMenuOpen(false)}
 				className={classes.menuItem}
 				key={props.id}
 				button
@@ -56,8 +54,8 @@ const MainMenu = props => {
 			className={classes.drawer}
 			anchor={props.anchor}
 			open={mainMenuOpen}
-			onClose={() => toggleMainMenu(false)}
-			onOpen={() => toggleMainMenu(true)}
+			onClose={() => setMainMenuOpen(false)}
+			onOpen={() => setMainMenuOpen(true)}
 			variant='temporary'
 		>
 			<div className={classes.drawerContainer}>

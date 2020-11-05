@@ -3,8 +3,9 @@
 // export const REMOVE_ALERT = 'REMOVE_ALERT';
 // export const REMOVE_ALL_ALERTS = 'REMOVE_ALL_ALERTS';
 // navbar types
-export const SET_MAIN_MENU_OPEN = 'SET_MAIN_MENU_OPEN';
+export const SET_MAIN_MENU = 'SET_MAIN_MENU_OPEN';
 export const SET_ANCHOREL = 'SET_ANCHOREL';
+export const SET_REGISTER = 'SET_REGISTER';
 export const SET_SCROLLED = 'SET_SCROLLED';
 // authentification
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';

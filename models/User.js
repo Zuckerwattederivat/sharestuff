@@ -7,13 +7,30 @@ const mongoose = require('mongoose');
 
 // collection schema
 const UserSchema = mongoose.Schema({
-	phone: {
-		type: String,
-		unique: true
-	},
 	name: {
 		type: String,
 		required: true
+	},
+	adress: {
+		type: String,
+		required: true
+	},
+	zipCode: {
+		type: String,
+		required: true
+	},
+	city: {
+		type: String,
+		required: true
+	},
+	country: {
+		type: String,
+		required: true
+	},
+	phone: {
+		type: String,
+		required: true,
+		unique: true
 	},
 	email: {
 		type: String,
@@ -34,7 +51,7 @@ const UserSchema = mongoose.Schema({
 		required: true,
 		default: false
 	},
-	avatar_url: {
+	avatarUrl: {
 		type: String,
 		default: ''
 	},
@@ -42,11 +59,11 @@ const UserSchema = mongoose.Schema({
 		type: String,
 		default: ''
 	},
-	postive_karma: {
+	postiveKarma: {
 		type: Number,
 		default: 0
 	},
-	negative_karma: {
+	negativeKarma: {
 		type: Number,
 		default: 0
 	},

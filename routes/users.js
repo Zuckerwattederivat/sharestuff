@@ -17,8 +17,12 @@ const User = require('../models/User');
 router.post(
 	'/',
 	[
-		check('phone', 'Please enter a valid phone number').isNumeric(),
 		check('name', 'Please enter your name').not().isEmpty(),
+		check('adress', 'Please enter your adress').not().isEmpty(),
+		check('zipCode', 'Please enter your zip code').not().isEmpty(),
+		check('city', 'Please enter your city').not().isEmpty(),
+		check('country', 'Please enter your country').not().isEmpty(),
+		check('phone', 'Please enter a valid phone number').isNumeric(),
 		check('email', 'Please include a valid email').isEmail(),
 		check('username', 'Please enter a username').not().isEmpty(),
 		check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
@@ -31,7 +35,7 @@ router.post(
 		}
 
 		// save request content
-		const { phone, name, email, username, password } = req.body;
+		const { name, adress, zipCode, city, country, phone, email, username, password } = req.body;
 
 		// create user and save to db
 		try {
@@ -53,8 +57,12 @@ router.post(
 
 			// instantiate new user
 			user = new User({
-				phone,
 				name,
+				adress,
+				zipCode,
+				city,
+				country,
+				phone,
 				email,
 				username,
 				password

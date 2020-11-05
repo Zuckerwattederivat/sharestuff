@@ -7,32 +7,32 @@ import HeroImage from '../../assets/hero/hero-4.jpg';
 // define styles
 const useStyles = makeStyles(theme => ({
 	hero: {
-		height: '95vh',
+		height: '82vh',
 		backgroundImage: `url(${HeroImage})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover'
 	},
 	overlay: {
-		background: 'rgba(0, 0, 0, 0.65)',
+		background: 'rgba(0, 0, 0, 0.5)',
 		position: 'relative',
 		zIndex: 10,
 		left: 0,
 		top: 0,
 		minWidth: '100%',
-		minHeight: '95vh'
+		minHeight: '82vh'
 	},
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '95vh',
+		height: '82vh',
 		maxWidth: '700px'
 	},
 	title: {
-		fontWeight: 'bold',
+		fontWeight: '700',
 		fontSize: '2.2rem',
 		color: '#fff',
-		lineHeight: theme.spacing(0.19)
+		lineHeight: theme.spacing(0.16)
 	},
 	shape: {
 		position: 'relative',
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 		height: '50px'
 	},
 	shapeFill: {
-		fill: '#212121'
+		fill: theme.palette.background.custom
 	}
 }));
 

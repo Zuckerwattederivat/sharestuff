@@ -1,13 +1,14 @@
 import React, { useReducer } from 'react';
 import NavbarContext from './navbarContext';
 import navbarReducer from './navbarReducer';
-import { SET_ANCHOREL, SET_MAIN_MENU_OPEN, SET_SCROLLED } from '../types';
+import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_SCROLLED } from '../types';
 
 const NavbarState = props => {
 	// initial state
 	const initialState = {
 		mainMenuOpen: false,
 		anchorEl: null,
+		registerOpen: false,
 		scrolled: {
 			scrolledUp: true,
 			scrolledDown: false,
@@ -19,13 +20,16 @@ const NavbarState = props => {
 	const [ state, dispatch ] = useReducer(navbarReducer, initialState);
 
 	// toggle main menu
-	const toggleMainMenu = mainMenuOpen => dispatch({ type: SET_MAIN_MENU_OPEN, payload: mainMenuOpen });
+	const setMainMenuOpen = mainMenuOpen => dispatch({ type: SET_MAIN_MENU, payload: mainMenuOpen });
 
-	// open menu
+	// open user menu
 	const handleUserMenuOpen = e => dispatch({ type: SET_ANCHOREL, payload: e.currentTarget });
 
-	// menu close
+	// close user menu
 	const handleUserMenuClose = () => dispatch({ type: SET_ANCHOREL, payload: null });
+
+	// set register
+	const setRegisterOpen = registerOpen => dispatch({ type: SET_REGISTER, payload: registerOpen });
 
 	// set scrolled
 	const setScrolled = () => {
@@ -42,10 +46,12 @@ const NavbarState = props => {
 			value={{
 				mainMenuOpen: state.mainMenuOpen,
 				anchorEl: state.anchorEl,
+				registerOpen: state.registerOpen,
 				scrolled: state.scrolled,
-				toggleMainMenu,
+				setMainMenuOpen,
 				handleUserMenuOpen,
 				handleUserMenuClose,
+				setRegisterOpen,
 				setScrolled
 			}}
 		>
