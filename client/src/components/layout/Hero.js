@@ -1,6 +1,6 @@
 // Node Modules
 import React from 'react';
-import { Container, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Container, makeStyles, Typography } from '@material-ui/core';
 // Assets
 import HeroImage from '../../assets/hero/hero-4.jpg';
 

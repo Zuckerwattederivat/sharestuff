@@ -3,35 +3,14 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
-import {
-	SET_LOADING,
-	USER_LOADED,
-	AUTH_ERROR,
-	REGISTER_SUCCESS,
-	REGISTER_FAIL,
-	USERNAME_ERROR,
-	EMAIL_ERROR,
-	PHONE_ERROR,
-	PASSWORD_ERROR,
-	PASSWORD_CONFIRM_ERROR,
-	FIRSTNAME_ERROR,
-	LASTNAME_ERROR,
-	ADDRESS_ERROR,
-	ZIPCODE_ERROR,
-	COUNTRY_ERROR,
-	CITY_ERROR,
-	LOGIN_SUCCESS,
-	LOGIN_FAIL,
-	LOGOUT,
-	CLEAR_ERRORS
-} from '../types';
+import { SET_LOADING, USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, SET_ERROR, CLEAR_ERRORS } from '../types';
 
 const AuthState = props => {
 	const initialState = {
 		token: localStorage.getItem('token'),
 		isAuthenticated: null,
 		user: null,
-		loading: false,
+		loading: true,
 		error: null,
 		usernameErr: null,
 		emailErr: null,
@@ -84,23 +63,31 @@ const AuthState = props => {
 			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {
-			dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg });
+			dispatch({ type: SET_ERROR, payload: err.response.data.msg });
 		}
 	};
 
 	// set errors
-	const setErrors = (type, payload) => dispatch({ type: type, payload: payload });
+	const setState = (type, payload) => dispatch({ type: type, payload: payload });
 
 	// check for duplicate user
 	const checkForDuplicateUser = async (username = '', email = '', type = null, payload = null) => {
-		dispatch({ type: SET_LOADING });
-		try {
-			let res = await axios.get('/api/users', { params: { username: username, email: email } });
-			if (!res.data.msg) {
-				dispatch({ type: type, payload: payload });
+		const setLoading = bool => {
+			setState(SET_LOADING, bool);
+			return new Promise(resolve => resolve(true));
+		};
+		const loading = await setLoading(true);
+		if (loading) {
+			try {
+				const res = await axios.get('/api/users', { params: { username: username, email: email } });
+				if (!res.data.msg) {
+					setState(type, payload);
+				} else {
+					await setLoading(false);
+				}
+			} catch (err) {
+				setState(SET_ERROR, `Server Error: ${err.response.status}`);
 			}
-		} catch (err) {
-			console.error(err);
 		}
 	};
 
@@ -127,7 +114,7 @@ const AuthState = props => {
 				register,
 				login,
 				logout,
-				setErrors,
+				setState,
 				checkForDuplicateUser,
 				clearErrors
 			}}

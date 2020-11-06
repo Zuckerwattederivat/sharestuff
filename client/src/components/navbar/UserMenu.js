@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Menu, MenuItem, Divider } from '@material-ui/core';
 import {

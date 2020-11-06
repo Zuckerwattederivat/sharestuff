@@ -3,7 +3,7 @@ import {
 	USER_LOADED,
 	AUTH_ERROR,
 	REGISTER_SUCCESS,
-	REGISTER_FAIL,
+	SET_ERROR,
 	USERNAME_ERROR,
 	EMAIL_ERROR,
 	PHONE_ERROR,
@@ -26,7 +26,7 @@ export default (state, action) => {
 		case SET_LOADING:
 			return {
 				...state,
-				loading: true
+				loading: action.payload
 			};
 		case USER_LOADED:
 			return {
@@ -53,7 +53,7 @@ export default (state, action) => {
 				isAuthenticated: true,
 				loading: false
 			};
-		case REGISTER_FAIL:
+		case SET_ERROR:
 			return { ...state, loading: false, error: action.payload };
 		case USERNAME_ERROR:
 			return { ...state, loading: false, usernameErr: action.payload };
