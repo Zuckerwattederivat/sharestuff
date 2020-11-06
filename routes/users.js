@@ -17,7 +17,8 @@ const User = require('../models/User');
 router.post(
 	'/',
 	[
-		check('name', 'Please enter your name').not().isEmpty(),
+		check('firstname', 'Please enter your firstname').not().isEmpty(),
+		check('lastname', 'Please enter your lastname').not().isEmpty(),
 		check('adress', 'Please enter your adress').not().isEmpty(),
 		check('zipCode', 'Please enter your zip code').not().isEmpty(),
 		check('city', 'Please enter your city').not().isEmpty(),
@@ -35,7 +36,7 @@ router.post(
 		}
 
 		// save request content
-		const { name, adress, zipCode, city, country, phone, email, username, password } = req.body;
+		const { firstname, lastname, adress, zipCode, city, country, phone, email, username, password } = req.body;
 
 		// create user and save to db
 		try {
@@ -57,7 +58,8 @@ router.post(
 
 			// instantiate new user
 			user = new User({
-				name,
+				firstname,
+				lastname,
 				adress,
 				zipCode,
 				city,
@@ -102,6 +104,43 @@ router.post(
 		}
 	}
 );
+
+// @route     GET api/users
+// @desc      Get user
+// @access    Public
+router.get('/', async (req, res) => {
+	// save request content
+	const { email, username } = req.query;
+
+	try {
+		// get user from db
+		let user = await User.findOne({ email });
+		!user ? (user = await User.findOne({ username })) : '';
+
+		// send response
+		if (!user) {
+			return res.status(200).json({ msg: 'No user was found' });
+		} else {
+			// create payload
+			const payload = {
+				user: {
+					username: user.username,
+					city: user.city,
+					bio: user.bio,
+					avatarUrl: user.avatarUrl,
+					positiveKarma: user.positiveKarma,
+					negativeKarma: user.negativeKarma,
+					date: user.date
+				}
+			};
+			// send response
+			res.json(payload);
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server error');
+	}
+});
 
 // export router
 module.exports = router;

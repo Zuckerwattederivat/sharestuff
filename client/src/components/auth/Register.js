@@ -1,8 +1,10 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, Backdrop, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
+// Components
+import RegisterCurrent from './RegisterCurrent';
 // Context
 import NavbarContext from '../../context/navbar/navbarContext';
 
@@ -44,10 +46,63 @@ const Register = () => {
 	// styling classes
 	const classes = useStyles();
 
-	// load avbar context
+	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure navbar context
 	const { registerOpen, setRegisterOpen } = navbarContext;
+
+	// use state
+	const [ user, setUser ] = useState({
+		step: 1,
+		name: '',
+		adress: '',
+		zipCode: '',
+		city: '',
+		country: '',
+		phone: '',
+		email: '',
+		username: '',
+		password: '',
+		passwordConfirm: ''
+	});
+	// destructure state
+	const {
+		step,
+		firstname,
+		lastname,
+		adress,
+		zipCode,
+		city,
+		country,
+		phone,
+		email,
+		username,
+		password,
+		passwordConfirm
+	} = user;
+
+	// state values for components
+	const values = {
+		step,
+		firstname,
+		lastname,
+		adress,
+		zipCode,
+		city,
+		country,
+		phone,
+		email,
+		username,
+		password,
+		passwordConfirm
+	};
+
+	// proceed to next step
+	const nextStep = () => setUser({ ...user, step: step + 1 });
+	// go back to previous step
+	const prevStep = () => setUser({ ...user, step: step + 1 });
+	// on input change
+	const handleInputChange = input => e => setUser({ ...user, [input]: e.target.value });
 
 	return (
 		<Modal
@@ -77,7 +132,13 @@ const Register = () => {
 					</Typography>
 				</div>
 				<Divider className={classes.topDivider} />
-				<form className={classes.registerForm}>hello</form>
+				<RegisterCurrent
+					step={step}
+					values={values}
+					prevStep={prevStep}
+					nextStep={nextStep}
+					handleInputChange={handleInputChange}
+				/>
 			</motion.div>
 		</Modal>
 	);

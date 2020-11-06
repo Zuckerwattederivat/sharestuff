@@ -7,7 +7,11 @@ const mongoose = require('mongoose');
 
 // collection schema
 const UserSchema = mongoose.Schema({
-	name: {
+	firstname: {
+		type: String,
+		required: true
+	},
+	lastname: {
 		type: String,
 		required: true
 	},
@@ -59,7 +63,7 @@ const UserSchema = mongoose.Schema({
 		type: String,
 		default: ''
 	},
-	postiveKarma: {
+	positiveKarma: {
 		type: Number,
 		default: 0
 	},

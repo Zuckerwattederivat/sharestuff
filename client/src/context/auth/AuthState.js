@@ -20,10 +20,27 @@ const AuthState = props => {
 		isAuthenticated: null,
 		user: null,
 		loading: true,
-		error: null
+		authErr: null,
+		serverErr: null,
+		usernameErr: null,
+		emailErr: null,
+		phoneErr: null,
+		passwordErr: null,
+		passwordConfirmErr: null,
+		firstnameErr: null,
+		lastnameErr: null,
+		adressErr: null,
+		zipCodeErr: null,
+		countryErr: null,
+		cityErr: null,
+		serverErr: null,
+		registerFail: null
 	};
 
 	const [ state, dispatch ] = useReducer(authReducer, initialState);
+
+	// clear errors
+	const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
 	// load user
 	const loadUser = async () => {
@@ -56,14 +73,30 @@ const AuthState = props => {
 		}
 	};
 
+	// check for duplicate user
+	const checkForDuplicateUser = async (username, email) => {
+		// let errors = { ...initialState.error };
+		// try {
+		// 	let res = await axios.get('/api/users', { params: { username: username, email: email } });
+		// 	if (res.data.user.username) {
+		// 		errors.usernameErr = 'Username is already taken';
+		// 		dispatch({ tyoe: SET_REGISTER_ERRORS, payload: errors });
+		// 	}
+		// 	if (res.data.user.email) {
+		// 		console.log(res.data.email);
+		// 		errors.emailErr = 'Email is already taken';
+		// 		dispatch({ tyoe: SET_REGISTER_ERRORS, payload: errors });
+		// 	}
+		// } catch (err) {
+		// 	console.log(err);
+		// }
+	};
+
 	// login user
 	const login = () => console.log('login user');
 
 	// logout
 	const logout = () => console.log('logout user');
-
-	// clear errors
-	const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
 	return (
 		<AuthContext.Provider
@@ -77,6 +110,7 @@ const AuthState = props => {
 				register,
 				login,
 				logout,
+				checkForDuplicateUser,
 				clearErrors
 			}}
 		>
