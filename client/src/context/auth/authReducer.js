@@ -1,8 +1,20 @@
 import {
-	REGISTER_SUCCESS,
-	REGISTER_FAIL,
+	SET_LOADING,
 	USER_LOADED,
 	AUTH_ERROR,
+	REGISTER_SUCCESS,
+	REGISTER_FAIL,
+	USERNAME_ERROR,
+	EMAIL_ERROR,
+	PHONE_ERROR,
+	PASSWORD_ERROR,
+	PASSWORD_CONFIRM_ERROR,
+	FIRSTNAME_ERROR,
+	LASTNAME_ERROR,
+	ADDRESS_ERROR,
+	ZIPCODE_ERROR,
+	COUNTRY_ERROR,
+	CITY_ERROR,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
 	LOGOUT,
@@ -11,6 +23,11 @@ import {
 
 export default (state, action) => {
 	switch (action.type) {
+		case SET_LOADING:
+			return {
+				...state,
+				loading: true
+			};
 		case USER_LOADED:
 			return {
 				...state,
@@ -26,7 +43,7 @@ export default (state, action) => {
 				isAuthenticated: false,
 				loading: false,
 				user: null,
-				authErr: action.payload
+				error: action.payload
 			};
 		case REGISTER_SUCCESS:
 			localStorage.setItem('token', action.payload.token);
@@ -37,12 +54,33 @@ export default (state, action) => {
 				loading: false
 			};
 		case REGISTER_FAIL:
-			return { ...state, error: action.payload };
+			return { ...state, loading: false, error: action.payload };
+		case USERNAME_ERROR:
+			return { ...state, loading: false, usernameErr: action.payload };
+		case EMAIL_ERROR:
+			return { ...state, loading: false, emailErr: action.payload };
+		case PHONE_ERROR:
+			return { ...state, loading: false, phoneErr: action.payload };
+		case PASSWORD_ERROR:
+			return { ...state, loading: false, passwordErr: action.payload };
+		case PASSWORD_CONFIRM_ERROR:
+			return { ...state, loading: false, passwordConfirmErr: action.payload };
+		case FIRSTNAME_ERROR:
+			return { ...state, loading: false, firstnameErr: action.payload };
+		case LASTNAME_ERROR:
+			return { ...state, loading: false, lastnameErr: action.payload };
+		case ADDRESS_ERROR:
+			return { ...state, loading: false, addressErr: action.payload };
+		case ZIPCODE_ERROR:
+			return { ...state, loading: false, zipCodeErr: action.payload };
+		case COUNTRY_ERROR:
+			return { ...state, loading: false, countryErr: action.payload };
+		case CITY_ERROR:
+			return { ...state, loading: false, cityErr: action.payload };
 		case CLEAR_ERRORS:
 			return {
 				...state,
-				authErr: null,
-				serverErr: null,
+				error: null,
 				usernameErr: null,
 				emailErr: null,
 				phoneErr: null,
@@ -50,12 +88,10 @@ export default (state, action) => {
 				passwordConfirmErr: null,
 				firstnameErr: null,
 				lastnameErr: null,
-				adressErr: null,
+				addressErr: null,
 				zipCodeErr: null,
 				countryErr: null,
-				cityErr: null,
-				serverErr: null,
-				registerFail: null
+				cityErr: null
 			};
 		default:
 			return state;

@@ -19,7 +19,7 @@ router.post(
 	[
 		check('firstname', 'Please enter your firstname').not().isEmpty(),
 		check('lastname', 'Please enter your lastname').not().isEmpty(),
-		check('adress', 'Please enter your adress').not().isEmpty(),
+		check('address', 'Please enter your address').not().isEmpty(),
 		check('zipCode', 'Please enter your zip code').not().isEmpty(),
 		check('city', 'Please enter your city').not().isEmpty(),
 		check('country', 'Please enter your country').not().isEmpty(),
@@ -36,7 +36,7 @@ router.post(
 		}
 
 		// save request content
-		const { firstname, lastname, adress, zipCode, city, country, phone, email, username, password } = req.body;
+		const { firstname, lastname, address, zipCode, city, country, phone, email, username, password } = req.body;
 
 		// create user and save to db
 		try {
@@ -60,7 +60,7 @@ router.post(
 			user = new User({
 				firstname,
 				lastname,
-				adress,
+				address,
 				zipCode,
 				city,
 				country,
