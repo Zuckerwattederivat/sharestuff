@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const User = require('../models/User');
+const { json } = require('express');
 
 // @route     POST api/users
 // @desc      Register a user
@@ -110,31 +111,51 @@ router.post(
 // @access    Public
 router.get('/', async (req, res) => {
 	// save request content
-	const { email, username } = req.query;
+	const { email, username, returnUser } = req.query;
+
+	console.log(returnUser);
 
 	try {
-		// get user from db
-		let user = await User.findOne({ email });
-		!user ? (user = await User.findOne({ username })) : '';
+		// don't return user
+		if (!returnUser) {
+			// search db for email and username
+			const emailRes = await User.findOne({ email });
+			const userRes = await User.findOne({ username });
 
-		// send response
-		if (!user) {
-			return res.status(200).json({ msg: 'No user was found' });
+			if (emailRes && userRes) {
+				res.json({ msg1: 'Email found', msg2: 'Username found' });
+			} else if (emailRes) {
+				res.json({ msg: 'Email found' });
+			} else if (userRes) {
+				res.json({ msg: 'Username found' });
+			} else {
+				return res.status(200).json({ msg: 'No user was found' });
+			}
+
+			// return user
 		} else {
-			// create payload
-			const payload = {
-				user: {
-					username: user.username,
-					city: user.city,
-					bio: user.bio,
-					avatarUrl: user.avatarUrl,
-					positiveKarma: user.positiveKarma,
-					negativeKarma: user.negativeKarma,
-					date: user.date
-				}
-			};
+			console.log('hello');
+			const user = await User.findOne({ email, username });
+
 			// send response
-			res.json(payload);
+			if (!user) {
+				return res.status(200).json({ msg: 'No user was found' });
+			} else {
+				// create payload
+				const payload = {
+					user: {
+						username: user.username,
+						city: user.city,
+						bio: user.bio,
+						avatarUrl: user.avatarUrl,
+						positiveKarma: user.positiveKarma,
+						negativeKarma: user.negativeKarma,
+						date: user.date
+					}
+				};
+				// send response
+				res.json(payload);
+			}
 		}
 	} catch (err) {
 		console.error(err.message);

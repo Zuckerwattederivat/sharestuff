@@ -54,32 +54,33 @@ export default (state, action) => {
 				loading: false
 			};
 		case SET_ERROR:
-			return { ...state, loading: false, error: action.payload };
+			return { ...state, error: action.payload };
 		case USERNAME_ERROR:
-			return { ...state, loading: false, usernameErr: action.payload };
+			return { ...state, usernameErr: action.payload };
 		case EMAIL_ERROR:
-			return { ...state, loading: false, emailErr: action.payload };
+			return { ...state, emailErr: action.payload };
 		case PHONE_ERROR:
-			return { ...state, loading: false, phoneErr: action.payload };
+			return { ...state, phoneErr: action.payload };
 		case PASSWORD_ERROR:
-			return { ...state, loading: false, passwordErr: action.payload };
+			return { ...state, passwordErr: action.payload };
 		case PASSWORD_CONFIRM_ERROR:
-			return { ...state, loading: false, passwordConfirmErr: action.payload };
+			return { ...state, passwordConfirmErr: action.payload };
 		case FIRSTNAME_ERROR:
-			return { ...state, loading: false, firstnameErr: action.payload };
+			return { ...state, firstnameErr: action.payload };
 		case LASTNAME_ERROR:
-			return { ...state, loading: false, lastnameErr: action.payload };
+			return { ...state, lastnameErr: action.payload };
 		case ADDRESS_ERROR:
-			return { ...state, loading: false, addressErr: action.payload };
+			return { ...state, addressErr: action.payload };
 		case ZIPCODE_ERROR:
-			return { ...state, loading: false, zipCodeErr: action.payload };
+			return { ...state, zipCodeErr: action.payload };
 		case COUNTRY_ERROR:
-			return { ...state, loading: false, countryErr: action.payload };
+			return { ...state, countryErr: action.payload };
 		case CITY_ERROR:
-			return { ...state, loading: false, cityErr: action.payload };
+			return { ...state, cityErr: action.payload };
 		case CLEAR_ERRORS:
 			return {
 				...state,
+				loading: true,
 				error: null,
 				usernameErr: null,
 				emailErr: null,

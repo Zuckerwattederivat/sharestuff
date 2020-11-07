@@ -3,7 +3,18 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
-import { SET_LOADING, USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, SET_ERROR, CLEAR_ERRORS } from '../types';
+import {
+	SET_LOADING,
+	USER_LOADED,
+	AUTH_ERROR,
+	REGISTER_SUCCESS,
+	SET_ERROR,
+	CLEAR_ERRORS,
+	USERNAME_ERROR,
+	EMAIL_ERROR,
+	PASSWORD_ERROR,
+	PASSWORD_CONFIRM_ERROR
+} from '../types';
 
 const AuthState = props => {
 	const initialState = {
@@ -67,27 +78,48 @@ const AuthState = props => {
 		}
 	};
 
-	// set errors
+	// set state
 	const setState = (type, payload) => dispatch({ type: type, payload: payload });
 
-	// check for duplicate user
-	const checkForDuplicateUser = async (username = '', email = '', type = null, payload = null) => {
-		const setLoading = bool => {
-			setState(SET_LOADING, bool);
-			return new Promise(resolve => resolve(true));
-		};
-		const loading = await setLoading(true);
-		if (loading) {
-			try {
-				const res = await axios.get('/api/users', { params: { username: username, email: email } });
-				if (!res.data.msg) {
-					setState(type, payload);
-				} else {
-					await setLoading(false);
+	// validate input
+	const validateUserData = async input => {
+		// destructure input
+		const { username, email, password, passwordConfirm } = input;
+
+		try {
+			// check username against db entries
+			const res = await axios.get('/api/users', { params: { username: username, email: email } });
+			if (res) {
+				// validate username
+				if (res.data.msg2 || res.data.msg === 'Username found') {
+					setState(USERNAME_ERROR, 'Username already taken');
+				} else if (username === '') {
+					setState(USERNAME_ERROR, 'Please choose a username');
 				}
-			} catch (err) {
-				setState(SET_ERROR, `Server Error: ${err.response.status}`);
+				// validate email
+				if (res.data.msg1 || res.data.msg === 'Email found') {
+					setState(EMAIL_ERROR, 'Email already exists');
+				} else if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
+					setState(EMAIL_ERROR, 'Please enter a valid email address');
+				}
+				// validate passwords
+				if (password === '') {
+					setState(PASSWORD_ERROR, 'Please choose a password');
+				}
+				if (passwordConfirm === '') {
+					setState(PASSWORD_CONFIRM_ERROR, 'Please confirm your password');
+				} else if (password !== passwordConfirm) {
+					setState(PASSWORD_ERROR, 'Passwords do not match');
+					setState(PASSWORD_CONFIRM_ERROR, 'Passwords do not match');
+				} else if (password.length < 6 || passwordConfirm.length < 6) {
+					setState(PASSWORD_ERROR, 'Password must be at least 6 characters long');
+					setState(PASSWORD_CONFIRM_ERROR, 'Password must be at least 6 characters long');
+				}
+				// set loading
+				setState(SET_LOADING, false);
 			}
+		} catch (err) {
+			setState(SET_ERROR, err);
 		}
 	};
 
@@ -115,8 +147,8 @@ const AuthState = props => {
 				login,
 				logout,
 				setState,
-				checkForDuplicateUser,
-				clearErrors
+				clearErrors,
+				validateUserData
 			}}
 		>
 			{props.children}

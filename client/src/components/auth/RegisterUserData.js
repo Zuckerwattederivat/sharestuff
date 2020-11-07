@@ -40,8 +40,7 @@ const RegisterUserData = props => {
 		emailErr,
 		passwordErr,
 		passwordConfirmErr,
-		checkForDuplicateUser,
-		setState,
+		validateUserData,
 		clearErrors
 	} = authContext;
 
@@ -49,40 +48,19 @@ const RegisterUserData = props => {
 	const { values, handleInputChange, nextStep } = props;
 
 	// continue form
-	const continueForm = e => {
-		// prevent default and clear remaining errors
-		e.preventDefault();
+	const continueForm = input => {
 		clearErrors();
-
-		// validate
-		if (values.username === '') {
-			setState(USERNAME_ERROR, 'Please choose a username');
-		} else {
-			checkForDuplicateUser(values.username, null, USERNAME_ERROR, 'Username is already taken');
-		}
-		if (!values.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-			setState(EMAIL_ERROR, 'Please enter a valid email');
-		} else {
-			checkForDuplicateUser(null, values.email, EMAIL_ERROR, 'Email already exists');
-		}
-		if (values.password === '') {
-			setState(PASSWORD_ERROR, 'Please choose a password');
-		}
-		if (values.passwordConfirm === '') {
-			setState(PASSWORD_CONFIRM_ERROR, 'Please confirm your password');
-		} else if (values.password !== values.passwordConfirm) {
-			setState(PASSWORD_ERROR, 'Passwords do not match');
-			setState(PASSWORD_CONFIRM_ERROR, 'Passwords do not match');
-		} else if (values.password.length < 6 || values.passwordConfirm.length < 6) {
-			setState(PASSWORD_ERROR, 'Password must be at least 6 characters long');
-			setState(PASSWORD_CONFIRM_ERROR, 'Password must be at least 6 characters long');
-		}
+		validateUserData(input);
 	};
 
+	// execute on error state change
 	useEffect(
 		() => {
 			if (!loading && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
+				//console.log('next');
 				nextStep();
+			} else {
+				//console.log('current');
 			}
 		},
 		[ loading, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
@@ -140,8 +118,8 @@ const RegisterUserData = props => {
 				variant='outlined'
 				color='primary'
 				endIcon={<ArrowForwardIcon />}
-				onClick={continueForm}
 				size='large'
+				onClick={() => continueForm(values)}
 			>
 				Next
 			</Button>
