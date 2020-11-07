@@ -23,6 +23,12 @@ function getTheme(theme) {
 		},
 		drawer: {
 			width: '240px'
+		},
+		input: {
+			'&:-webkit-autofill': {
+				WebkitBoxShadow: '0 0 0 100px #089349 inset',
+				WebkitTextFillColor: '#fff'
+			}
 		}
 	});
 }

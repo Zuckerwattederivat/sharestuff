@@ -10,16 +10,17 @@ import RegisterSuccess from './RegisterSuccess';
 // RegisterCurrent Component
 const RegisterCurrent = props => {
 	switch (props.step) {
-		case 1:
+		case 2:
 			return (
 				<RegisterUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
 			);
-		case 2:
+		case 1:
 			return (
 				<RegisterPersonalData
 					prevStep={props.prevStep}
 					nextStep={props.nextStep}
 					handleInputChange={props.handleInputChange}
+					setInputValue={props.setInputValue}
 					values={props.values}
 				/>
 			);
@@ -37,6 +38,7 @@ RegisterCurrent.propTypes = {
 	prevStep: PropTypes.func.isRequired,
 	nextStep: PropTypes.func.isRequired,
 	handleInputChange: PropTypes.func.isRequired,
+	setInputValue: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired
 };
 

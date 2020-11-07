@@ -15,3 +15,6 @@ export const startScrolling = () => {
 	document.body.style.scrollTop = '';
 	window.scrollTo(0, parseInt(scrollY || '0') * -1);
 };
+
+// export
+export default { stopScrolling, startScrolling };

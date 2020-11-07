@@ -85,6 +85,9 @@ const UserMenu = props => {
 				]
 			) : (
 				[
+					<MenuItem key='login' onClick={handleUserMenuClose}>
+						<LockOpenIcon fontSize='small' className={classes.dropdownIcons} /> Login
+					</MenuItem>,
 					<MenuItem
 						key='register'
 						onClick={() => {
@@ -93,9 +96,6 @@ const UserMenu = props => {
 						}}
 					>
 						<PersonAddIcon fontSize='small' className={classes.dropdownIcons} /> Register
-					</MenuItem>,
-					<MenuItem key='login' onClick={handleUserMenuClose}>
-						<LockOpenIcon fontSize='small' className={classes.dropdownIcons} /> Login
 					</MenuItem>
 				]
 			)}

@@ -113,7 +113,7 @@ router.get('/', async (req, res) => {
 	// save request content
 	const { email, username, returnUser } = req.query;
 
-	console.log(returnUser);
+	//console.log(returnUser);
 
 	try {
 		// don't return user
@@ -134,7 +134,6 @@ router.get('/', async (req, res) => {
 
 			// return user
 		} else {
-			console.log('hello');
 			const user = await User.findOne({ email, username });
 
 			// send response

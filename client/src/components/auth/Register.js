@@ -100,9 +100,11 @@ const Register = () => {
 	// proceed to next step
 	const nextStep = () => setUser({ ...user, step: step + 1 });
 	// go back to previous step
-	const prevStep = () => setUser({ ...user, step: step + 1 });
+	const prevStep = () => setUser({ ...user, step: step - 1 });
 	// on input change
 	const handleInputChange = input => e => setUser({ ...user, [input]: e.target.value });
+	// set state
+	const setInputValue = (input, value) => setUser({ ...user, [input]: value });
 
 	return (
 		<Modal
@@ -138,6 +140,7 @@ const Register = () => {
 					prevStep={prevStep}
 					nextStep={nextStep}
 					handleInputChange={handleInputChange}
+					setInputValue={setInputValue}
 				/>
 			</motion.div>
 		</Modal>

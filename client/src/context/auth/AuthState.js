@@ -92,7 +92,7 @@ const AuthState = props => {
 			if (res) {
 				// validate username
 				if (res.data.msg2 || res.data.msg === 'Username found') {
-					setState(USERNAME_ERROR, 'Username already taken');
+					setState(USERNAME_ERROR, 'Username is already taken');
 				} else if (username === '') {
 					setState(USERNAME_ERROR, 'Please choose a username');
 				}

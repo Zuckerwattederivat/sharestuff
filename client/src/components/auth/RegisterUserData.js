@@ -6,7 +6,6 @@ import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import { USERNAME_ERROR, EMAIL_ERROR, PASSWORD_ERROR, PASSWORD_CONFIRM_ERROR } from '../../context/types';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -21,8 +20,13 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		marginBottom: theme.spacing(3)
 	},
-	nextButton: {
-		width: '100%'
+	// nextButton: {
+	// 	width: '100%'
+	// },
+	buttonIcon: {
+		[theme.breakpoints.down('xs')]: {
+			display: 'none'
+		}
 	}
 }));
 
@@ -63,6 +67,7 @@ const RegisterUserData = props => {
 				//console.log('current');
 			}
 		},
+		// eslint-disable-next-line
 		[ loading, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
 	);
 
@@ -72,18 +77,21 @@ const RegisterUserData = props => {
 				Please enter your user details.
 			</Typography>
 			<TextField
+				id='username'
+				name='username'
 				className={classes.textfield}
 				variant='outlined'
 				label={usernameErr ? usernameErr : 'Username'}
-				placeholder='Toolsmaster121'
-				type='username'
+				placeholder='toolsmaster'
+				type='text'
 				error={usernameErr ? true : false}
 				onChange={handleInputChange('username')}
 				defaultValue={values.username}
 			/>
 			<TextField
-				className={classes.textfield}
+				id='email'
 				name='email'
+				className={classes.textfield}
 				variant='outlined'
 				label={emailErr ? emailErr : 'Email'}
 				placeholder='john.doe@gmail.com'
@@ -93,8 +101,9 @@ const RegisterUserData = props => {
 				defaultValue={values.email}
 			/>
 			<TextField
-				className={classes.textfield}
+				id='password'
 				name='password'
+				className={classes.textfield}
 				variant='outlined'
 				label={passwordErr ? passwordErr : 'Password'}
 				type='password'
@@ -103,8 +112,9 @@ const RegisterUserData = props => {
 				defaultValue={values.password}
 			/>
 			<TextField
-				className={classes.textfield}
+				id='passwordConfirm'
 				name='passwordConfirm'
+				className={classes.textfield}
 				variant='outlined'
 				label={passwordConfirmErr ? passwordConfirmErr : 'Confirm Password'}
 				type='password'
@@ -112,17 +122,19 @@ const RegisterUserData = props => {
 				onChange={handleInputChange('passwordConfirm')}
 				defaultValue={values.passwordConfirm}
 			/>
-			<Button
-				className={classes.nextButton}
-				width='100%'
-				variant='outlined'
-				color='primary'
-				endIcon={<ArrowForwardIcon />}
-				size='large'
-				onClick={() => continueForm(values)}
-			>
-				Next
-			</Button>
+			<Box width='100%' display='flex' justifyContent='flex-end'>
+				<Button
+					className={classes.nextButton}
+					width='100%'
+					variant='outlined'
+					color='primary'
+					endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
+					size='large'
+					onClick={() => continueForm(values)}
+				>
+					Continue
+				</Button>
+			</Box>
 		</Box>
 	);
 };
