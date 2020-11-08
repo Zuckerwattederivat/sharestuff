@@ -1,7 +1,7 @@
 // Node Modules
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Button, TextField } from '@material-ui/core';
+import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
@@ -17,9 +17,15 @@ const useStyles = makeStyles(theme => ({
 		textAlign: 'center',
 		margin: theme.spacing(0, 0, 3)
 	},
-	textfield: {
-		width: '100%',
+	grid: {
 		marginBottom: theme.spacing(3)
+	},
+	gridItem: {},
+	textfield: {
+		width: '100%'
+	},
+	textfield: {
+		width: '100%'
 	},
 	// nextButton: {
 	// 	width: '100%'
@@ -77,52 +83,62 @@ const RegisterUserData = props => {
 			<Typography className={classes.description} variant='subtitle1'>
 				Please enter your user details.
 			</Typography>
-			<TextField
-				id='username'
-				name='username'
-				className={classes.textfield}
-				variant='outlined'
-				label={usernameErr ? usernameErr : 'Username'}
-				placeholder='toolsmaster'
-				type='text'
-				error={usernameErr ? true : false}
-				onChange={handleInputChange('username')}
-				defaultValue={values.username}
-			/>
-			<TextField
-				id='email'
-				name='email'
-				className={classes.textfield}
-				variant='outlined'
-				label={emailErr ? emailErr : 'Email'}
-				placeholder='john.doe@gmail.com'
-				type='email'
-				error={emailErr ? true : false}
-				onChange={handleInputChange('email')}
-				defaultValue={values.email}
-			/>
-			<TextField
-				id='password'
-				name='password'
-				className={classes.textfield}
-				variant='outlined'
-				label={passwordErr ? passwordErr : 'Password'}
-				type='password'
-				error={passwordErr ? true : false}
-				onChange={handleInputChange('password')}
-				defaultValue={values.password}
-			/>
-			<TextField
-				id='passwordConfirm'
-				name='passwordConfirm'
-				className={classes.textfield}
-				variant='outlined'
-				label={passwordConfirmErr ? passwordConfirmErr : 'Confirm Password'}
-				type='password'
-				error={passwordConfirmErr ? true : false}
-				onChange={handleInputChange('passwordConfirm')}
-				defaultValue={values.passwordConfirm}
-			/>
+			<Grid className={classes.grid} width='100%' container spacing={2}>
+				<Grid item xs={12} className={classes.gridItem}>
+					<TextField
+						id='username'
+						name='username'
+						className={classes.textfield}
+						variant='outlined'
+						label={usernameErr ? usernameErr : 'Username'}
+						placeholder='toolsmaster'
+						type='text'
+						error={usernameErr ? true : false}
+						onChange={handleInputChange('username')}
+						defaultValue={values.username}
+					/>
+				</Grid>
+				<Grid item xs={12} className={classes.gridItem}>
+					<TextField
+						id='email'
+						name='email'
+						className={classes.textfield}
+						variant='outlined'
+						label={emailErr ? emailErr : 'Email'}
+						placeholder='john.doe@gmail.com'
+						type='email'
+						error={emailErr ? true : false}
+						onChange={handleInputChange('email')}
+						defaultValue={values.email}
+					/>
+				</Grid>
+				<Grid item xs={12} className={classes.gridItem}>
+					<TextField
+						id='password'
+						name='password'
+						className={classes.textfield}
+						variant='outlined'
+						label={passwordErr ? passwordErr : 'Password'}
+						type='password'
+						error={passwordErr ? true : false}
+						onChange={handleInputChange('password')}
+						defaultValue={values.password}
+					/>
+				</Grid>
+				<Grid item xs={12} className={classes.gridItem}>
+					<TextField
+						id='passwordConfirm'
+						name='passwordConfirm'
+						className={classes.textfield}
+						variant='outlined'
+						label={passwordConfirmErr ? passwordConfirmErr : 'Confirm Password'}
+						type='password'
+						error={passwordConfirmErr ? true : false}
+						onChange={handleInputChange('passwordConfirm')}
+						defaultValue={values.passwordConfirm}
+					/>
+				</Grid>
+			</Grid>
 			<Box width='100%' display='flex' justifyContent='flex-end'>
 				<Button
 					className={classes.nextButton}

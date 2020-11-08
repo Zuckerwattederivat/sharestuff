@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -7,7 +7,7 @@ import { ArrowForward as ArrowForwardIcon, ArrowBack as ArrowBackIcon } from '@m
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import { SET_LOADING, SET_COUNTRY_AUTO } from '../../context/types';
+import { SET_LOADING, SET_COUNTRY_AUTO, SET_COUNTRY_LABEL } from '../../context/types';
 // utils
 import countries from '../../utils/countries';
 
@@ -72,21 +72,28 @@ const RegisterPersonalData = props => {
 		addressErr,
 		countryErr,
 		countryAuto,
+		countryLabel,
 		phoneErr,
 		zipCodeErr,
+		cityErr,
 		setState,
 		clearErrors,
 		validatePersonalData
 	} = authContext;
 
 	// destructure props
-	const { values, handleInputChange, handleStateChange, nextStep, prevStep } = props;
+	const { values, handleInputChange, nextStep, prevStep } = props;
 
 	// watch errors & loading
 	useEffect(
 		() => {
 			if (!loading && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
-				console.log('works');
+				// change country label state based on state of countryAuto
+				setState(SET_COUNTRY_LABEL, countryAuto.label);
+				// set loading to true
+				setState(SET_LOADING, true);
+				// go to next page
+				nextStep();
 			}
 			// eslint-disable-next-line
 		},
@@ -145,7 +152,6 @@ const RegisterPersonalData = props => {
 						onChange={(e, newCountryAuto) => setState(SET_COUNTRY_AUTO, newCountryAuto)}
 						onInput={handleInputChange('country')}
 						className={classes.countrySelect}
-						id='country-select'
 						options={countries}
 						classes={{
 							option: classes.option
@@ -165,6 +171,7 @@ const RegisterPersonalData = props => {
 								error={countryErr ? true : false}
 								label={countryErr ? countryErr : 'Country'}
 								variant='outlined'
+								placeholder={countryLabel ? countryLabel : 'Germany'}
 							/>
 						)}
 					/>
@@ -183,7 +190,7 @@ const RegisterPersonalData = props => {
 						defaultValue={values.phone}
 					/>
 				</Grid>
-				<Grid item xs={6} md={9} className={classes.gridItem}>
+				<Grid item xs={12} md={5} className={classes.gridItem}>
 					<TextField
 						id='address'
 						name='address'
@@ -209,6 +216,20 @@ const RegisterPersonalData = props => {
 						error={zipCodeErr ? true : false}
 						onChange={handleInputChange('zipCode')}
 						defaultValue={values.zipCode}
+					/>
+				</Grid>
+				<Grid item xs={6} md={4} className={classes.gridItem}>
+					<TextField
+						id='city'
+						name='city'
+						className={classes.textfield}
+						variant='outlined'
+						label={cityErr ? cityErr : 'City'}
+						placeholder='Hamburg'
+						type='text'
+						error={cityErr ? true : false}
+						onChange={handleInputChange('city')}
+						defaultValue={values.city}
 					/>
 				</Grid>
 			</Grid>

@@ -20,7 +20,7 @@ import {
 	PHONE_ERROR,
 	ZIPCODE_ERROR,
 	ADDRESS_ERROR,
-	SET_COUNTRY_AUTO
+	CITY_ERROR
 } from '../types';
 
 const AuthState = props => {
@@ -40,8 +40,9 @@ const AuthState = props => {
 		addressErr: null,
 		zipCodeErr: null,
 		countryErr: null,
+		cityErr: null,
 		countryAuto: null,
-		cityErr: null
+		countryLabel: null
 	};
 
 	const [ state, dispatch ] = useReducer(authReducer, initialState);
@@ -105,7 +106,7 @@ const AuthState = props => {
 			setState(USERNAME_ERROR, 'Username is already taken');
 			return Promise.resolve(false);
 		} else if (input3 === '') {
-			setState(USERNAME_ERROR, 'Please choose a username');
+			setState(USERNAME_ERROR, 'Choose a username');
 			return Promise.resolve(false);
 		} else {
 			return Promise.resolve(true);
@@ -118,22 +119,17 @@ const AuthState = props => {
 			setState(EMAIL_ERROR, 'Email already exists');
 			return Promise.resolve(false);
 		} else if (!input3.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-			setState(EMAIL_ERROR, 'Please enter a valid email address');
+			setState(EMAIL_ERROR, 'Enter your email address');
 			return Promise.resolve(false);
 		} else {
 			return Promise.resolve(true);
 		}
 	};
 
-	// validate password
+	// ckeck password
 	const checkPasswords = async (input1, input2) => {
-		const passwordNotEmpty = await checkForOneCond(input1, '', PASSWORD_ERROR, 'Please choose a password');
-		const passwordConfirmNotEmpty = await checkForOneCond(
-			input2,
-			'',
-			PASSWORD_CONFIRM_ERROR,
-			'Please confirm your password'
-		);
+		const passwordNotEmpty = await checkForOneCond(input1, '', PASSWORD_ERROR, 'Choose a password');
+		const passwordConfirmNotEmpty = await checkForOneCond(input2, '', PASSWORD_CONFIRM_ERROR, 'Confirm your password');
 		if (passwordNotEmpty && passwordConfirmNotEmpty) {
 			if (input1 !== input2) {
 				setState(PASSWORD_ERROR, 'Passwords do not match');
@@ -177,15 +173,16 @@ const AuthState = props => {
 	// validate personal data
 	const validatePersonalData = async input => {
 		// destructure input
-		const { countryAuto, firstname, lastname, phone, address, zipCode } = input;
+		const { countryAuto, firstname, lastname, phone, address, zipCode, city } = input;
 
 		// validate form
-		const firstnameValidated = await checkForOneCond(firstname, '', FIRSTNAME_ERROR, 'Please enter your first name');
-		const lastnameValidated = await checkForOneCond(lastname, '', LASTNAME_ERROR, 'Please enter your last name');
+		const firstnameValidated = await checkForOneCond(firstname, '', FIRSTNAME_ERROR, 'Enter your first name');
+		const lastnameValidated = await checkForOneCond(lastname, '', LASTNAME_ERROR, 'Enter your last name');
 		const countryValidated = await checkForOneCond(countryAuto, null, COUNTRY_ERROR, 'Enter country');
-		const phoneValidated = await checkForOneCond(phone, '', PHONE_ERROR, 'Please enter your phone number');
-		const addressValidated = await checkForOneCond(address, '', ADDRESS_ERROR, 'Please enter your address');
+		const phoneValidated = await checkForOneCond(phone, '', PHONE_ERROR, 'Enter your phone number');
+		const addressValidated = await checkForOneCond(address, '', ADDRESS_ERROR, 'Enter your address');
 		const zipCodeValidated = await checkForOneCond(zipCode, '', ZIPCODE_ERROR, 'Enter zip');
+		const cityValidated = await checkForOneCond(city, '', CITY_ERROR, 'Enter city');
 
 		// set loading
 		if (
@@ -194,7 +191,8 @@ const AuthState = props => {
 			countryValidated &&
 			phoneValidated &&
 			addressValidated &&
-			zipCodeValidated
+			zipCodeValidated &&
+			cityValidated
 		) {
 			setState(SET_LOADING, false);
 		}
@@ -219,6 +217,7 @@ const AuthState = props => {
 				zipCodeErr: state.zipCodeErr,
 				countryErr: state.countryErr,
 				countryAuto: state.countryAuto,
+				countryLabel: state.countryLabel,
 				cityErr: state.cityErr,
 				loadUser,
 				register,

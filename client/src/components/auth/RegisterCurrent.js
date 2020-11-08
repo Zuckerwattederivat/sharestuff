@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import RegisterUserData from './RegisterUserData';
 import RegisterPersonalData from './RegisterPersonalData';
 import RegisterConfirm from './RegisterConfirm';
-import RegisterSuccess from './RegisterSuccess';
+import RegisterResponse from './RegisterResponse';
 
 // RegisterCurrent Component
 const RegisterCurrent = props => {
@@ -26,8 +26,8 @@ const RegisterCurrent = props => {
 			);
 		case 3:
 			return <RegisterConfirm prevStep={props.prevStep} nextStep={props.nextStep} values={props.values} />;
-		case 4:
-			return <RegisterSuccess />;
+		case 2:
+			return <RegisterResponse />;
 		default:
 			return (
 				<RegisterUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
