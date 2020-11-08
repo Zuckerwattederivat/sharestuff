@@ -7,7 +7,7 @@ import { ArrowForward as ArrowForwardIcon, ArrowBack as ArrowBackIcon } from '@m
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import { SET_LOADING } from '../../context/types';
+import { SET_LOADING, SET_COUNTRY_AUTO } from '../../context/types';
 // utils
 import countries from '../../utils/countries';
 
@@ -27,8 +27,21 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: '100%'
 	},
+	buttonContainer: {
+		[theme.breakpoints.down('xs')]: {
+			justifyContent: 'space-between'
+		}
+	},
 	prevButton: {
+		[theme.breakpoints.down('xs')]: {
+			width: '47%'
+		},
 		marginRight: theme.spacing(1)
+	},
+	nextButton: {
+		[theme.breakpoints.down('xs')]: {
+			width: '47%'
+		}
 	},
 	buttonIcon: {
 		[theme.breakpoints.down('xs')]: {
@@ -52,10 +65,22 @@ const RegisterPersonalData = props => {
 	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { loading, firstnameErr, lastnameErr, addressErr, phoneErr, zipCodeErr, setState } = authContext;
+	const {
+		loading,
+		firstnameErr,
+		lastnameErr,
+		addressErr,
+		countryErr,
+		countryAuto,
+		phoneErr,
+		zipCodeErr,
+		setState,
+		clearErrors,
+		validatePersonalData
+	} = authContext;
 
 	// destructure props
-	const { values, handleInputChange, setInputValue, nextStep, prevStep } = props;
+	const { values, handleInputChange, handleStateChange, nextStep, prevStep } = props;
 
 	// reset loading once on start
 	useEffect(() => {
@@ -63,22 +88,34 @@ const RegisterPersonalData = props => {
 		// eslint-disable-next-line
 	}, []);
 
-	// country state
-	const [ countryAuto, setCountryAuto ] = useState(undefined);
-	// on state change send to parent state
+	// watch errors & loadin
 	useEffect(
 		() => {
-			setInputValue('country', countryAuto);
+			if (!loading && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
+				console.log('works');
+			}
+			// eslint-disable-next-line
 		},
-		[ countryAuto ]
+		[ loading, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
 	);
+
+	// continue form
+	const continueForm = (input, countryAuto) => {
+		// add countryAuto to input
+		input.countryAuto = countryAuto;
+		//console.log(input);
+		// clear errors
+		clearErrors();
+		// validate form
+		validatePersonalData(input);
+	};
 
 	return (
 		<Box className={classes.registerUserDetails} width='100%'>
 			<Typography className={classes.description} variant='subtitle1'>
 				Please enter your personal details.
 			</Typography>
-			<Grid className={classes.grid} width='100%' container spacing={1}>
+			<Grid className={classes.grid} width='100%' container spacing={2}>
 				<Grid item xs={12} md={6} className={classes.gridItem}>
 					<TextField
 						id='firstname'
@@ -109,7 +146,9 @@ const RegisterPersonalData = props => {
 				</Grid>
 				<Grid item xs={12} md={4} className={classes.gridItem}>
 					<Autocomplete
-						onChange={(e, newCountryAuto) => setCountryAuto(newCountryAuto)}
+						id='country'
+						name='country'
+						onChange={(e, newCountryAuto) => setState(SET_COUNTRY_AUTO, newCountryAuto)}
 						onInput={handleInputChange('country')}
 						className={classes.countrySelect}
 						id='country-select'
@@ -125,7 +164,15 @@ const RegisterPersonalData = props => {
 								{option.label} ({option.code}) +{option.phone}
 							</React.Fragment>
 						)}
-						renderInput={params => <TextField {...params} label='Country' variant='outlined' />}
+						renderInput={params => (
+							<TextField
+								{...params}
+								required={false}
+								error={countryErr ? true : false}
+								label={countryErr ? countryErr : 'Country'}
+								variant='outlined'
+							/>
+						)}
 					/>
 				</Grid>
 				<Grid item xs={12} md={8} className={classes.gridItem}>
@@ -136,7 +183,7 @@ const RegisterPersonalData = props => {
 						variant='outlined'
 						label={phoneErr ? phoneErr : 'Phone Number'}
 						placeholder='1767777777'
-						type='text'
+						type='number'
 						error={phoneErr ? true : false}
 						onChange={handleInputChange('phone')}
 						defaultValue={values.phone}
@@ -164,7 +211,7 @@ const RegisterPersonalData = props => {
 						variant='outlined'
 						label={zipCodeErr ? zipCodeErr : 'Zip Code'}
 						placeholder='20359'
-						type='text'
+						type='number'
 						error={zipCodeErr ? true : false}
 						onChange={handleInputChange('zipCode')}
 						defaultValue={values.zipCode}
@@ -189,6 +236,7 @@ const RegisterPersonalData = props => {
 					color='primary'
 					endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
 					size='large'
+					onClick={() => continueForm(values, countryAuto)}
 				>
 					Continue
 				</Button>

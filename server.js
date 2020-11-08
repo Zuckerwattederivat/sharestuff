@@ -19,8 +19,8 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.json({ msg: 'Welcome to the sharestuff API...' }));
 
 // define routes
-app.use('/api/users', require('./routes/users'));
-app.use('/api/auth', require('./routes/auth'));
+app.use('/server/users', require('./routes/users'));
+app.use('/server/auth', require('./routes/auth'));
 
 // start server on PORT
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));

@@ -18,7 +18,8 @@ import {
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
 	LOGOUT,
-	CLEAR_ERRORS
+	CLEAR_ERRORS,
+	SET_COUNTRY_AUTO
 } from '../types';
 
 export default (state, action) => {
@@ -75,6 +76,8 @@ export default (state, action) => {
 			return { ...state, zipCodeErr: action.payload };
 		case COUNTRY_ERROR:
 			return { ...state, countryErr: action.payload };
+		case SET_COUNTRY_AUTO:
+			return { ...state, countryAuto: action.payload };
 		case CITY_ERROR:
 			return { ...state, cityErr: action.payload };
 		case CLEAR_ERRORS:

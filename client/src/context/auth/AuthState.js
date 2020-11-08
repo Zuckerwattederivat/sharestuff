@@ -13,7 +13,14 @@ import {
 	USERNAME_ERROR,
 	EMAIL_ERROR,
 	PASSWORD_ERROR,
-	PASSWORD_CONFIRM_ERROR
+	PASSWORD_CONFIRM_ERROR,
+	FIRSTNAME_ERROR,
+	LASTNAME_ERROR,
+	COUNTRY_ERROR,
+	PHONE_ERROR,
+	ZIPCODE_ERROR,
+	ADDRESS_ERROR,
+	SET_COUNTRY_AUTO
 } from '../types';
 
 const AuthState = props => {
@@ -33,6 +40,7 @@ const AuthState = props => {
 		addressErr: null,
 		zipCodeErr: null,
 		countryErr: null,
+		countryAuto: undefined,
 		cityErr: null
 	};
 
@@ -48,7 +56,7 @@ const AuthState = props => {
 		}
 
 		try {
-			const res = await axios.get('/api/auth');
+			const res = await axios.get('/server/auth');
 			dispatch({ type: USER_LOADED, payload: res.data });
 		} catch (err) {
 			dispatch({ type: AUTH_ERROR });
@@ -70,7 +78,7 @@ const AuthState = props => {
 		};
 
 		try {
-			const res = await axios.post('/api/users', formData, config);
+			const res = await axios.post('/server/users', formData, config);
 			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {
@@ -81,14 +89,14 @@ const AuthState = props => {
 	// set state
 	const setState = (type, payload) => dispatch({ type: type, payload: payload });
 
-	// validate input
+	// validate user data
 	const validateUserData = async input => {
 		// destructure input
 		const { username, email, password, passwordConfirm } = input;
 
 		try {
 			// check username against db entries
-			const res = await axios.get('/api/users', { params: { username: username, email: email } });
+			const res = await axios.get('/server/users', { params: { username: username, email: email } });
 			if (res) {
 				// validate username
 				if (res.data.msg2 || res.data.msg === 'Username found') {
@@ -123,6 +131,76 @@ const AuthState = props => {
 		}
 	};
 
+	// validate personal data
+	const validatePersonalData = async input => {
+		// destructure input
+		const { countryAuto, firstname, lastname, phone, address, zipCode } = input;
+
+		// validation functions
+		const validateFirstname = input => {
+			if (input === '') {
+				setState(FIRSTNAME_ERROR, 'Please enter your first name');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+		const validateLastname = input => {
+			if (input === '') {
+				setState(LASTNAME_ERROR, 'Please enter your last name');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+		const validateCountry = input => {
+			if (!input) {
+				setState(COUNTRY_ERROR, 'Enter country');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+		const validatePhone = input => {
+			if (input === '') {
+				setState(PHONE_ERROR, 'Please enter your phone number');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+		const validateAddress = input => {
+			if (input === '') {
+				setState(ADDRESS_ERROR, 'Please enter your address');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+		const validateZipCode = input => {
+			if (input === '') {
+				setState(ZIPCODE_ERROR, 'Enter Zip');
+			} else {
+				return Promise.resolve(true);
+			}
+		};
+
+		// validate form
+		const firstnameValidated = await validateFirstname(firstname);
+		const lastnameValidated = await validateLastname(lastname);
+		const countryValidated = await validateCountry(countryAuto);
+		const phoneValidated = await validatePhone(phone);
+		const addressValidated = await validateAddress(address);
+		const zipCodeValidated = await validateZipCode(zipCode);
+
+		// set loading
+		if (
+			firstnameValidated &&
+			lastnameValidated &&
+			countryValidated &&
+			phoneValidated &&
+			addressValidated &&
+			zipCodeValidated
+		) {
+			setState(SET_LOADING, false);
+		}
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -141,6 +219,7 @@ const AuthState = props => {
 				addressErr: state.addressErr,
 				zipCodeErr: state.zipCodeErr,
 				countryErr: state.countryErr,
+				countryAuto: state.countryAuto,
 				cityErr: state.cityErr,
 				loadUser,
 				register,
@@ -148,7 +227,8 @@ const AuthState = props => {
 				logout,
 				setState,
 				clearErrors,
-				validateUserData
+				validateUserData,
+				validatePersonalData
 			}}
 		>
 			{props.children}

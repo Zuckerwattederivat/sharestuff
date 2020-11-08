@@ -54,11 +54,13 @@ const Register = () => {
 	// use state
 	const [ user, setUser ] = useState({
 		step: 1,
-		name: '',
-		adress: '',
+		firstname: '',
+		lastname: '',
+		address: '',
 		zipCode: '',
 		city: '',
 		country: '',
+		countryAuto: '',
 		phone: '',
 		email: '',
 		username: '',
@@ -70,10 +72,11 @@ const Register = () => {
 		step,
 		firstname,
 		lastname,
-		adress,
+		address,
 		zipCode,
 		city,
 		country,
+		countryAuto,
 		phone,
 		email,
 		username,
@@ -86,10 +89,11 @@ const Register = () => {
 		step,
 		firstname,
 		lastname,
-		adress,
+		address,
 		zipCode,
 		city,
 		country,
+		countryAuto,
 		phone,
 		email,
 		username,
@@ -103,8 +107,6 @@ const Register = () => {
 	const prevStep = () => setUser({ ...user, step: step - 1 });
 	// on input change
 	const handleInputChange = input => e => setUser({ ...user, [input]: e.target.value });
-	// set state
-	const setInputValue = (input, value) => setUser({ ...user, [input]: value });
 
 	return (
 		<Modal
@@ -140,7 +142,6 @@ const Register = () => {
 					prevStep={prevStep}
 					nextStep={nextStep}
 					handleInputChange={handleInputChange}
-					setInputValue={setInputValue}
 				/>
 			</motion.div>
 		</Modal>

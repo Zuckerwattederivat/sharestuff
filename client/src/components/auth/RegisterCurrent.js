@@ -29,6 +29,9 @@ const RegisterCurrent = props => {
 		case 4:
 			return <RegisterSuccess />;
 		default:
+			return (
+				<RegisterUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
+			);
 	}
 };
 
@@ -38,7 +41,6 @@ RegisterCurrent.propTypes = {
 	prevStep: PropTypes.func.isRequired,
 	nextStep: PropTypes.func.isRequired,
 	handleInputChange: PropTypes.func.isRequired,
-	setInputValue: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired
 };
 
