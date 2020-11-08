@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -82,13 +82,7 @@ const RegisterPersonalData = props => {
 	// destructure props
 	const { values, handleInputChange, handleStateChange, nextStep, prevStep } = props;
 
-	// reset loading once on start
-	useEffect(() => {
-		setState(SET_LOADING, true);
-		// eslint-disable-next-line
-	}, []);
-
-	// watch errors & loadin
+	// watch errors & loading
 	useEffect(
 		() => {
 			if (!loading && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {

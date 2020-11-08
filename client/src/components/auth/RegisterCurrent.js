@@ -10,11 +10,11 @@ import RegisterSuccess from './RegisterSuccess';
 // RegisterCurrent Component
 const RegisterCurrent = props => {
 	switch (props.step) {
-		case 2:
+		case 1:
 			return (
 				<RegisterUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
 			);
-		case 1:
+		case 2:
 			return (
 				<RegisterPersonalData
 					prevStep={props.prevStep}

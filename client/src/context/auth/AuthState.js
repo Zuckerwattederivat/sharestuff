@@ -40,7 +40,7 @@ const AuthState = props => {
 		addressErr: null,
 		zipCodeErr: null,
 		countryErr: null,
-		countryAuto: undefined,
+		countryAuto: null,
 		cityErr: null
 	};
 
@@ -89,6 +89,68 @@ const AuthState = props => {
 	// set state
 	const setState = (type, payload) => dispatch({ type: type, payload: payload });
 
+	// check for condition
+	const checkForOneCond = (input, condition, type, errMsg) => {
+		if (input === condition) {
+			setState(type, errMsg);
+			return Promise.resolve(false);
+		} else {
+			return Promise.resolve(true);
+		}
+	};
+
+	// check username
+	const checkUsername = (input1, input2, input3) => {
+		if (input1 === 'Username found' || input2) {
+			setState(USERNAME_ERROR, 'Username is already taken');
+			return Promise.resolve(false);
+		} else if (input3 === '') {
+			setState(USERNAME_ERROR, 'Please choose a username');
+			return Promise.resolve(false);
+		} else {
+			return Promise.resolve(true);
+		}
+	};
+
+	// check email
+	const checkEmail = (input1, input2, input3) => {
+		if (input1 === 'Email found' || input2) {
+			setState(EMAIL_ERROR, 'Email already exists');
+			return Promise.resolve(false);
+		} else if (!input3.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
+			setState(EMAIL_ERROR, 'Please enter a valid email address');
+			return Promise.resolve(false);
+		} else {
+			return Promise.resolve(true);
+		}
+	};
+
+	// validate password
+	const checkPasswords = async (input1, input2) => {
+		const passwordNotEmpty = await checkForOneCond(input1, '', PASSWORD_ERROR, 'Please choose a password');
+		const passwordConfirmNotEmpty = await checkForOneCond(
+			input2,
+			'',
+			PASSWORD_CONFIRM_ERROR,
+			'Please confirm your password'
+		);
+		if (passwordNotEmpty && passwordConfirmNotEmpty) {
+			if (input1 !== input2) {
+				setState(PASSWORD_ERROR, 'Passwords do not match');
+				setState(PASSWORD_CONFIRM_ERROR, 'Passwords do not match');
+				return Promise.resolve(false);
+			} else if (input1.length < 6 || input2.length < 6) {
+				setState(PASSWORD_ERROR, 'Password must be at least 6 characters long');
+				setState(PASSWORD_CONFIRM_ERROR, 'Password must be at least 6 characters long');
+				return Promise.resolve(false);
+			} else {
+				return Promise.resolve(true);
+			}
+		} else {
+			return Promise.resolve(false);
+		}
+	};
+
 	// validate user data
 	const validateUserData = async input => {
 		// destructure input
@@ -98,33 +160,14 @@ const AuthState = props => {
 			// check username against db entries
 			const res = await axios.get('/server/users', { params: { username: username, email: email } });
 			if (res) {
-				// validate username
-				if (res.data.msg2 || res.data.msg === 'Username found') {
-					setState(USERNAME_ERROR, 'Username is already taken');
-				} else if (username === '') {
-					setState(USERNAME_ERROR, 'Please choose a username');
-				}
-				// validate email
-				if (res.data.msg1 || res.data.msg === 'Email found') {
-					setState(EMAIL_ERROR, 'Email already exists');
-				} else if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-					setState(EMAIL_ERROR, 'Please enter a valid email address');
-				}
-				// validate passwords
-				if (password === '') {
-					setState(PASSWORD_ERROR, 'Please choose a password');
-				}
-				if (passwordConfirm === '') {
-					setState(PASSWORD_CONFIRM_ERROR, 'Please confirm your password');
-				} else if (password !== passwordConfirm) {
-					setState(PASSWORD_ERROR, 'Passwords do not match');
-					setState(PASSWORD_CONFIRM_ERROR, 'Passwords do not match');
-				} else if (password.length < 6 || passwordConfirm.length < 6) {
-					setState(PASSWORD_ERROR, 'Password must be at least 6 characters long');
-					setState(PASSWORD_CONFIRM_ERROR, 'Password must be at least 6 characters long');
-				}
+				// validate form
+				const usernameValidated = await checkUsername(res.data.msg, res.data.msg2, username);
+				const emailValidated = await checkEmail(res.data.msg, res.data.msg1, email);
+				const passwordsValidated = await checkPasswords(password, passwordConfirm);
 				// set loading
-				setState(SET_LOADING, false);
+				if (usernameValidated && emailValidated && passwordsValidated) {
+					setState(SET_LOADING, false);
+				}
 			}
 		} catch (err) {
 			setState(SET_ERROR, err);
@@ -136,57 +179,13 @@ const AuthState = props => {
 		// destructure input
 		const { countryAuto, firstname, lastname, phone, address, zipCode } = input;
 
-		// validation functions
-		const validateFirstname = input => {
-			if (input === '') {
-				setState(FIRSTNAME_ERROR, 'Please enter your first name');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-		const validateLastname = input => {
-			if (input === '') {
-				setState(LASTNAME_ERROR, 'Please enter your last name');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-		const validateCountry = input => {
-			if (!input) {
-				setState(COUNTRY_ERROR, 'Enter country');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-		const validatePhone = input => {
-			if (input === '') {
-				setState(PHONE_ERROR, 'Please enter your phone number');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-		const validateAddress = input => {
-			if (input === '') {
-				setState(ADDRESS_ERROR, 'Please enter your address');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-		const validateZipCode = input => {
-			if (input === '') {
-				setState(ZIPCODE_ERROR, 'Enter Zip');
-			} else {
-				return Promise.resolve(true);
-			}
-		};
-
 		// validate form
-		const firstnameValidated = await validateFirstname(firstname);
-		const lastnameValidated = await validateLastname(lastname);
-		const countryValidated = await validateCountry(countryAuto);
-		const phoneValidated = await validatePhone(phone);
-		const addressValidated = await validateAddress(address);
-		const zipCodeValidated = await validateZipCode(zipCode);
+		const firstnameValidated = await checkForOneCond(firstname, '', FIRSTNAME_ERROR, 'Please enter your first name');
+		const lastnameValidated = await checkForOneCond(lastname, '', LASTNAME_ERROR, 'Please enter your last name');
+		const countryValidated = await checkForOneCond(countryAuto, null, COUNTRY_ERROR, 'Enter country');
+		const phoneValidated = await checkForOneCond(phone, '', PHONE_ERROR, 'Please enter your phone number');
+		const addressValidated = await checkForOneCond(address, '', ADDRESS_ERROR, 'Please enter your address');
+		const zipCodeValidated = await checkForOneCond(zipCode, '', ZIPCODE_ERROR, 'Enter zip');
 
 		// set loading
 		if (
