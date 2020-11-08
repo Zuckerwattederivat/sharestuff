@@ -1,13 +1,11 @@
 // Node Modules
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { PersonAdd as PersonAddIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-// Assets
-import LoadingGif from '../../assets/loading.gif';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -79,7 +77,7 @@ const RegisterConfirm = props => {
 		// clear errors
 		clearErrors();
 		// validate form
-		console.log('ok');
+		nextStep();
 	};
 
 	return (

@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -95,8 +95,8 @@ const RegisterPersonalData = props => {
 				// go to next page
 				nextStep();
 			}
-			// eslint-disable-next-line
 		},
+		// eslint-disable-next-line
 		[ loading, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
 	);
 

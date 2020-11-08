@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: '100%'
 	},
-	textfield: {
-		width: '100%'
-	},
 	// nextButton: {
 	// 	width: '100%'
 	// },
