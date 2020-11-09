@@ -7,7 +7,6 @@ import { ArrowForward as ArrowForwardIcon, ArrowBack as ArrowBackIcon } from '@m
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import { SET_LOADING, SET_COUNTRY_AUTO, SET_COUNTRY_LABEL } from '../../context/types';
 // utils
 import countries from '../../utils/countries';
 
@@ -89,9 +88,9 @@ const RegisterPersonalData = props => {
 		() => {
 			if (!loading && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
 				// change country label state based on state of countryAuto
-				setState(SET_COUNTRY_LABEL, countryAuto.label);
+				setState('SET_COUNTRY_LABEL', countryAuto.label);
 				// set loading to true
-				setState(SET_LOADING, true);
+				setState('SET_LOADING', true);
 				// go to next page
 				nextStep();
 			}
@@ -149,7 +148,7 @@ const RegisterPersonalData = props => {
 					<Autocomplete
 						id='country'
 						name='country'
-						onChange={(e, newCountryAuto) => setState(SET_COUNTRY_AUTO, newCountryAuto)}
+						onChange={(e, newCountryAuto) => setState('SET_COUNTRY_AUTO', newCountryAuto)}
 						onInput={handleInputChange('country')}
 						className={classes.countrySelect}
 						options={countries}

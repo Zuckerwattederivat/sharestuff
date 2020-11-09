@@ -1,13 +1,13 @@
 // Node Modules
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Button } from '@material-ui/core';
+import { Box, Typography, Button, Grid } from '@material-ui/core';
 import { Close as CloseIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
-import { SET_LOADING } from '../../context/types';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import ConfirmedSvg from '../../assets/undraw/confirmed.svg';
@@ -64,7 +64,7 @@ const RegisterResponse = props => {
 	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { loading, error, countryAuto, setState } = authContext;
+	const { loading, error, isAuthenticated, setState } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -72,12 +72,7 @@ const RegisterResponse = props => {
 	const { setRegisterOpen } = navbarContext;
 
 	// destructure props
-	const { values, setParentState, prevStep } = props;
-
-	useEffect(() => {
-		console.log(values, countryAuto);
-		// eslint-disable-next-line
-	}, []);
+	const { setParentState, prevStep } = props;
 
 	// RenderResponse
 	const RenderResponse = props => {
@@ -87,7 +82,7 @@ const RegisterResponse = props => {
 		// close register
 		const closeRegister = () => {
 			setParentState('step', 1);
-			setState(SET_LOADING, true);
+			setState('SET_LOADING', true);
 			setRegisterOpen(false);
 		};
 
@@ -107,7 +102,7 @@ const RegisterResponse = props => {
 						flexDirection='column'
 						className={classes.responseContainer}
 					>
-						{!error ? (
+						{isAuthenticated ? (
 							<Fragment>
 								<img className={classes.messageSvg} src={ConfirmedSvg} alt='Add User Drawing' />
 								<Typography className={classes.response} variant='h5'>
@@ -120,7 +115,7 @@ const RegisterResponse = props => {
 										variant='outlined'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={closeRegister}
+										onClick={() => closeRegister()}
 									>
 										Close
 									</Button>
@@ -129,9 +124,17 @@ const RegisterResponse = props => {
 						) : (
 							<Fragment>
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
-								<Typography className={classes.response} variant='h5'>
-									{error}
-								</Typography>
+								<Grid className={classes.response} width='100%' container spacing={1}>
+									{error.errors.map(err => {
+										return (
+											<Grid key={`error-item-${err.param}`} item xs={12}>
+												<Alert key={`error-alert-${err.param}`} severity='error'>
+													{err.msg}
+												</Alert>
+											</Grid>
+										);
+									})}
+								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button
 										className={classes.prevButton}
@@ -150,7 +153,7 @@ const RegisterResponse = props => {
 										color='secondary'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={closeRegister}
+										onClick={() => closeRegister()}
 									>
 										Close
 									</Button>

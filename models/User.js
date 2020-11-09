@@ -28,7 +28,7 @@ const UserSchema = mongoose.Schema({
 		required: true
 	},
 	country: {
-		type: String,
+		type: Object,
 		required: true
 	},
 	phone: {

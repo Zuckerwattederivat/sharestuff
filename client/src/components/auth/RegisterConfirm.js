@@ -65,19 +65,33 @@ const RegisterConfirm = props => {
 		zipCodeErr,
 		cityErr,
 		clearErrors,
-		countryAuto
+		countryAuto,
+		register
 	} = authContext;
 
 	// destructure props
 	const { values, nextStep, prevStep } = props;
 
 	// continue form
-	const continueForm = input => {
+	const continueForm = () => {
 		//console.log(input);
 		// clear errors
 		clearErrors();
 		// validate form
 		nextStep();
+		// register
+		register({
+			username: values.username,
+			email: values.email,
+			password: values.password,
+			firstname: values.firstname,
+			lastname: values.lastname,
+			country: countryAuto,
+			phone: values.phone,
+			address: values.address,
+			city: values.city,
+			zipCode: values.zipCode
+		});
 	};
 
 	return (
@@ -240,7 +254,7 @@ const RegisterConfirm = props => {
 					color='primary'
 					startIcon={<PersonAddIcon className={classes.buttonIcon} />}
 					size='large'
-					onClick={() => continueForm(values)}
+					onClick={continueForm}
 				>
 					Register
 				</Button>

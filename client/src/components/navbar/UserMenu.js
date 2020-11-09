@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.up('sm')]: {
 			display: 'none'
 		}
+	},
+	secondaryText: {
+		color: theme.palette.secondary.main
 	}
 }));
 
@@ -42,7 +45,7 @@ const UserMenu = props => {
 	// laod auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { isAuthenticated } = authContext;
+	const { isAuthenticated, loading, setState, logout } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -66,10 +69,10 @@ const UserMenu = props => {
 		>
 			{isAuthenticated ? (
 				[
-					<MenuItem className={classes.itemsResponsivePosition} key='messages' onClick={handleUserMenuClose}>
+					<MenuItem key='messages' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
 						<MessageIcon fontSize='small' className={classes.dropdownIcons} /> Messages
 					</MenuItem>,
-					<MenuItem className={classes.itemsResponsivePosition} key='notifications' onClick={handleUserMenuClose}>
+					<MenuItem key='notifications' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
 						<NotificationsIcon fontSize='small' className={classes.dropdownIcons} /> Notifications
 					</MenuItem>,
 					<MenuItem key='profile' onClick={handleUserMenuClose}>
@@ -79,8 +82,15 @@ const UserMenu = props => {
 						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
 					</MenuItem>,
 					<Divider key='divider' className={classes.divider} variant='middle' />,
-					<MenuItem key='logout' color='secondary' onClick={handleUserMenuClose}>
-						<LockIcon fontSize='small' className={classes.dropdownIcons} /> Logout
+					<MenuItem
+						key='logout'
+						className={classes.secondaryText}
+						onClick={() => {
+							handleUserMenuClose();
+							logout();
+						}}
+					>
+						<LockIcon fontSize='small' color='secondary' className={classes.dropdownIcons} /> Logout
 					</MenuItem>
 				]
 			) : (
@@ -91,6 +101,7 @@ const UserMenu = props => {
 					<MenuItem
 						key='register'
 						onClick={() => {
+							setState('SET_LOADING', true);
 							handleUserMenuClose();
 							setRegisterOpen(true);
 						}}

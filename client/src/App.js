@@ -7,6 +7,13 @@ import Navbar from './components/navbar/Navbar';
 // State
 import AuthState from './context/auth/AuthState';
 import NavbarState from './context/navbar/NavbarState';
+// Utils
+import setAuthToken from './utils/setAuthToken';
+
+// set auth token
+if (localStorage.token) {
+	setAuthToken(localStorage.token);
+}
 
 // App Component
 const App = () => {

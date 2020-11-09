@@ -6,7 +6,6 @@ import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import { SET_LOADING } from '../../context/types';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -67,7 +66,7 @@ const RegisterUserData = props => {
 		() => {
 			if (!loading && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
 				//console.log('next');
-				setState(SET_LOADING, true);
+				setState('SET_LOADING', true);
 				nextStep();
 			}
 		},

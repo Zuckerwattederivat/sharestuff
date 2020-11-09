@@ -20,7 +20,8 @@ import {
 	PHONE_ERROR,
 	ZIPCODE_ERROR,
 	ADDRESS_ERROR,
-	CITY_ERROR
+	CITY_ERROR,
+	LOGOUT
 } from '../types';
 
 const AuthState = props => {
@@ -65,10 +66,30 @@ const AuthState = props => {
 	};
 
 	// login user
-	const login = () => console.log('login user');
+	const login = () => async formData => {
+		// const config = {
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// };
+		// try {
+		// 	const res = await axios.post('/server/users', formData, config);
+		// 	dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+		// 	loadUser();
+		// } catch (err) {
+		// 	if (err.response.data.msg) {
+		// 		dispatch({ type: SET_ERROR, payload: err.response.data.msg });
+		// 	} else {
+		// 		dispatch({ type: SET_ERROR, payload: err.response.data });
+		// 	}
+		// }
+	};
 
 	// logout
-	const logout = () => console.log('logout user');
+	const logout = () => {
+		localStorage.removeItem('token');
+		dispatch({ type: LOGOUT });
+	};
 
 	// register user
 	const register = async formData => {
@@ -83,7 +104,11 @@ const AuthState = props => {
 			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {
-			dispatch({ type: SET_ERROR, payload: err.response.data.msg });
+			if (err.response.data.msg) {
+				dispatch({ type: SET_ERROR, payload: err.response.data.msg });
+			} else {
+				dispatch({ type: SET_ERROR, payload: err.response.data });
+			}
 		}
 	};
 

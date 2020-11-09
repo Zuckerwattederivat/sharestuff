@@ -56,7 +56,19 @@ export default (state, action) => {
 				loading: false
 			};
 		case SET_ERROR:
-			return { ...state, error: action.payload };
+			return {
+				...state,
+				loading: false,
+				error: action.payload
+			};
+		case LOGOUT:
+			return {
+				...state,
+				token: localStorage.getItem('token'),
+				isAuthenticated: false,
+				loading: false,
+				user: null
+			};
 		case USERNAME_ERROR:
 			return { ...state, usernameErr: action.payload };
 		case EMAIL_ERROR:
