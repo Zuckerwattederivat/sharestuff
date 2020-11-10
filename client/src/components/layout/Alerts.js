@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -9,6 +9,7 @@ import AlertContext from '../../context/alert/alertContext';
 // define styles
 const useStyles = makeStyles(theme => ({
 	alertItem: {
+		margin: theme.spacing(1, 0),
 		width: '100%'
 	}
 }));
@@ -22,7 +23,7 @@ const Alerts = () => {
 	const alertContext = useContext(AlertContext);
 
 	return (
-		<TransitionGroup>
+		<Fragment>
 			{alertContext.alerts.length > 0 &&
 				alertContext.alerts.map(alert => (
 					<motion.div
@@ -32,8 +33,8 @@ const Alerts = () => {
 							// damping: 10,
 							// stiffness: 70
 						}}
-						initial={{ opacity: 1 }}
-						animate={{ opacity: 0 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
 						key={alert.id}
 						className={classes.alertItem}
 					>
@@ -42,7 +43,7 @@ const Alerts = () => {
 						</Alert>
 					</motion.div>
 				))}
-		</TransitionGroup>
+		</Fragment>
 	);
 };
 

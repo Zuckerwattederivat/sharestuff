@@ -7,6 +7,11 @@ const mongoose = require('mongoose');
 
 // collection schema
 const UserSchema = mongoose.Schema({
+	verified: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
 	firstname: {
 		type: String,
 		required: true

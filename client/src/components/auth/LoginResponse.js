@@ -1,8 +1,9 @@
 // Node Modules
 import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Button } from '@material-ui/core';
+import { Box, Typography, Button, Grid } from '@material-ui/core';
 import { Close as CloseIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 // Components
 import Alerts from '../layout/Alerts';
@@ -17,7 +18,7 @@ import ErrorSvg from '../../assets/undraw/cancel.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	RegisterResponse: {
+	LoginResponse: {
 		padding: theme.spacing(3, 4),
 		overflow: 'hidden'
 	},
@@ -63,15 +64,15 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-// RegisterResponse Component
-const RegisterResponse = props => {
+// LoginResponse Component
+const LoginResponse = () => {
 	// styling classes
 	const classes = useStyles();
 
 	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { loading, error, isAuthenticated, clearErrors } = authContext;
+	const { user, loading, error, isAuthenticated, clearErrors } = authContext;
 
 	// load alert context
 	const alertContext = useContext(AlertContext);
@@ -81,10 +82,7 @@ const RegisterResponse = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { setRegisterOpen } = navbarContext;
-
-	// destructure props
-	const { setParentState, prevStep } = props;
+	const { setLoginOpen } = navbarContext;
 
 	// set alerts if errors occure
 	useEffect(
@@ -114,7 +112,7 @@ const RegisterResponse = props => {
 		};
 
 		// close register
-		const closeRegister = () => {
+		const closeLogin = () => {
 			// clear auth errors
 			clearErrors();
 			// remove alerts
@@ -122,7 +120,7 @@ const RegisterResponse = props => {
 			// reset step
 			setParentState('step', 1);
 			// close register
-			setRegisterOpen(false);
+			setLoginOpen(false);
 		};
 
 		switch (loading) {
@@ -145,7 +143,7 @@ const RegisterResponse = props => {
 							<Fragment>
 								<img className={classes.messageSvg} src={ConfirmedSvg} alt='Add User Drawing' />
 								<Typography className={classes.response} variant='h5'>
-									Your account has been created successfully!
+									Welcome back {user.username}!
 								</Typography>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button
@@ -154,7 +152,7 @@ const RegisterResponse = props => {
 										variant='outlined'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => closeRegister()}
+										onClick={() => closeLogin()}
 									>
 										Close
 									</Button>
@@ -187,7 +185,7 @@ const RegisterResponse = props => {
 										color='secondary'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => closeRegister()}
+										onClick={() => closeLogin()}
 									>
 										Close
 									</Button>
@@ -202,18 +200,18 @@ const RegisterResponse = props => {
 	};
 
 	return (
-		<Box className={classes.RegisterResponse} width='100%' height='100%'>
+		<Box className={classes.LoginResponse} width='100%' height='100%'>
 			<RenderResponse loading={loading} setParentState={setParentState} prevStep={prevStep} />
 		</Box>
 	);
 };
 
 // PropTypes
-RegisterResponse.propTypes = {
+LoginResponse.propTypes = {
 	values: PropTypes.object.isRequired,
 	setParentState: PropTypes.func.isRequired,
 	prevStep: PropTypes.func.isRequired
 };
 
-// export RegisterResponse Component
-export default RegisterResponse;
+// export LoginResponse
+export default LoginResponse;
