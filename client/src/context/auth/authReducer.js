@@ -1,4 +1,5 @@
 import {
+	SET_LOADING,
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
 	USER_LOADED,
@@ -11,6 +12,8 @@ import {
 
 export default (state, action) => {
 	switch (action.type) {
+		case SET_LOADING:
+			return { ...state, loading: action.payload };
 		case USER_LOADED:
 			return {
 				...state,
@@ -27,6 +30,12 @@ export default (state, action) => {
 				loading: false
 			};
 		case REGISTER_FAIL:
+			console.log(action.payload);
+			return {
+				...state,
+				loading: false,
+				error: action.payload
+			};
 		case AUTH_ERROR:
 			localStorage.removeItem('token');
 			return {

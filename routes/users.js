@@ -18,8 +18,8 @@ const { json } = require('express');
 router.post(
 	'/',
 	[
-		check('firstname', 'Please enter your firstname').notEmpty(),
-		check('lastname', 'Please enter your lastname').notEmpty(),
+		check('firstname', 'Please enter your first name').notEmpty(),
+		check('lastname', 'Please enter your last name').notEmpty(),
 		check('address', 'Please enter your address').notEmpty(),
 		check('zipCode', 'Please enter your zip code').notEmpty(),
 		check('city', 'Please enter your city').notEmpty(),

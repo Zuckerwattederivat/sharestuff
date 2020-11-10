@@ -6,6 +6,7 @@ import { PersonAdd as PersonAddIcon, ArrowBack as ArrowBackIcon } from '@materia
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
+import AuthValidationContext from '../../context/auth/authValidationContext';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,9 @@ const RegisterConfirm = props => {
 
 	// load auth context
 	const authContext = useContext(AuthContext);
+
+	// load authvalidation context
+	const authValidationContext = useContext(AuthValidationContext);
 	// destructure auth context
 	const {
 		usernameErr,
@@ -64,33 +68,32 @@ const RegisterConfirm = props => {
 		addressErr,
 		zipCodeErr,
 		cityErr,
-		clearErrors,
-		countryAuto,
-		register
-	} = authContext;
+		clearInputErrors,
+		countryAuto
+	} = authValidationContext;
 
 	// destructure props
 	const { values, nextStep, prevStep } = props;
 
 	// continue form
-	const continueForm = () => {
+	const continueForm = input => {
 		//console.log(input);
 		// clear errors
-		clearErrors();
+		clearInputErrors();
 		// validate form
 		nextStep();
 		// register
-		register({
-			username: values.username,
-			email: values.email,
-			password: values.password,
-			firstname: values.firstname,
-			lastname: values.lastname,
+		authContext.register({
+			username: input.username,
+			email: input.email,
+			password: input.password,
+			firstname: input.firstname,
+			lastname: input.lastname,
 			country: countryAuto,
-			phone: values.phone,
-			address: values.address,
-			city: values.city,
-			zipCode: values.zipCode
+			phone: input.phone,
+			address: input.address,
+			city: input.city,
+			zipCode: input.zipCode
 		});
 	};
 
@@ -254,7 +257,7 @@ const RegisterConfirm = props => {
 					color='primary'
 					startIcon={<PersonAddIcon className={classes.buttonIcon} />}
 					size='large'
-					onClick={continueForm}
+					onClick={() => continueForm(values)}
 				>
 					Register
 				</Button>

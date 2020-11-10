@@ -52,8 +52,8 @@ export default (state, action) => {
 		case CLEAR_INPUT_ERRORS:
 			return {
 				...state,
-				loading: true,
-				error: null,
+				inputAuth: false,
+				serverError: null,
 				usernameErr: null,
 				emailErr: null,
 				phoneErr: null,

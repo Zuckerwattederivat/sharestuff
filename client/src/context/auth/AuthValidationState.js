@@ -22,7 +22,7 @@ import {
 const AuthValidationState = props => {
 	const initialState = {
 		inputAuth: false,
-		inputError: null,
+		serverError: null,
 		usernameErr: null,
 		emailErr: null,
 		phoneErr: null,
@@ -122,7 +122,7 @@ const AuthValidationState = props => {
 				}
 			}
 		} catch (err) {
-			setInputState(SERVER_ERROR, err);
+			setInputState(SERVER_ERROR, err.response.data.msg);
 		}
 	};
 
@@ -158,7 +158,7 @@ const AuthValidationState = props => {
 		<AuthValidationContext.Provider
 			value={{
 				inputAuth: state.inputAuth,
-				inputError: state.inputError,
+				serverError: state.inputError,
 				usernameErr: state.usernameErr,
 				emailErr: state.emailErr,
 				phoneErr: state.phoneErr,

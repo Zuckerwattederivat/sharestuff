@@ -64,7 +64,7 @@ const RegisterResponse = props => {
 	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { loading, error, isAuthenticated, setState } = authContext;
+	const { loading, error, isAuthenticated } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -82,11 +82,10 @@ const RegisterResponse = props => {
 		// close register
 		const closeRegister = () => {
 			setParentState('step', 1);
-			setState('SET_LOADING', true);
 			setRegisterOpen(false);
 		};
 
-		switch (loading && !error) {
+		switch (loading) {
 			case true:
 				return (
 					<Box width='100%' display='flex' justifyContent='center' className={classes.loadingContainer}>
@@ -125,15 +124,16 @@ const RegisterResponse = props => {
 							<Fragment>
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
 								<Grid className={classes.response} width='100%' container spacing={1}>
-									{error.map(err => {
-										return (
-											<Grid key={`error-item-${err.param}`} item xs={12}>
-												<Alert key={`error-alert-${err.param}`} severity='error'>
-													{err.msg}
-												</Alert>
-											</Grid>
-										);
-									})}
+									{error &&
+										error.map(err => {
+											return (
+												<Grid key={`error-item-${err.param}`} item xs={12}>
+													<Alert key={`error-alert-${err.param}`} severity='error'>
+														{err.msg}
+													</Alert>
+												</Grid>
+											);
+										})}
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button

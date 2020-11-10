@@ -45,7 +45,7 @@ const UserMenu = props => {
 	// laod auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { isAuthenticated, loading, setState, logout } = authContext;
+	const { isAuthenticated, logout } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -101,7 +101,6 @@ const UserMenu = props => {
 					<MenuItem
 						key='register'
 						onClick={() => {
-							setState('SET_LOADING', true);
 							handleUserMenuClose();
 							setRegisterOpen(true);
 						}}

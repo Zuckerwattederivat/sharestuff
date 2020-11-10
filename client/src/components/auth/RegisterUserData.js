@@ -5,7 +5,7 @@ import { Box, Typography, Button, TextField, Grid } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
-import AuthContext from '../../context/auth/authContext';
+import AuthValidationContext from '../../context/auth/authValidationContext';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -38,40 +38,40 @@ const RegisterUserData = props => {
 	// styling classes
 	const classes = useStyles();
 
-	// load auth context
-	const authContext = useContext(AuthContext);
+	// load authvalidation context
+	const authValidationContext = useContext(AuthValidationContext);
 	// destructure auth context
 	const {
-		loading,
+		inputAuth,
 		usernameErr,
 		emailErr,
 		passwordErr,
 		passwordConfirmErr,
 		validateUserData,
-		clearErrors,
-		setState
-	} = authContext;
+		clearInputErrors,
+		setInputState
+	} = authValidationContext;
 
 	// destructure props
 	const { values, handleInputChange, nextStep } = props;
 
 	// continue form
 	const continueForm = input => {
-		clearErrors();
+		clearInputErrors();
 		validateUserData(input);
 	};
 
 	// execute on error state change
 	useEffect(
 		() => {
-			if (!loading && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
+			if (inputAuth && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
 				//console.log('next');
-				setState('SET_LOADING', true);
+				setInputState('INPUT_AUTH', false);
 				nextStep();
 			}
 		},
 		// eslint-disable-next-line
-		[ loading, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
+		[ inputAuth, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
 	);
 
 	return (

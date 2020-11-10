@@ -6,7 +6,7 @@ import { Autocomplete } from '@material-ui/lab';
 import { ArrowForward as ArrowForwardIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
-import AuthContext from '../../context/auth/authContext';
+import AuthValidationContext from '../../context/auth/authValidationContext';
 // utils
 import countries from '../../utils/countries';
 
@@ -61,11 +61,11 @@ const RegisterPersonalData = props => {
 	// styling classes
 	const classes = useStyles();
 
-	// load auth context
-	const authContext = useContext(AuthContext);
+	// load authvalidation context
+	const authValidationContext = useContext(AuthValidationContext);
 	// destructure auth context
 	const {
-		loading,
+		inputAuth,
 		firstnameErr,
 		lastnameErr,
 		addressErr,
@@ -75,28 +75,28 @@ const RegisterPersonalData = props => {
 		phoneErr,
 		zipCodeErr,
 		cityErr,
-		setState,
-		clearErrors,
+		setInputState,
+		clearInputErrors,
 		validatePersonalData
-	} = authContext;
+	} = authValidationContext;
 
 	// destructure props
 	const { values, handleInputChange, nextStep, prevStep } = props;
 
-	// watch errors & loading
+	// watch errors & inputAuth
 	useEffect(
 		() => {
-			if (!loading && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
+			if (inputAuth && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
 				// change country label state based on state of countryAuto
-				setState('SET_COUNTRY_LABEL', countryAuto.label);
-				// set loading to true
-				setState('SET_LOADING', true);
+				setInputState('SET_COUNTRY_LABEL', countryAuto.label);
+				// set inputAuth to true
+				setInputState('INPUT_AUTH', true);
 				// go to next page
 				nextStep();
 			}
 		},
 		// eslint-disable-next-line
-		[ loading, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
+		[ inputAuth, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
 	);
 
 	// continue form
@@ -105,7 +105,7 @@ const RegisterPersonalData = props => {
 		input.countryAuto = countryAuto;
 		//console.log(input);
 		// clear errors
-		clearErrors();
+		clearInputErrors();
 		// validate form
 		validatePersonalData(input);
 	};
@@ -148,7 +148,7 @@ const RegisterPersonalData = props => {
 					<Autocomplete
 						id='country'
 						name='country'
-						onChange={(e, newCountryAuto) => setState('SET_COUNTRY_AUTO', newCountryAuto)}
+						onChange={(e, newCountryAuto) => setInputState('SET_COUNTRY_AUTO', newCountryAuto)}
 						onInput={handleInputChange('country')}
 						className={classes.countrySelect}
 						options={countries}
