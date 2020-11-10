@@ -86,7 +86,7 @@ const RegisterResponse = props => {
 			setRegisterOpen(false);
 		};
 
-		switch (loading) {
+		switch (loading && !error) {
 			case true:
 				return (
 					<Box width='100%' display='flex' justifyContent='center' className={classes.loadingContainer}>
@@ -125,7 +125,7 @@ const RegisterResponse = props => {
 							<Fragment>
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
 								<Grid className={classes.response} width='100%' container spacing={1}>
-									{error.errors.map(err => {
+									{error.map(err => {
 										return (
 											<Grid key={`error-item-${err.param}`} item xs={12}>
 												<Alert key={`error-alert-${err.param}`} severity='error'>

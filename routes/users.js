@@ -42,10 +42,6 @@ router.post(
 		// create user and save to db
 		try {
 			// check if user already exists
-			let phoneExists = await User.findOne({ phone });
-			if (phoneExists) {
-				return res.status(400).json({ msg: 'Phone number already exists' });
-			}
 			let emailExists = await User.findOne({ email });
 			if (emailExists) {
 				return res.status(400).json({ msg: 'Email already exists' });
@@ -101,7 +97,8 @@ router.post(
 			// catch error & send response
 		} catch (err) {
 			console.error(err.message);
-			res.status(500).send('Server error');
+			res.status(500).json({ msg: 'Server Error' });
+			res.status(500).send('Server Error');
 		}
 	}
 );
@@ -158,6 +155,7 @@ router.get('/', async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
 		res.status(500).send('Server error');
 	}
 });

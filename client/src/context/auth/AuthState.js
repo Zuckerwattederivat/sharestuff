@@ -105,9 +105,9 @@ const AuthState = props => {
 			loadUser();
 		} catch (err) {
 			if (err.response.data.msg) {
-				dispatch({ type: SET_ERROR, payload: err.response.data.msg });
+				dispatch({ type: SET_ERROR, payload: [ { msg: err.response.data.msg } ] });
 			} else {
-				dispatch({ type: SET_ERROR, payload: err.response.data });
+				dispatch({ type: SET_ERROR, payload: err.response.data.errors });
 			}
 		}
 	};

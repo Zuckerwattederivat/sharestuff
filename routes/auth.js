@@ -24,6 +24,7 @@ router.get('/', auth, async (req, res) => {
 		// catch error & send response
 	} catch (err) {
 		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
 		res.status(500).send('Server error');
 	}
 });
@@ -78,6 +79,7 @@ router.post(
 			// catch error & send response
 		} catch (err) {
 			console.error(err.message);
+			res.status(500).json({ msg: 'Server Error' });
 			res.status(500).send('Server error');
 		}
 	}
