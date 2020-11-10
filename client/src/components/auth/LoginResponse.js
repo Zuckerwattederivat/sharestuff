@@ -3,7 +3,6 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, Grid } from '@material-ui/core';
 import { Close as CloseIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 // Components
 import Alerts from '../layout/Alerts';
@@ -13,7 +12,7 @@ import AlertContext from '../../context/alert/alertContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
-import ConfirmedSvg from '../../assets/undraw/confirmed.svg';
+import WelcomeSvg from '../../assets/undraw/welcome.svg';
 import ErrorSvg from '../../assets/undraw/cancel.svg';
 
 // define styles
@@ -65,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // LoginResponse Component
-const LoginResponse = () => {
+const LoginResponse = props => {
 	// styling classes
 	const classes = useStyles();
 
@@ -83,6 +82,9 @@ const LoginResponse = () => {
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
 	const { setLoginOpen } = navbarContext;
+
+	// destructure props
+	const { setParentState, prevStep } = props;
 
 	// set alerts if errors occure
 	useEffect(
@@ -111,7 +113,7 @@ const LoginResponse = () => {
 			prevStep();
 		};
 
-		// close register
+		// close login
 		const closeLogin = () => {
 			// clear auth errors
 			clearErrors();
@@ -141,9 +143,9 @@ const LoginResponse = () => {
 					>
 						{isAuthenticated ? (
 							<Fragment>
-								<img className={classes.messageSvg} src={ConfirmedSvg} alt='Add User Drawing' />
-								<Typography className={classes.response} variant='h5'>
-									Welcome back {user.username}!
+								<img className={classes.messageSvg} src={WelcomeSvg} alt='Add User Drawing' />
+								<Typography className={classes.response} variant='h4'>
+									{user && user.username}!
 								</Typography>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button

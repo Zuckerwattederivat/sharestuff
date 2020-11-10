@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 // Components
 import RegisterCurrent from './RegisterCurrent';
 // Context
+import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 import AuthValidationContext from '../../context/auth/authValidationContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 
@@ -52,10 +54,16 @@ const Register = () => {
 	// destructure navbar context
 	const { registerOpen, setRegisterOpen } = navbarContext;
 
+	// load auth context
+	const authContext = useContext(AuthContext);
+
 	// load authValidation context
 	const authValidationContext = useContext(AuthValidationContext);
 	// destructure authValidation context
 	const { clearInputErrors } = authValidationContext;
+
+	// load alert context
+	const alertContext = useContext(AlertContext);
 
 	// use state
 	const [ user, setUser ] = useState({
@@ -116,16 +124,27 @@ const Register = () => {
 	// set state
 	const setParentState = (state, value) => setUser({ ...user, [state]: value });
 
+	// close register
+	const closeRegister = () => {
+		// remove all alerts
+		alertContext.removeAllAlerts();
+		// clear input errors
+		clearInputErrors();
+		// clear auth errors
+		authContext.clearErrors();
+		// set step to 1
+		setParentState('step', 1);
+		// close modal
+		setRegisterOpen(false);
+	};
+
 	return (
 		<Modal
 			className={classes.registerModal}
 			aria-labelledby='register-modal-title'
 			aria-describedby='register-modal-description'
 			open={registerOpen}
-			onClose={() => {
-				clearInputErrors();
-				setRegisterOpen(false);
-			}}
+			onClose={() => closeRegister()}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}

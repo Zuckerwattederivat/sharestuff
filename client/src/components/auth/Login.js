@@ -1,13 +1,15 @@
-// NodeM Modules
-import React, { useContext, useState, useEffect } from 'react';
-import { Modal, Backdrop, Typography, Divider, Box, Grid, TextField, Button } from '@material-ui/core';
-import { LockOpen as LockOpenIcon } from '@material-ui/icons';
+// Node Modules
+import React, { useState, useContext } from 'react';
+import { Modal, Backdrop, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
+// Components
+import LoginCurrent from './LoginCurrent';
 // Context
-import AuthContext from '../../context/auth/authValidationContext';
 import AuthValidationContext from '../../context/auth/authValidationContext';
+import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
+import AlertContext from '../../context/alert/alertContext';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -37,23 +39,8 @@ const useStyles = makeStyles(theme => ({
 	titleSpan2: {
 		color: theme.palette.primary.main
 	},
-	loginUserData: {
-		padding: theme.spacing(3, 4)
-	},
-	description: {
-		textAlign: 'center',
-		margin: theme.spacing(0, 0, 3)
-	},
-	grid: {
-		marginBottom: theme.spacing(3)
-	},
-	textfield: {
-		width: '100%'
-	},
-	buttonIcon: {
-		[theme.breakpoints.down('xs')]: {
-			display: 'none'
-		}
+	loginForm: {
+		padding: theme.spacing(2)
 	}
 }));
 
@@ -62,59 +49,59 @@ const Login = () => {
 	// styling classes
 	const classes = useStyles();
 
-	// user state
-	const [ user, setUser ] = useState({
-		email: '',
-		password: ''
-	});
-	// destructure user state
-	const { email, password } = user;
-
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure navbar context
 	const { loginOpen, setLoginOpen } = navbarContext;
 
-	// load authValidation context
-	const authValidationContext = useContext(AuthValidationContext);
-	// destructure authValidation context
-	const {
-		login,
-		inputAuth,
-		emailErr,
-		passwordErr,
-		clearInputErrors,
-		validateLoginData,
-		setInputState
-	} = authValidationContext;
-
 	// load auth context
 	const authContext = useContext(AuthContext);
 
+	// load authValidation context
+	const authValidationContext = useContext(AuthValidationContext);
+	// destructure authValidation context
+	const { clearInputErrors } = authValidationContext;
+
+	// load alert context
+	const alertContext = useContext(AlertContext);
+
+	// use state
+	const [ user, setUser ] = useState({
+		step: 1,
+		email: '',
+		password: ''
+	});
+	// destructure state
+	const { step, email, password } = user;
+
+	// state values for components
+	const values = {
+		step,
+		email,
+		password
+	};
+
+	// proceed to next step
+	const nextStep = () => setUser({ ...user, step: step + 1 });
+	// go back to previous step
+	const prevStep = () => setUser({ ...user, step: step - 1 });
 	// on input change
 	const handleInputChange = input => e => setUser({ ...user, [input]: e.target.value });
+	// set state
+	const setParentState = (state, value) => setUser({ ...user, [state]: value });
 
-	// watch errors & inputAuth
-	useEffect(
-		() => {
-			if (login && inputAuth && !emailErr && !passwordErr) {
-				// set inputAuth to true
-				setInputState('INPUT_AUTH', false);
-				// login user
-				authContext.login(user);
-			}
-		},
-		// eslint-disable-next-line
-		[ login, inputAuth, emailErr, passwordErr ]
-	);
-
-	// continue form
-	const continueForm = input => {
-		//console.log(input);
-		// clear errors
+	// close login
+	const closeLogin = () => {
+		// remove all alerts
+		alertContext.removeAllAlerts();
+		// clear input errors
 		clearInputErrors();
-		// validate form
-		validateLoginData(input);
+		// clear auth errors
+		authContext.clearErrors();
+		// set step to 1
+		setParentState('step', 1);
+		// close modal
+		setLoginOpen(false);
 	};
 
 	return (
@@ -123,10 +110,7 @@ const Login = () => {
 			aria-labelledby='login-modal-title'
 			aria-describedby='login-modal-description'
 			open={loginOpen}
-			onClose={() => {
-				clearInputErrors();
-				setLoginOpen(false);
-			}}
+			onClose={() => closeLogin()}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -148,53 +132,14 @@ const Login = () => {
 					</Typography>
 				</div>
 				<Divider className={classes.topDivider} />
-				<Box className={classes.loginUserData} width='100%'>
-					<Typography className={classes.description} variant='subtitle1'>
-						Please enter your user details.
-					</Typography>
-					<Grid className={classes.grid} width='100%' container spacing={2}>
-						<Grid item xs={12} className={classes.gridItem}>
-							<TextField
-								id='email'
-								name='email'
-								className={classes.textfield}
-								variant='outlined'
-								label={emailErr ? emailErr : 'Email'}
-								placeholder='john.doe@gmail.com'
-								type='email'
-								error={emailErr ? true : false}
-								onChange={handleInputChange('email')}
-								defaultValue={email}
-							/>
-						</Grid>
-						<Grid item xs={12} className={classes.gridItem}>
-							<TextField
-								id='password'
-								name='password'
-								className={classes.textfield}
-								variant='outlined'
-								label={passwordErr ? passwordErr : 'Password'}
-								type='password'
-								error={passwordErr ? true : false}
-								onChange={handleInputChange('password')}
-								defaultValue={password}
-							/>
-						</Grid>
-					</Grid>
-					<Box width='100%' display='flex' justifyContent='flex-end'>
-						<Button
-							className={classes.nextButton}
-							width='100%'
-							variant='outlined'
-							color='primary'
-							startIcon={<LockOpenIcon className={classes.buttonIcon} />}
-							size='large'
-							onClick={() => continueForm(user)}
-						>
-							Login
-						</Button>
-					</Box>
-				</Box>
+				<LoginCurrent
+					step={step}
+					values={values}
+					prevStep={prevStep}
+					nextStep={nextStep}
+					handleInputChange={handleInputChange}
+					setParentState={setParentState}
+				/>
 			</motion.div>
 		</Modal>
 	);

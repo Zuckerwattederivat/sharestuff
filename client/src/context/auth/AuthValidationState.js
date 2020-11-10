@@ -77,13 +77,13 @@ const AuthValidationState = props => {
 		}
 	};
 
-	// check email
+	// check email & email exists
 	const checkEmail = (input1, input2, input3) => {
 		if (input1 === 'Email found' || input2) {
 			setInputState(EMAIL_ERROR, 'Email already exists');
 			return Promise.resolve(false);
 		} else if (!input3.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-			setInputState(EMAIL_ERROR, 'Enter your email address');
+			setInputState(EMAIL_ERROR, 'Enter a valid email address');
 			return Promise.resolve(false);
 		} else {
 			return Promise.resolve(true);
@@ -176,7 +176,7 @@ const AuthValidationState = props => {
 		const { email, password } = input;
 
 		// validate form
-		const emailValidated = await checkForOneCond(email, '', EMAIL_ERROR, 'Enter your email');
+		const emailValidated = await checkEmail(null, null, email);
 		const passwordValidated = await checkForOneCond(password, '', PASSWORD_ERROR, 'Enter your password');
 
 		// set loading

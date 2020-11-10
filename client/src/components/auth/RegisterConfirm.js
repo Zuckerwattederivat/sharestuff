@@ -78,10 +78,10 @@ const RegisterConfirm = props => {
 	// continue form
 	const continueForm = input => {
 		//console.log(input);
+		// set auth loading for smoother response transition
+		authContext.setAuthState('SET_LOADING', true);
 		// clear errors
 		clearInputErrors();
-		// validate form
-		nextStep();
 		// register
 		authContext.register({
 			username: input.username,
@@ -95,6 +95,8 @@ const RegisterConfirm = props => {
 			city: input.city,
 			zipCode: input.zipCode
 		});
+		// validate form
+		nextStep();
 	};
 
 	return (
