@@ -6,6 +6,7 @@
 export const SET_MAIN_MENU = 'SET_MAIN_MENU_OPEN';
 export const SET_ANCHOREL = 'SET_ANCHOREL';
 export const SET_REGISTER = 'SET_REGISTER';
+export const SET_LOGIN = 'SET_LOGIN';
 export const SET_SCROLLED = 'SET_SCROLLED';
 // authentification
 export const SET_LOADING = 'SET_LOADING';
@@ -18,6 +19,8 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 // authvalidation
+export const LOGIN = 'LOGIN';
+export const REGISTER = 'REGISTER';
 export const INPUT_AUTH = 'INPUT_AUTH';
 export const SERVER_ERROR = 'SERVER_ERROR';
 export const USERNAME_ERROR = 'USERNAME_ERROR';

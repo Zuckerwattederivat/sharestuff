@@ -1,4 +1,7 @@
+// Types
 import {
+	LOGIN,
+	REGISTER,
 	SERVER_ERROR,
 	INPUT_AUTH,
 	USERNAME_ERROR,
@@ -17,8 +20,13 @@ import {
 	CLEAR_INPUT_ERRORS
 } from '../types';
 
+// export Reducer
 export default (state, action) => {
 	switch (action.type) {
+		case LOGIN:
+			return { ...state, login: action.payload };
+		case REGISTER:
+			return { ...state, register: action.payload };
 		case INPUT_AUTH:
 			return { ...state, inputAuth: action.payload };
 		case SERVER_ERROR:
@@ -52,6 +60,8 @@ export default (state, action) => {
 		case CLEAR_INPUT_ERRORS:
 			return {
 				...state,
+				login: false,
+				register: false,
 				inputAuth: false,
 				serverError: null,
 				usernameErr: null,

@@ -1,6 +1,7 @@
 // Node Modules
 import React from 'react';
 import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // theme
 function getTheme(theme) {
@@ -35,7 +36,11 @@ function getTheme(theme) {
 
 // Theme Component
 const Theme = props => {
-	return <MuiThemeProvider theme={getTheme({ paletteType: 'dark' })}>{props.children}</MuiThemeProvider>;
+	return (
+		<MuiThemeProvider theme={getTheme({ paletteType: 'dark' })}>
+			<CssBaseline>{props.children}</CssBaseline>
+		</MuiThemeProvider>
+	);
 };
 
 // export Theme Component

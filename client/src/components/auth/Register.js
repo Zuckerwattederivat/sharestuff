@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 // Components
 import RegisterCurrent from './RegisterCurrent';
 // Context
+import AuthValidationContext from '../../context/auth/authValidationContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 
 // define styles
@@ -50,6 +51,11 @@ const Register = () => {
 	const navbarContext = useContext(NavbarContext);
 	// destructure navbar context
 	const { registerOpen, setRegisterOpen } = navbarContext;
+
+	// load authValidation context
+	const authValidationContext = useContext(AuthValidationContext);
+	// destructure authValidation context
+	const { clearInputErrors } = authValidationContext;
 
 	// use state
 	const [ user, setUser ] = useState({
@@ -116,7 +122,10 @@ const Register = () => {
 			aria-labelledby='register-modal-title'
 			aria-describedby='register-modal-description'
 			open={registerOpen}
-			onClose={() => setRegisterOpen(false)}
+			onClose={() => {
+				clearInputErrors();
+				setRegisterOpen(false);
+			}}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}

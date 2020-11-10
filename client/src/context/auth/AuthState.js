@@ -1,8 +1,12 @@
+// Node Modules
 import React, { useReducer } from 'react';
 import axios from 'axios';
+// Context
 import AuthContext from './authContext';
 import authReducer from './authReducer';
+// Utils
 import setAuthToken from '../../utils/setAuthToken';
+// Types
 import {
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
@@ -15,6 +19,7 @@ import {
 	SET_LOADING
 } from '../types';
 
+// AuthState Component
 const AuthState = props => {
 	const initialState = {
 		token: localStorage.getItem('token'),
@@ -71,10 +76,30 @@ const AuthState = props => {
 	};
 
 	// login user
-	const login = () => console.log('login user');
+	const login = async formData => {
+		dispatch({ type: SET_LOADING, payload: true });
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		try {
+			const res = await axios.post('/server/users', formData, config);
+			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+			loadUser();
+		} catch (err) {
+			if (err.response.data.msg) {
+				dispatch({ type: REGISTER_FAIL, payload: [ { msg: err.response.data.msg } ] });
+			} else {
+				dispatch({ type: REGISTER_FAIL, payload: err.response.data.errors });
+			}
+		}
+	};
 
 	// logout
-	const logout = () => console.log('logout user');
+	const logout = () => {};
 
 	return (
 		<AuthContext.Provider
@@ -97,4 +122,5 @@ const AuthState = props => {
 	);
 };
 
+// export AuthState
 export default AuthState;

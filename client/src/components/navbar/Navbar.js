@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserMenu from './UserMenu';
 import MainMenu from './MainMenu';
 import Register from '../auth/Register';
+import Login from '../auth/Login';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
@@ -182,6 +183,7 @@ const Navbar = props => {
 				</Toolbar>
 			</AppBar>
 			<UserMenu menuId={menuId} />
+			<Login />
 			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} />
 		</div>

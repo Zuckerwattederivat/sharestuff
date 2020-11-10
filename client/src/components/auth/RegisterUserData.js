@@ -42,6 +42,7 @@ const RegisterUserData = props => {
 	const authValidationContext = useContext(AuthValidationContext);
 	// destructure auth context
 	const {
+		register,
 		inputAuth,
 		usernameErr,
 		emailErr,
@@ -64,14 +65,14 @@ const RegisterUserData = props => {
 	// execute on error state change
 	useEffect(
 		() => {
-			if (inputAuth && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
-				//console.log('next');
+			if (register && inputAuth && !usernameErr && !emailErr && !passwordErr && !passwordConfirmErr) {
+				// console.log('next');
 				setInputState('INPUT_AUTH', false);
 				nextStep();
 			}
 		},
 		// eslint-disable-next-line
-		[ inputAuth, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
+		[ register, inputAuth, usernameErr, emailErr, passwordErr, passwordConfirmErr ]
 	);
 
 	return (

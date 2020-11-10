@@ -65,6 +65,7 @@ const RegisterPersonalData = props => {
 	const authValidationContext = useContext(AuthValidationContext);
 	// destructure auth context
 	const {
+		register,
 		inputAuth,
 		firstnameErr,
 		lastnameErr,
@@ -86,17 +87,26 @@ const RegisterPersonalData = props => {
 	// watch errors & inputAuth
 	useEffect(
 		() => {
-			if (inputAuth && !firstnameErr && !lastnameErr && !countryErr && !phoneErr && !addressErr && !zipCodeErr) {
+			if (
+				register &&
+				inputAuth &&
+				!firstnameErr &&
+				!lastnameErr &&
+				!countryErr &&
+				!phoneErr &&
+				!addressErr &&
+				!zipCodeErr
+			) {
 				// change country label state based on state of countryAuto
 				setInputState('SET_COUNTRY_LABEL', countryAuto.label);
 				// set inputAuth to true
-				setInputState('INPUT_AUTH', true);
+				setInputState('INPUT_AUTH', false);
 				// go to next page
 				nextStep();
 			}
 		},
 		// eslint-disable-next-line
-		[ inputAuth, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
+		[ register, inputAuth, firstnameErr, lastnameErr, countryErr, phoneErr, addressErr, zipCodeErr ]
 	);
 
 	// continue form

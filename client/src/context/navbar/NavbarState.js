@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import NavbarContext from './navbarContext';
 import navbarReducer from './navbarReducer';
-import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_SCROLLED } from '../types';
+import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_LOGIN, SET_SCROLLED } from '../types';
 
 const NavbarState = props => {
 	// initial state
@@ -9,6 +9,7 @@ const NavbarState = props => {
 		mainMenuOpen: false,
 		anchorEl: null,
 		registerOpen: false,
+		loginOpen: false,
 		scrolled: {
 			scrolledUp: true,
 			scrolledDown: false,
@@ -31,6 +32,9 @@ const NavbarState = props => {
 	// set register
 	const setRegisterOpen = registerOpen => dispatch({ type: SET_REGISTER, payload: registerOpen });
 
+	// set login
+	const setLoginOpen = loginOpen => dispatch({ type: SET_LOGIN, payload: loginOpen });
+
 	// set scrolled
 	const setScrolled = () => {
 		let offset = window.pageYOffset;
@@ -47,11 +51,13 @@ const NavbarState = props => {
 				mainMenuOpen: state.mainMenuOpen,
 				anchorEl: state.anchorEl,
 				registerOpen: state.registerOpen,
+				loginOpen: state.loginOpen,
 				scrolled: state.scrolled,
 				setMainMenuOpen,
 				handleUserMenuOpen,
 				handleUserMenuClose,
 				setRegisterOpen,
+				setLoginOpen,
 				setScrolled
 			}}
 		>

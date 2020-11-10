@@ -1,8 +1,13 @@
+// Node Modules
 import React, { useReducer } from 'react';
 import axios from 'axios';
+// Context
 import AuthValidationContext from './authValidationContext';
 import authCalidationReducer from './authValidationReducer';
+// Types
 import {
+	REGISTER,
+	LOGIN,
 	INPUT_AUTH,
 	SERVER_ERROR,
 	USERNAME_ERROR,
@@ -19,8 +24,11 @@ import {
 	CLEAR_INPUT_ERRORS
 } from '../types';
 
+// AuthValidationState Component
 const AuthValidationState = props => {
 	const initialState = {
+		login: false,
+		register: false,
 		inputAuth: false,
 		serverError: null,
 		usernameErr: null,
@@ -105,6 +113,9 @@ const AuthValidationState = props => {
 
 	// validate user data
 	const validateUserData = async input => {
+		// validate for register form
+		setInputState(REGISTER, true);
+
 		// destructure input
 		const { username, email, password, passwordConfirm } = input;
 
@@ -128,6 +139,9 @@ const AuthValidationState = props => {
 
 	// validate personal data
 	const validatePersonalData = async input => {
+		// validate for register form
+		setInputState(REGISTER, true);
+
 		// destructure input
 		const { countryAuto, firstname, lastname, phone, address, zipCode, city } = input;
 
@@ -153,10 +167,29 @@ const AuthValidationState = props => {
 			setInputState(INPUT_AUTH, true);
 		}
 	};
+	// validate login data
+	const validateLoginData = async input => {
+		// validate for login form
+		setInputState(LOGIN, true);
+
+		// destructure input
+		const { email, password } = input;
+
+		// validate form
+		const emailValidated = await checkForOneCond(email, '', EMAIL_ERROR, 'Enter your email');
+		const passwordValidated = await checkForOneCond(password, '', PASSWORD_ERROR, 'Enter your password');
+
+		// set loading
+		if (emailValidated && passwordValidated) {
+			setInputState(INPUT_AUTH, true);
+		}
+	};
 
 	return (
 		<AuthValidationContext.Provider
 			value={{
+				register: state.register,
+				login: state.login,
 				inputAuth: state.inputAuth,
 				serverError: state.inputError,
 				usernameErr: state.usernameErr,
@@ -175,7 +208,8 @@ const AuthValidationState = props => {
 				setInputState,
 				clearInputErrors,
 				validateUserData,
-				validatePersonalData
+				validatePersonalData,
+				validateLoginData
 			}}
 		>
 			{props.children}
@@ -183,4 +217,5 @@ const AuthValidationState = props => {
 	);
 };
 
+// export AUthValidationState COmponent
 export default AuthValidationState;

@@ -1,3 +1,4 @@
+// Types
 import {
 	SET_LOADING,
 	REGISTER_SUCCESS,

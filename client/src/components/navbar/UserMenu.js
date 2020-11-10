@@ -50,7 +50,7 @@ const UserMenu = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { anchorEl, handleUserMenuClose, setRegisterOpen } = navbarContext;
+	const { anchorEl, handleUserMenuClose, setRegisterOpen, setLoginOpen } = navbarContext;
 
 	// user menu open?
 	const isUserMenuOpen = Boolean(anchorEl);
@@ -95,7 +95,13 @@ const UserMenu = props => {
 				]
 			) : (
 				[
-					<MenuItem key='login' onClick={handleUserMenuClose}>
+					<MenuItem
+						key='login'
+						onClick={() => {
+							handleUserMenuClose();
+							setLoginOpen(true);
+						}}
+					>
 						<LockOpenIcon fontSize='small' className={classes.dropdownIcons} /> Login
 					</MenuItem>,
 					<MenuItem
