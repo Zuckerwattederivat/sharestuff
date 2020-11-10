@@ -50,9 +50,6 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: '100%'
 	},
-	// nextButton: {
-	// 	width: '100%'
-	// },
 	buttonIcon: {
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'

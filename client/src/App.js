@@ -6,6 +6,7 @@ import Home from './components/pages/Home';
 import Navbar from './components/navbar/Navbar';
 // State
 import AuthState from './context/auth/AuthState';
+import AlertState from './context/alert/AlertState';
 import AuthValidationState from './context/auth/AuthValidationState';
 import NavbarState from './context/navbar/NavbarState';
 // Utils
@@ -19,20 +20,22 @@ if (localStorage.token) {
 // App Component
 const App = () => {
 	return (
-		<AuthState>
-			<NavbarState>
-				<AuthValidationState>
-					<Router>
-						<Navbar />
-						<div className='wrapper'>
-							<Switch>
-								<Route exact path='/' component={Home} />
-							</Switch>
-						</div>
-					</Router>
-				</AuthValidationState>
-			</NavbarState>
-		</AuthState>
+		<AlertState>
+			<AuthState>
+				<NavbarState>
+					<AuthValidationState>
+						<Router>
+							<Navbar />
+							<div className='wrapper'>
+								<Switch>
+									<Route exact path='/' component={Home} />
+								</Switch>
+							</div>
+						</Router>
+					</AuthValidationState>
+				</NavbarState>
+			</AuthState>
+		</AlertState>
 	);
 };
 

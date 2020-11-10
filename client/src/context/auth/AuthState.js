@@ -86,14 +86,14 @@ const AuthState = props => {
 		};
 
 		try {
-			const res = await axios.post('/server/users', formData, config);
-			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+			const res = await axios.post('/server/auth', formData, config);
+			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {
 			if (err.response.data.msg) {
-				dispatch({ type: REGISTER_FAIL, payload: [ { msg: err.response.data.msg } ] });
+				dispatch({ type: LOGIN_FAIL, payload: [ { msg: err.response.data.msg } ] });
 			} else {
-				dispatch({ type: REGISTER_FAIL, payload: err.response.data.errors });
+				dispatch({ type: LOGIN_FAIL, payload: err.response.data.errors });
 			}
 		}
 	};
