@@ -147,7 +147,7 @@ const RegisterResponse = props => {
 								<Typography className={classes.response} variant='h5'>
 									Your account has been created successfully!
 								</Typography>
-								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
+								<Box width='100%' display='flex' justifyContent='flex-end'>
 									<Button
 										className={classes.closeButton}
 										width='100%'

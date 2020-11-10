@@ -144,10 +144,10 @@ const LoginResponse = props => {
 						{isAuthenticated ? (
 							<Fragment>
 								<img className={classes.messageSvg} src={WelcomeSvg} alt='Add User Drawing' />
-								<Typography className={classes.response} variant='h4'>
-									{user && user.username}!
+								<Typography className={classes.response} variant='h5'>
+									Welcome back {user && user.username}!
 								</Typography>
-								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
+								<Box width='100%' display='flex' justifyContent='flex-end'>
 									<Button
 										className={classes.closeButton}
 										width='100%'
@@ -165,7 +165,7 @@ const LoginResponse = props => {
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
 								<div className={classes.response}>
 									<Typography className={classes.response} variant='h5'>
-										Somethin went wrong :(
+										Something went wrong :(
 									</Typography>
 									<Alerts />
 								</div>
