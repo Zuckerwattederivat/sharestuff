@@ -1,7 +1,7 @@
 // Node Modules
 import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Button, Grid } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 import { Close as CloseIcon, ArrowBack as ArrowBackIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Components

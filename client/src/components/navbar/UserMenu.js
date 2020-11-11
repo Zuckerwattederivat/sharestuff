@@ -1,7 +1,8 @@
 // Node Modules
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Menu, MenuItem, Divider } from '@material-ui/core';
+import { Menu, MenuItem, Typography, Divider, Box } from '@material-ui/core';
 import {
 	Message as MessageIcon,
 	Notifications as NotificationsIcon,
@@ -18,11 +19,19 @@ import NavbarContext from '../../context/navbar/navbarContext';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	userMenu: {
-		top: '40px'
+	userMenu: {},
+	usernameContainer: {
+		padding: theme.spacing(1, 2.6)
+	},
+	loggedInAs: {
+		fontSize: 'small'
+	},
+	username: {
+		fontWeight: 'bold'
 	},
 	divider: {
-		margin: '0.3em'
+		margin: theme.spacing(1, 0),
+		width: '100%'
 	},
 	dropdownIcons: {
 		marginRight: '0.3em'
@@ -33,7 +42,10 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	secondaryText: {
-		color: theme.palette.secondary.main
+		color: theme.palette.error.main
+	},
+	fontAwesomeIcon: {
+		margin: theme.spacing(0, 1.2, 0, 0)
 	}
 }));
 
@@ -45,7 +57,7 @@ const UserMenu = props => {
 	// laod auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { isAuthenticated, logout } = authContext;
+	const { isAuthenticated, logout, user } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -57,7 +69,7 @@ const UserMenu = props => {
 
 	return (
 		<Menu
-			className='userMenu'
+			className={classes.userMenu}
 			anchorEl={anchorEl}
 			anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 			getContentAnchorEl={null}
@@ -69,6 +81,11 @@ const UserMenu = props => {
 		>
 			{isAuthenticated ? (
 				[
+					<Box key='welcome-message' className={classes.usernameContainer}>
+						<Typography className={classes.loggedInAs}>Logged in as:</Typography>
+						<Typography className={classes.username}>{user && user.username}</Typography>
+					</Box>,
+					<Divider key='divider-top' className={classes.divider} />,
 					<MenuItem key='messages' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
 						<MessageIcon fontSize='small' className={classes.dropdownIcons} /> Messages
 					</MenuItem>,
@@ -81,7 +98,6 @@ const UserMenu = props => {
 					<MenuItem key='account' onClick={handleUserMenuClose}>
 						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
 					</MenuItem>,
-					<Divider key='divider' className={classes.divider} variant='middle' />,
 					<MenuItem
 						key='logout'
 						className={classes.secondaryText}
@@ -90,8 +106,23 @@ const UserMenu = props => {
 							logout();
 						}}
 					>
-						<LockIcon fontSize='small' color='secondary' className={classes.dropdownIcons} /> Logout
-					</MenuItem>
+						<LockIcon fontSize='small' className={classes.dropdownIcons} /> Logout
+					</MenuItem>,
+					user &&
+					user.admin === true && [
+						<Divider key='divider-bottom' className={classes.divider} />,
+						<MenuItem
+							component={Link}
+							to='/admin'
+							key='admin'
+							onClick={() => {
+								handleUserMenuClose();
+								logout();
+							}}
+						>
+							<i className={`fas fa-tools ${classes.fontAwesomeIcon}`} /> Admin Panel
+						</MenuItem>
+					]
 				]
 			) : (
 				[

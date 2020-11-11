@@ -99,7 +99,7 @@ const AuthState = props => {
 	};
 
 	// logout
-	const logout = () => {};
+	const logout = () => dispatch({ type: LOGOUT });
 
 	return (
 		<AuthContext.Provider
