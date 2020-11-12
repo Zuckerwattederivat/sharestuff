@@ -1,19 +1,24 @@
 // Node Modules
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
-import { makeStyles, Grid, TextField, CircularProgress } from '@material-ui/core';
+import { makeStyles, Grid, TextField, CircularProgress, IconButton } from '@material-ui/core';
+import { Search as SearchIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
-import { STATES } from 'mongoose';
 // Assets
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	container: {
-		width: '100%'
-	},
-	searchField: {
+	textfield: {
+		minWidth: '100%',
 		background: theme.palette.background.custom,
 		color: theme.palette.primary.main
+	},
+	buttonContainer: {
+		display: 'flex',
+		alignItems: 'center'
+	},
+	button: {
+		// height: '100%'
 	}
 }));
 
@@ -37,7 +42,7 @@ const MainSearch = () => {
 	const loading = open && options.length === 0;
 	// input state
 	const [ searchParams, setSearchParams ] = useState({
-		product: '',
+		item: '',
 		location: '',
 		locationAuto: null
 	});
@@ -81,12 +86,23 @@ const MainSearch = () => {
 	);
 
 	return (
-		<Grid container spacing={2} className={classes.container}>
-			<Grid item xs={12} md={6}>
+		<Grid container spacing={1} width='100%' className={classes.grid}>
+			<Grid item xs={6} sm={7}>
+				<TextField
+					id='product'
+					name='product'
+					className={classes.textfield}
+					variant='outlined'
+					label='Item'
+					placeholder='vacum cleaner'
+					type='text'
+					onChange={handleInputChange('item')}
+				/>
+			</Grid>
+			<Grid item xs={4} sm={4}>
 				<Autocomplete
 					id='location'
 					name='location'
-					style={{ width: 300 }}
 					open={open}
 					onOpen={() => {
 						setOpen(true);
@@ -103,9 +119,10 @@ const MainSearch = () => {
 						<TextField
 							{...params}
 							onChange={handleInputChange('location')}
-							className={classes.searchField}
-							label='Where are you searching?'
+							className={classes.textfield}
+							label='Location'
 							variant='outlined'
+							placeholder='Fifth Ave, New York'
 							InputProps={{
 								...params.InputProps,
 								endAdornment: (
@@ -118,6 +135,16 @@ const MainSearch = () => {
 						/>
 					)}
 				/>
+			</Grid>
+			<Grid item xs={2} sm={1} className={classes.buttonContainer}>
+				<IconButton
+					className={classes.button}
+					width='100%'
+					variant='contained'
+					// onClick={search}
+				>
+					<SearchIcon className={classes.buttonIcon} />
+				</IconButton>
 			</Grid>
 		</Grid>
 	);

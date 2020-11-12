@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundSize: 'cover'
 	},
 	overlay: {
-		background: 'rgba(0, 0, 0, 0.5)',
+		background: 'rgba(0, 0, 0, 0.7)',
 		position: 'relative',
 		zIndex: 10,
 		left: 0,
@@ -31,11 +31,22 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: '800px'
 	},
 	title: {
-		fontWeight: '500',
-		fontSize: '2.2rem',
+		fontWeight: '600',
+		fontSize: theme.typography.h4.fontSize,
 		color: '#fff',
-		lineHeight: theme.spacing(0.16),
-		marginBottom: theme.spacing(2)
+		lineHeight: theme.spacing(0.2),
+		marginBottom: theme.spacing(3),
+		[theme.breakpoints.down('xs')]: {
+			fontSize: theme.typography.h5.fontSize
+		}
+	},
+	titleChild2: {
+		[theme.breakpoints.down('xs')]: {
+			display: 'none'
+		}
+	},
+	textPrimary: {
+		color: theme.palette.primary.main
 	},
 	shape: {
 		position: 'relative',
@@ -68,7 +79,11 @@ const Hero = () => {
 			<div className={classes.overlay}>
 				<Container className={classes.container} maxWidth='xl'>
 					<Typography className={classes.title} variant='h1'>
-						Rent tools or other items from people near you. Start working on your home projects today.
+						<span className={classes.titleChild1}>
+							<span className={classes.textPrimary}>Rent</span> tools or other
+							<span className={classes.textPrimary}> items</span> from people near you.
+						</span>
+						<span className={classes.titleChild2}> Start working on your home projects today.</span>
 					</Typography>
 					<MainSearch />
 				</Container>
