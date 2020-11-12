@@ -72,6 +72,9 @@ const AuthValidationState = props => {
 		} else if (input3 === '') {
 			setInputState(USERNAME_ERROR, 'Choose a username');
 			return Promise.resolve(false);
+		} else if (input3.length > 18) {
+			setInputState(USERNAME_ERROR, 'Username can not be longer than 15 characters');
+			return Promise.resolve(false);
 		} else {
 			return Promise.resolve(true);
 		}
@@ -102,6 +105,10 @@ const AuthValidationState = props => {
 			} else if (input1.length < 6 || input2.length < 6) {
 				setInputState(PASSWORD_ERROR, 'Password must be at least 6 characters long');
 				setInputState(PASSWORD_CONFIRM_ERROR, 'Password must be at least 6 characters long');
+				return Promise.resolve(false);
+			} else if (input1.length > 30 || input2.length > 30) {
+				setInputState(PASSWORD_ERROR, 'Password can not be longer than 30 characters');
+				setInputState(PASSWORD_CONFIRM_ERROR, 'Password can not be longer than 30 characters');
 				return Promise.resolve(false);
 			} else {
 				return Promise.resolve(true);

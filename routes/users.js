@@ -27,7 +27,9 @@ router.post(
 		check('phone', 'Please enter a valid phone number').isNumeric(),
 		check('email', 'Please include a valid email').isEmail(),
 		check('username', 'Please enter a username').notEmpty(),
-		check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+		check('username', 'Username can not be longer than 16 characters').isLength({ max: 18 }),
+		check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
+		check('password', 'Your password can not be longer than 30 characters').isLength({ max: 30 })
 	],
 	async (req, res) => {
 		// check if validation errors exist and response with 400 if true
