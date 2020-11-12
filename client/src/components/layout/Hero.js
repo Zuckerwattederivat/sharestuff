@@ -1,6 +1,8 @@
 // Node Modules
 import React from 'react';
 import { Container, makeStyles, Typography } from '@material-ui/core';
+// Components
+import MainSearch from '../search/MainSearch';
 // Assets
 import HeroImage from '../../assets/hero/hero-4.jpg';
 
@@ -26,13 +28,14 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		height: '82vh',
-		maxWidth: '700px'
+		maxWidth: '800px'
 	},
 	title: {
-		fontWeight: '700',
+		fontWeight: '500',
 		fontSize: '2.2rem',
 		color: '#fff',
-		lineHeight: theme.spacing(0.16)
+		lineHeight: theme.spacing(0.16),
+		marginBottom: theme.spacing(2)
 	},
 	shape: {
 		position: 'relative',
@@ -65,8 +68,9 @@ const Hero = () => {
 			<div className={classes.overlay}>
 				<Container className={classes.container} maxWidth='xl'>
 					<Typography className={classes.title} variant='h1'>
-						Rent tools for your next home project from people near you.
+						Rent tools or other items from people near you. Start working on your home projects today.
 					</Typography>
+					<MainSearch />
 				</Container>
 			</div>
 			<div className={classes.shape}>
