@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
 		height: '82vh',
 		backgroundImage: `url(${HeroImage})`,
 		backgroundRepeat: 'no-repeat',
-		backgroundSize: 'cover'
+		backgroundSize: 'cover',
+		backgroundPosition: '50% 45%'
 	},
 	overlay: {
 		background: 'rgba(0, 0, 0, 0.7)',
@@ -35,14 +36,12 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.h4.fontSize,
 		color: '#fff',
 		lineHeight: theme.spacing(0.2),
-		marginBottom: theme.spacing(3),
-		[theme.breakpoints.down('xs')]: {
-			fontSize: theme.typography.h5.fontSize
-		}
+		marginBottom: theme.spacing(3)
 	},
 	titleChild2: {
-		[theme.breakpoints.down('xs')]: {
-			display: 'none'
+		display: 'none',
+		[theme.breakpoints.up('sm')]: {
+			display: 'inline'
 		}
 	},
 	textPrimary: {
@@ -83,7 +82,11 @@ const Hero = () => {
 							<span className={classes.textPrimary}>Rent</span> tools or other
 							<span className={classes.textPrimary}> items</span> from people near you.
 						</span>
-						<span className={classes.titleChild2}> Start working on your home projects today.</span>
+						<span className={classes.titleChild2}>
+							{' '}
+							Start working on your home projects
+							<span className={classes.textPrimary}> today</span>.
+						</span>
 					</Typography>
 					<MainSearch />
 				</Container>
