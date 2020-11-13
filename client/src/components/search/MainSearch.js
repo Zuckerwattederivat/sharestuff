@@ -85,68 +85,78 @@ const MainSearch = () => {
 		[ open ]
 	);
 
+	// onSubmit
+	const onSubmit = e => {
+		e.preventDefault();
+		console.log(searchParams);
+	};
+
 	return (
-		<Grid container spacing={1} width='100%' className={classes.grid}>
-			<Grid item xs={6} sm={7}>
-				<TextField
-					id='product'
-					name='product'
-					className={classes.textfield}
-					variant='outlined'
-					label='Item'
-					placeholder='vacum cleaner'
-					type='text'
-					onChange={handleInputChange('item')}
-				/>
+		<form onSubmit={onSubmit}>
+			<Grid container spacing={1} width='100%' className={classes.grid}>
+				<Grid item xs={6} sm={7}>
+					<TextField
+						id='product'
+						name='product'
+						className={classes.textfield}
+						variant='outlined'
+						label='Item'
+						placeholder='vacum cleaner'
+						type='text'
+						onChange={handleInputChange('item')}
+					/>
+				</Grid>
+				<Grid item xs={4} sm={4}>
+					<Autocomplete
+						id='location'
+						name='location'
+						open={open}
+						onOpen={() => {
+							setOpen(true);
+						}}
+						onClose={() => {
+							setOpen(false);
+						}}
+						onChange={(e, option) => setSearchParams({ ...searchParams, locationAuto: option })}
+						getOptionSelected={(option, value) => option.label === value.label}
+						getOptionLabel={option => option.label}
+						options={options}
+						loading={loading}
+						renderInput={params => (
+							<TextField
+								{...params}
+								onChange={handleInputChange('location')}
+								className={classes.textfield}
+								label='Location'
+								variant='outlined'
+								placeholder='Fifth Ave, New York'
+								InputProps={{
+									...params.InputProps,
+									endAdornment: (
+										<Fragment>
+											{loading ? <CircularProgress color='inherit' size={20} /> : null}
+											{params.InputProps.endAdornment}
+										</Fragment>
+									)
+								}}
+							/>
+						)}
+					/>
+				</Grid>
+				<Grid item xs={2} sm={1} className={classes.buttonContainer}>
+					<IconButton
+						name='submit'
+						type='submit'
+						className={classes.button}
+						width='100%'
+						variant='contained'
+						// onClick={search}
+					>
+						<SearchIcon className={classes.buttonIcon} />
+					</IconButton>
+				</Grid>
 			</Grid>
-			<Grid item xs={4} sm={4}>
-				<Autocomplete
-					id='location'
-					name='location'
-					open={open}
-					onOpen={() => {
-						setOpen(true);
-					}}
-					onClose={() => {
-						setOpen(false);
-					}}
-					onChange={(e, option) => setSearchParams({ ...searchParams, locationAuto: option })}
-					getOptionSelected={(option, value) => option.label === value.label}
-					getOptionLabel={option => option.label}
-					options={options}
-					loading={loading}
-					renderInput={params => (
-						<TextField
-							{...params}
-							onChange={handleInputChange('location')}
-							className={classes.textfield}
-							label='Location'
-							variant='outlined'
-							placeholder='Fifth Ave, New York'
-							InputProps={{
-								...params.InputProps,
-								endAdornment: (
-									<Fragment>
-										{loading ? <CircularProgress color='inherit' size={20} /> : null}
-										{params.InputProps.endAdornment}
-									</Fragment>
-								)
-							}}
-						/>
-					)}
-				/>
-			</Grid>
-			<Grid item xs={2} sm={1} className={classes.buttonContainer}>
-				<IconButton
-					className={classes.button}
-					width='100%'
-					variant='contained'
-					// onClick={search}
-				>
-					<SearchIcon className={classes.buttonIcon} />
-				</IconButton>
-			</Grid>
-		</Grid>
+		</form>
 	);
 };
 

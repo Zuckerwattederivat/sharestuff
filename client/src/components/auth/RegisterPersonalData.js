@@ -110,14 +110,15 @@ const RegisterPersonalData = props => {
 	);
 
 	// continue form
-	const continueForm = (input, countryAuto) => {
+	const continueForm = e => {
+		e.preventDefault();
 		// add countryAuto to input
-		input.countryAuto = countryAuto;
+		values.countryAuto = countryAuto;
 		//console.log(input);
 		// clear errors
 		clearInputErrors();
 		// validate form
-		validatePersonalData(input);
+		validatePersonalData(values);
 	};
 
 	return (
@@ -125,146 +126,149 @@ const RegisterPersonalData = props => {
 			<Typography className={classes.description} variant='subtitle1'>
 				Please enter your personal details.
 			</Typography>
-			<Grid className={classes.grid} width='100%' container spacing={2}>
-				<Grid item xs={12} md={6} className={classes.gridItem}>
-					<TextField
-						id='firstname'
-						name='firstname'
-						className={classes.textfield}
+			<form onSubmit={continueForm}>
+				<Grid className={classes.grid} width='100%' container spacing={2}>
+					<Grid item xs={12} md={6} className={classes.gridItem}>
+						<TextField
+							id='firstname'
+							name='firstname'
+							className={classes.textfield}
+							variant='outlined'
+							label={firstnameErr ? firstnameErr : 'First Name'}
+							placeholder='John'
+							type='text'
+							error={firstnameErr ? true : false}
+							onChange={handleInputChange('firstname')}
+							defaultValue={values.firstname}
+						/>
+					</Grid>
+					<Grid item xs={12} md={6} className={classes.gridItem}>
+						<TextField
+							id='lastname'
+							name='lastname'
+							className={classes.textfield}
+							variant='outlined'
+							label={lastnameErr ? lastnameErr : 'Last Name'}
+							placeholder='Doe'
+							type='text'
+							error={lastnameErr ? true : false}
+							onChange={handleInputChange('lastname')}
+							defaultValue={values.lastname}
+						/>
+					</Grid>
+					<Grid item xs={12} md={4} className={classes.gridItem}>
+						<Autocomplete
+							id='country'
+							name='country'
+							onChange={(e, newCountryAuto) => setInputState('SET_COUNTRY_AUTO', newCountryAuto)}
+							onInput={handleInputChange('country')}
+							className={classes.countrySelect}
+							options={countries}
+							classes={{
+								option: classes.option
+							}}
+							autoHighlight
+							getOptionLabel={option => option.label}
+							renderOption={option => (
+								<React.Fragment>
+									<span>{countryToFlag(option.code)}</span>
+									{option.label} ({option.code}) +{option.phone}
+								</React.Fragment>
+							)}
+							renderInput={params => (
+								<TextField
+									{...params}
+									required={false}
+									error={countryErr ? true : false}
+									label={countryErr ? countryErr : 'Country'}
+									variant='outlined'
+									placeholder={countryLabel ? countryLabel : 'Germany'}
+								/>
+							)}
+						/>
+					</Grid>
+					<Grid item xs={12} md={8} className={classes.gridItem}>
+						<TextField
+							id='phone'
+							name='phone'
+							className={classes.textfield}
+							variant='outlined'
+							label={phoneErr ? phoneErr : 'Phone Number'}
+							placeholder='1767777777'
+							type='number'
+							error={phoneErr ? true : false}
+							onChange={handleInputChange('phone')}
+							defaultValue={values.phone}
+						/>
+					</Grid>
+					<Grid item xs={12} md={5} className={classes.gridItem}>
+						<TextField
+							id='address'
+							name='address'
+							className={classes.textfield}
+							variant='outlined'
+							label={addressErr ? addressErr : 'Address'}
+							placeholder='Heiligengeistfeld 15'
+							type='text'
+							error={addressErr ? true : false}
+							onChange={handleInputChange('address')}
+							defaultValue={values.address}
+						/>
+					</Grid>
+					<Grid item xs={6} md={3} className={classes.gridItem}>
+						<TextField
+							id='zipCode'
+							name='zipCode'
+							className={classes.textfield}
+							variant='outlined'
+							label={zipCodeErr ? zipCodeErr : 'Zip Code'}
+							placeholder='20359'
+							type='number'
+							error={zipCodeErr ? true : false}
+							onChange={handleInputChange('zipCode')}
+							defaultValue={values.zipCode}
+						/>
+					</Grid>
+					<Grid item xs={6} md={4} className={classes.gridItem}>
+						<TextField
+							id='city'
+							name='city'
+							className={classes.textfield}
+							variant='outlined'
+							label={cityErr ? cityErr : 'City'}
+							placeholder='Hamburg'
+							type='text'
+							error={cityErr ? true : false}
+							onChange={handleInputChange('city')}
+							defaultValue={values.city}
+						/>
+					</Grid>
+				</Grid>
+				<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
+					<Button
+						className={classes.prevButton}
+						width='100%'
 						variant='outlined'
-						label={firstnameErr ? firstnameErr : 'First Name'}
-						placeholder='John'
-						type='text'
-						error={firstnameErr ? true : false}
-						onChange={handleInputChange('firstname')}
-						defaultValue={values.firstname}
-					/>
-				</Grid>
-				<Grid item xs={12} md={6} className={classes.gridItem}>
-					<TextField
-						id='lastname'
-						name='lastname'
-						className={classes.textfield}
+						startIcon={<ArrowBackIcon className={classes.buttonIcon} />}
+						size='large'
+						onClick={prevStep}
+					>
+						Go Back
+					</Button>
+					<Button
+						className={classes.nextButton}
+						name='submit'
+						type='submit'
+						width='100%'
 						variant='outlined'
-						label={lastnameErr ? lastnameErr : 'Last Name'}
-						placeholder='Doe'
-						type='text'
-						error={lastnameErr ? true : false}
-						onChange={handleInputChange('lastname')}
-						defaultValue={values.lastname}
-					/>
-				</Grid>
-				<Grid item xs={12} md={4} className={classes.gridItem}>
-					<Autocomplete
-						id='country'
-						name='country'
-						onChange={(e, newCountryAuto) => setInputState('SET_COUNTRY_AUTO', newCountryAuto)}
-						onInput={handleInputChange('country')}
-						className={classes.countrySelect}
-						options={countries}
-						classes={{
-							option: classes.option
-						}}
-						autoHighlight
-						getOptionLabel={option => option.label}
-						renderOption={option => (
-							<React.Fragment>
-								<span>{countryToFlag(option.code)}</span>
-								{option.label} ({option.code}) +{option.phone}
-							</React.Fragment>
-						)}
-						renderInput={params => (
-							<TextField
-								{...params}
-								required={false}
-								error={countryErr ? true : false}
-								label={countryErr ? countryErr : 'Country'}
-								variant='outlined'
-								placeholder={countryLabel ? countryLabel : 'Germany'}
-							/>
-						)}
-					/>
-				</Grid>
-				<Grid item xs={12} md={8} className={classes.gridItem}>
-					<TextField
-						id='phone'
-						name='phone'
-						className={classes.textfield}
-						variant='outlined'
-						label={phoneErr ? phoneErr : 'Phone Number'}
-						placeholder='1767777777'
-						type='number'
-						error={phoneErr ? true : false}
-						onChange={handleInputChange('phone')}
-						defaultValue={values.phone}
-					/>
-				</Grid>
-				<Grid item xs={12} md={5} className={classes.gridItem}>
-					<TextField
-						id='address'
-						name='address'
-						className={classes.textfield}
-						variant='outlined'
-						label={addressErr ? addressErr : 'Address'}
-						placeholder='Heiligengeistfeld 15'
-						type='text'
-						error={addressErr ? true : false}
-						onChange={handleInputChange('address')}
-						defaultValue={values.address}
-					/>
-				</Grid>
-				<Grid item xs={6} md={3} className={classes.gridItem}>
-					<TextField
-						id='zipCode'
-						name='zipCode'
-						className={classes.textfield}
-						variant='outlined'
-						label={zipCodeErr ? zipCodeErr : 'Zip Code'}
-						placeholder='20359'
-						type='number'
-						error={zipCodeErr ? true : false}
-						onChange={handleInputChange('zipCode')}
-						defaultValue={values.zipCode}
-					/>
-				</Grid>
-				<Grid item xs={6} md={4} className={classes.gridItem}>
-					<TextField
-						id='city'
-						name='city'
-						className={classes.textfield}
-						variant='outlined'
-						label={cityErr ? cityErr : 'City'}
-						placeholder='Hamburg'
-						type='text'
-						error={cityErr ? true : false}
-						onChange={handleInputChange('city')}
-						defaultValue={values.city}
-					/>
-				</Grid>
-			</Grid>
-			<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
-				<Button
-					className={classes.prevButton}
-					width='100%'
-					variant='outlined'
-					startIcon={<ArrowBackIcon className={classes.buttonIcon} />}
-					size='large'
-					onClick={prevStep}
-				>
-					Go Back
-				</Button>
-				<Button
-					className={classes.nextButton}
-					width='100%'
-					variant='outlined'
-					color='primary'
-					endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
-					size='large'
-					onClick={() => continueForm(values, countryAuto)}
-				>
-					Continue
-				</Button>
-			</Box>
+						color='primary'
+						endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
+						size='large'
+					>
+						Continue
+					</Button>
+				</Box>
+			</form>
 		</Box>
 	);
 };

@@ -57,9 +57,10 @@ const RegisterUserData = props => {
 	const { values, handleInputChange, nextStep } = props;
 
 	// continue form
-	const continueForm = input => {
+	const continueForm = e => {
+		e.preventDefault();
 		clearInputErrors();
-		validateUserData(input);
+		validateUserData(values);
 	};
 
 	// execute on error state change
@@ -80,75 +81,78 @@ const RegisterUserData = props => {
 			<Typography className={classes.description} variant='subtitle1'>
 				Please enter your user details.
 			</Typography>
-			<Grid className={classes.grid} width='100%' container spacing={2}>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='username'
-						name='username'
-						className={classes.textfield}
-						variant='outlined'
-						label={usernameErr ? usernameErr : 'Username'}
-						placeholder='toolsmaster'
-						type='text'
-						error={usernameErr ? true : false}
-						onChange={handleInputChange('username')}
-						defaultValue={values.username}
-					/>
+			<form onSubmit={continueForm}>
+				<Grid className={classes.grid} width='100%' container spacing={2}>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='username'
+							name='username'
+							className={classes.textfield}
+							variant='outlined'
+							label={usernameErr ? usernameErr : 'Username'}
+							placeholder='toolsmaster'
+							type='text'
+							error={usernameErr ? true : false}
+							onChange={handleInputChange('username')}
+							defaultValue={values.username}
+						/>
+					</Grid>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='email'
+							name='email'
+							className={classes.textfield}
+							variant='outlined'
+							label={emailErr ? emailErr : 'Email'}
+							placeholder='john.doe@gmail.com'
+							type='email'
+							error={emailErr ? true : false}
+							onChange={handleInputChange('email')}
+							defaultValue={values.email}
+						/>
+					</Grid>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='password'
+							name='password'
+							className={classes.textfield}
+							variant='outlined'
+							label={passwordErr ? passwordErr : 'Password'}
+							type='password'
+							error={passwordErr ? true : false}
+							onChange={handleInputChange('password')}
+							defaultValue={values.password}
+						/>
+					</Grid>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='passwordConfirm'
+							name='passwordConfirm'
+							className={classes.textfield}
+							variant='outlined'
+							label={passwordConfirmErr ? passwordConfirmErr : 'Confirm Password'}
+							type='password'
+							error={passwordConfirmErr ? true : false}
+							onChange={handleInputChange('passwordConfirm')}
+							defaultValue={values.passwordConfirm}
+						/>
+					</Grid>
 				</Grid>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='email'
-						name='email'
-						className={classes.textfield}
+				<Box width='100%' display='flex' justifyContent='flex-end'>
+					<Button
+						className={classes.nextButton}
+						name='submit'
+						type='submit'
+						width='100%'
 						variant='outlined'
-						label={emailErr ? emailErr : 'Email'}
-						placeholder='john.doe@gmail.com'
-						type='email'
-						error={emailErr ? true : false}
-						onChange={handleInputChange('email')}
-						defaultValue={values.email}
-					/>
-				</Grid>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='password'
-						name='password'
-						className={classes.textfield}
-						variant='outlined'
-						label={passwordErr ? passwordErr : 'Password'}
-						type='password'
-						error={passwordErr ? true : false}
-						onChange={handleInputChange('password')}
-						defaultValue={values.password}
-					/>
-				</Grid>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='passwordConfirm'
-						name='passwordConfirm'
-						className={classes.textfield}
-						variant='outlined'
-						label={passwordConfirmErr ? passwordConfirmErr : 'Confirm Password'}
-						type='password'
-						error={passwordConfirmErr ? true : false}
-						onChange={handleInputChange('passwordConfirm')}
-						defaultValue={values.passwordConfirm}
-					/>
-				</Grid>
-			</Grid>
-			<Box width='100%' display='flex' justifyContent='flex-end'>
-				<Button
-					className={classes.nextButton}
-					width='100%'
-					variant='outlined'
-					color='primary'
-					endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
-					size='large'
-					onClick={() => continueForm(values)}
-				>
-					Continue
-				</Button>
-			</Box>
+						color='primary'
+						endIcon={<ArrowForwardIcon className={classes.buttonIcon} />}
+						size='large'
+					>
+						Continue
+					</Button>
+				</Box>
+			</form>
 		</Box>
 	);
 };

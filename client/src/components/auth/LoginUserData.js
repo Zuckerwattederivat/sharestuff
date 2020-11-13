@@ -101,12 +101,13 @@ const Login = props => {
 	);
 
 	// continue form
-	const continueForm = input => {
+	const continueForm = e => {
+		e.preventDefault();
 		//console.log(input);
 		// clear errors
 		clearInputErrors();
 		// validate form
-		validateLoginData(input);
+		validateLoginData(values);
 	};
 
 	return (
@@ -114,48 +115,51 @@ const Login = props => {
 			<Typography className={classes.description} variant='subtitle1'>
 				Please enter your user details.
 			</Typography>
-			<Grid className={classes.grid} width='100%' container spacing={2}>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='email'
-						name='email'
-						className={classes.textfield}
-						variant='outlined'
-						label={emailErr ? emailErr : 'Email'}
-						placeholder='john.doe@gmail.com'
-						type='email'
-						error={emailErr ? true : false}
-						onChange={handleInputChange('email')}
-						defaultValue={values.email}
-					/>
+			<form onSubmit={continueForm}>
+				<Grid className={classes.grid} width='100%' container spacing={2}>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='email'
+							name='email'
+							className={classes.textfield}
+							variant='outlined'
+							label={emailErr ? emailErr : 'Email'}
+							placeholder='john.doe@gmail.com'
+							type='email'
+							error={emailErr ? true : false}
+							onChange={handleInputChange('email')}
+							defaultValue={values.email}
+						/>
+					</Grid>
+					<Grid item xs={12} className={classes.gridItem}>
+						<TextField
+							id='password'
+							name='password'
+							className={classes.textfield}
+							variant='outlined'
+							label={passwordErr ? passwordErr : 'Password'}
+							type='password'
+							error={passwordErr ? true : false}
+							onChange={handleInputChange('password')}
+							defaultValue={values.password}
+						/>
+					</Grid>
 				</Grid>
-				<Grid item xs={12} className={classes.gridItem}>
-					<TextField
-						id='password'
-						name='password'
-						className={classes.textfield}
+				<Box width='100%' display='flex' justifyContent='flex-end'>
+					<Button
+						name='submit'
+						className={classes.nextButton}
+						type='submit'
+						width='100%'
 						variant='outlined'
-						label={passwordErr ? passwordErr : 'Password'}
-						type='password'
-						error={passwordErr ? true : false}
-						onChange={handleInputChange('password')}
-						defaultValue={values.password}
-					/>
-				</Grid>
-			</Grid>
-			<Box width='100%' display='flex' justifyContent='flex-end'>
-				<Button
-					className={classes.nextButton}
-					width='100%'
-					variant='outlined'
-					color='primary'
-					startIcon={<LockOpenIcon className={classes.buttonIcon} />}
-					size='large'
-					onClick={() => continueForm(values)}
-				>
-					Login
-				</Button>
-			</Box>
+						color='primary'
+						startIcon={<LockOpenIcon className={classes.buttonIcon} />}
+						size='large'
+					>
+						Login
+					</Button>
+				</Box>
+			</form>
 		</Box>
 	);
 };
