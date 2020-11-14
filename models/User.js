@@ -59,9 +59,9 @@ const UserSchema = mongoose.Schema({
 		required: true,
 		default: false
 	},
-	avatarUrl: {
+	avatar: {
 		type: String,
-		default: ''
+		default: 'avatar-placeholder.jpg'
 	},
 	bio: {
 		type: String,

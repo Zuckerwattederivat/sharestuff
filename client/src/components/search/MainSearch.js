@@ -100,7 +100,7 @@ const MainSearch = () => {
 						name='product'
 						className={classes.textfield}
 						variant='outlined'
-						label='Item'
+						label='Product'
 						placeholder='vacum cleaner'
 						type='text'
 						onChange={handleInputChange('item')}

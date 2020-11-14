@@ -12,7 +12,7 @@ const config = require('config');
 const User = require('../models/User');
 const { json } = require('express');
 
-// @route     POST api/users
+// @route     POST server/users
 // @desc      Register a user
 // @access    Public
 router.post(
@@ -105,7 +105,7 @@ router.post(
 	}
 );
 
-// @route     GET api/users
+// @route     GET server/users
 // @desc      Get user
 // @access    Public
 router.get('/', async (req, res) => {

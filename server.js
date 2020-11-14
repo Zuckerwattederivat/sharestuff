@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.json({ msg: 'Welcome to the sharestuff API...' })
 // define routes
 app.use('/server/users', require('./routes/users'));
 app.use('/server/auth', require('./routes/auth'));
+app.use('/server/categories', require('./routes/categories'));
 
 // start server on PORT
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));

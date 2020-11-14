@@ -12,7 +12,7 @@ const config = require('config');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-// @route     GET api/auth
+// @route     GET server/auth
 // @desc      Get logged in user
 // @access    Private
 router.get('/', auth, async (req, res) => {
@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res) => {
 	}
 });
 
-// @route     POST api/auth
+// @route     POST server/auth
 // @desc      Auth user & get token
 // @access    Public
 router.post(
@@ -68,7 +68,7 @@ router.post(
 				payload,
 				config.get('jwtSecret'),
 				{
-					expiresIn: '1h'
+					expiresIn: 3600000
 				},
 				(err, token) => {
 					if (err) throw err;
