@@ -2,15 +2,17 @@
  * Users API
  */
 
-// variables
+// Node Modules
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+// Config
 const config = require('config');
+// Models
 const User = require('../models/User');
-const { json } = require('express');
+// const { json } = require('express');
 
 // @route     POST server/users
 // @desc      Register a user

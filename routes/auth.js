@@ -2,14 +2,16 @@
  * Authentication API
  */
 
-// variables
+// Node Modules
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+// Middleware
 const auth = require('../middleware/auth');
+// Models
 const User = require('../models/User');
 
 // @route     GET server/auth

@@ -5,18 +5,20 @@
 // variables
 const PORT = process.env.PORT || 5000;
 const express = require('express');
-const connectDB = require('./config/db');
-
 const app = express();
+const connectDB = require('./config/db');
 
 // connect database
 connectDB();
 
 // init middleware
 app.use(express.json({ extended: false }));
+app.use('/public', express.static('public'));
 
 // response to get request
-app.get('/', (req, res) => res.json({ msg: 'Welcome to the sharestuff API...' }));
+app.get('/', (req, res) => {
+	res.json({ msg: 'Welcome to the sharestuff backend server' });
+});
 
 // define routes
 app.use('/server/users', require('./routes/users'));

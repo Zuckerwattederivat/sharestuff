@@ -9,11 +9,12 @@ const mongoose = require('mongoose');
 const CategorySchema = mongoose.Schema({
 	title: {
 		type: String,
-		required: true
+		required: true,
+		index: { unique: true }
 	},
 	image: {
 		type: String,
-		default: 'category-placeholder.jpg'
+		default: 'public/img/placeholder.jpg'
 	}
 });
 
