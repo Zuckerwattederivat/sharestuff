@@ -86,10 +86,10 @@ const mainMenuLinks = [
 		linkName: 'Home'
 	},
 	{
-		id: 'products',
-		href: '/products',
+		id: 'offers',
+		href: '/offers/find',
 		icon: <LocalMallIcon />,
-		linkName: 'Find Products'
+		linkName: 'Find Offers'
 	},
 	{
 		id: 'local',

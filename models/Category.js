@@ -12,6 +12,10 @@ const CategorySchema = mongoose.Schema({
 		required: true,
 		index: { unique: true }
 	},
+	description: {
+		type: String,
+		required: true
+	},
 	image: {
 		type: String,
 		default: 'public/img/placeholder.jpg'

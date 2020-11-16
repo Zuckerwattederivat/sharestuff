@@ -44,7 +44,12 @@ const upload = multer({
 // @access    Private
 router.post(
 	'/',
-	[ auth, upload.single('categoryImage'), check('title', 'Please enter a category name').notEmpty() ],
+	[
+		auth,
+		upload.single('categoryImage'),
+		check('title', 'Please enter a category name').notEmpty(),
+		check('description', 'Please describe the category').notEmpty()
+	],
 	async (req, res) => {
 		// check if validation errors exist and response with 400 if true
 		const errors = validationResult(req);
@@ -97,11 +102,13 @@ router.post(
 // @access    Public
 router.get('/', async (req, res) => {
 	// save request content
-	const { title } = req.query;
+	const { id } = req.query;
+
+	console.log(id);
 
 	try {
 		// return all categories
-		if (!title) {
+		if (!id) {
 			const categories = await Category.find({});
 
 			// send error response
@@ -110,16 +117,16 @@ router.get('/', async (req, res) => {
 
 				// send response
 			} else {
-				const categoryMap = {};
+				const categoryMap = [];
 				categories.forEach(category => {
-					categoryMap[category._id] = category;
+					categoryMap.push(category);
 				});
 				res.send(categoryMap);
 			}
 
 			// return searched category
 		} else {
-			const category = await Category.findOne({ title });
+			const category = await Category.findById(id);
 
 			// send error response
 			if (!category) {
