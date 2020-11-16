@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-// CardMedia Component
-const CardMedia = props => {
+// CardMediaV2 Component
+const CardMediaV1 = props => {
 	// define classes
 	const classes = useStyles();
 
@@ -60,7 +60,7 @@ const CardMedia = props => {
 };
 
 // Proptypes
-CardMedia.propTypes = {
+CardMediaV1.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	btnicon: PropTypes.object.isRequired,
@@ -68,5 +68,5 @@ CardMedia.propTypes = {
 	link: PropTypes.string.isRequired
 };
 
-// export CardMedia Component
-export default CardMedia;
+// export CardMediaV2 Component
+export default CardMediaV1;

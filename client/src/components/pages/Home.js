@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import AuthContext from '../../context/auth/authContext';
 // Components
 import Hero from '../layout/Hero';
-import Card from '../layout/CardMedia';
+import CardMediaV1 from '../layout/CardMediaV1';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 	h2: {
 		fontSize: '1.7rem',
 		fontWeight: 700,
-		margin: theme.spacing(3, 0)
+		margin: theme.spacing(6, 0, 3)
 	},
 	textPrimary: {
 		color: theme.palette.primary.main
@@ -83,38 +83,46 @@ const Home = () => {
 						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
 					</Box>
 				) : (
-					<Box width='100%'>
-						<Typography className={classes.h2} variant='h2'>
-							Featured <span className={classes.textPrimary}>Categories</span>
-						</Typography>
-						<Grid container width='100%' spacing={4}>
-							{categories.map(category => {
-								return (
-									<Grid key={category._id} item xs={12} sm={6} md={3}>
-										<motion.div
-											className={classes.motionDiv}
-											transition={{
-												duration: 1,
-												type: 'tween'
-											}}
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-										>
-											<Card
-												link={`/offers/${category.title}`}
-												image={category.image}
-												title={category.title}
-												btnname='Explorer'
-												btnicon={<ArrowRightIcon />}
+					[
+						<Box width='100%'>
+							<Typography className={classes.h2} variant='h2'>
+								Featured <span className={classes.textPrimary}>Categories</span>
+							</Typography>
+							<Grid container width='100%' spacing={4}>
+								{categories.map(category => {
+									return (
+										<Grid key={category._id} item xs={12} sm={6} md={3}>
+											<motion.div
+												className={classes.motionDiv}
+												transition={{
+													duration: 1,
+													type: 'tween'
+												}}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
 											>
-												{category.description}
-											</Card>
-										</motion.div>
-									</Grid>
-								);
-							})}
-						</Grid>
-					</Box>
+												<CardMediaV1
+													link={`/offers/${category.title}`}
+													image={category.image}
+													title={category.title}
+													btnname='Explorer'
+													btnicon={<ArrowRightIcon />}
+												>
+													{category.description}
+												</CardMediaV1>
+											</motion.div>
+										</Grid>
+									);
+								})}
+							</Grid>
+						</Box>,
+						<br />,
+						<Box width='100%'>
+							<Typography className={classes.h2} variant='h2'>
+								Featured <span className={classes.textPrimary}>Offers</span>
+							</Typography>
+						</Box>
+					]
 				)}
 			</Container>
 		</div>
