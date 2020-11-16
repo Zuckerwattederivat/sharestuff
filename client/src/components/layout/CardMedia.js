@@ -16,7 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // define styles
 const useStyles = makeStyles(theme => ({
 	root: {
-		maxWidth: 500,
+		maxWidth: 600,
 		minHeight: '100%',
 		display: 'flex',
 		justifyContent: 'space-between',
@@ -41,7 +41,7 @@ const CardMedia = props => {
 
 	return (
 		<Card className={classes.root}>
-			<CardActionArea className={classes.actionArea}>
+			<CardActionArea className={classes.actionArea} component={Link} to={props.link}>
 				<CardImage className={classes.media} image={props.image} title={props.title} />
 				<CardContent>
 					<Typography gutterBottom variant='h5' component='h2'>

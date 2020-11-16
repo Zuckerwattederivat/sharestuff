@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Box, Container, Typography, Grid } from '@material-ui/core';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { motion } from 'framer-motion';
 // Context
 import AuthContext from '../../context/auth/authContext';
 // Components
@@ -24,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	loadingGif: {
 		height: '20vh'
+	},
+	motionDiv: {
+		height: '100%'
 	}
 }));
 
@@ -38,7 +42,8 @@ const Home = () => {
 	// home state
 	const [ homeState, setHomeState ] = useState({
 		loading: true,
-		categories: null
+		categories: null,
+		offers: null
 	});
 	// destructure home state
 	const { loading, categories } = homeState;
@@ -55,10 +60,12 @@ const Home = () => {
 	const getCategories = async () => {
 		// response
 		const res = await axios.get('/server/categories');
-		// array max length
-		const categories = res.data.slice(0, 4);
-		// set sate
-		setHomeState({ loading: false, categories: categories });
+		if (res.data) {
+			// array max length
+			const categories = res.data.slice(0, 4);
+			// set sate
+			setHomeState({ loading: false, categories: categories });
+		}
 	};
 
 	// load assets
@@ -84,15 +91,25 @@ const Home = () => {
 							{categories.map(category => {
 								return (
 									<Grid key={category._id} item xs={12} sm={6} md={3}>
-										<Card
-											link={`/offers/${category.title}`}
-											image={category.image}
-											title={category.title}
-											btnname='Explorer'
-											btnicon={<ArrowRightIcon />}
+										<motion.div
+											className={classes.motionDiv}
+											transition={{
+												duration: 1,
+												type: 'tween'
+											}}
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
 										>
-											{category.description}
-										</Card>
+											<Card
+												link={`/offers/${category.title}`}
+												image={category.image}
+												title={category.title}
+												btnname='Explorer'
+												btnicon={<ArrowRightIcon />}
+											>
+												{category.description}
+											</Card>
+										</motion.div>
 									</Grid>
 								);
 							})}
