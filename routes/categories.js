@@ -61,6 +61,7 @@ router.post(
 		const title = req.body.title.toLowerCase();
 		let image;
 
+		// save image path
 		if (!req.file) {
 			return res.status(400).json({ msg: 'Please upload an image file' });
 		} else {
