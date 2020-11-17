@@ -12,6 +12,8 @@ import {
 	Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+// Utils
+import utils from '../../utils/helpers';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -45,7 +47,7 @@ const CardMediaV1 = props => {
 				<CardImage className={classes.media} image={props.image} title={props.title} />
 				<CardContent>
 					<Typography gutterBottom variant='h5' component='h2'>
-						{props.title.toUpperCase()}
+						{utils.capitalizeFirstLetter(props.title)}
 					</Typography>
 					<Typography variant='body1'>{props.children}</Typography>
 				</CardContent>

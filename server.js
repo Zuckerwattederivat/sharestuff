@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/server/users', require('./routes/users'));
 app.use('/server/auth', require('./routes/auth'));
 app.use('/server/categories', require('./routes/categories'));
+app.use('/server/offers', require('./routes/offers'));
 
 // start server on PORT
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));

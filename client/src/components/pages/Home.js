@@ -59,12 +59,10 @@ const Home = () => {
 	// get categories
 	const getCategories = async () => {
 		// response
-		const res = await axios.get('/server/categories');
+		const res = await axios.get('/server/categories', { params: { rand: true, limit: 4 } });
+		// set sate
 		if (res.data) {
-			// array max length
-			const categories = res.data.slice(0, 4);
-			// set sate
-			setHomeState({ loading: false, categories: categories });
+			setHomeState({ loading: false, categories: res.data });
 		}
 	};
 
@@ -84,7 +82,7 @@ const Home = () => {
 					</Box>
 				) : (
 					[
-						<Box width='100%'>
+						<Box key='categories-box' width='100%'>
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Categories</span>
 							</Typography>
@@ -116,8 +114,8 @@ const Home = () => {
 								})}
 							</Grid>
 						</Box>,
-						<br />,
-						<Box width='100%'>
+						<br key='break-1' />,
+						<Box key='offers-box' width='100%'>
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Offers</span>
 							</Typography>

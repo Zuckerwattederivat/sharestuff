@@ -9,7 +9,8 @@ const mongoose = require('mongoose');
 const OfferSchema = mongoose.Schema({
 	title: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
 	descitpiton: {
 		type: String,
@@ -23,21 +24,22 @@ const OfferSchema = mongoose.Schema({
 		type: Array,
 		required: true
 	},
-	category: {
+	categoryId: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
 	location: {
 		type: Object,
 		required: true
 	},
-	createdBy: {
+	createdByUserId: {
 		type: String,
 		required: true
 	},
-	pictures: {
+	images: {
 		type: Array,
-		default: [ 'product-placeholder.jpg' ]
+		default: [ 'public/img/product-placeholder.jpg' ]
 	},
 	active: {
 		type: Boolean,

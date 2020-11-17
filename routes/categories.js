@@ -1,5 +1,5 @@
 /**
- * Authentication API
+ * Categories API
  */
 
 // Node Modules
@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const { v1: uuidv1 } = require('uuid');
+const _ = require('lodash');
 // Middleware
 const auth = require('../middleware/auth');
 // Models
@@ -47,8 +48,8 @@ router.post(
 	[
 		auth,
 		upload.single('categoryImage'),
-		check('title', 'Please enter a category name').notEmpty(),
-		check('description', 'Please describe the category').notEmpty()
+		check('title', 'Enter a category name').notEmpty(),
+		check('description', 'Describe the category').notEmpty()
 	],
 	async (req, res) => {
 		// check if validation errors exist and response with 400 if true
@@ -59,28 +60,21 @@ router.post(
 
 		// save request content
 		const title = req.body.title.toLowerCase();
+		const description = req.body.description;
 		let image;
-
 		// save image path
 		if (!req.file) {
-			return res.status(400).json({ msg: 'Please upload an image file' });
+			return res.status(400).json({ msg: 'Upload an image file' });
 		} else {
 			image = req.file.path;
 		}
 
 		try {
-			// get user from db
-			const user = await User.findById(req.user.id);
-
-			// error if user not admin
-			if (!user.admin) {
-				return res.status(401).json({ msg: 'Unauthorized' });
-			}
-
 			// instantiate new category
 			const category = new Category({
 				image,
-				title
+				title,
+				description
 			});
 
 			// save category
@@ -99,13 +93,13 @@ router.post(
 );
 
 // @route     GET server/categories
-// @desc      Get categories
+// @desc      Get categories all; by id; rand; limit
 // @access    Public
 router.get('/', async (req, res) => {
 	// save request content
-	const { id } = req.query;
+	const { id, rand, limit } = req.query;
 
-	console.log(id);
+	//console.log(id);
 
 	try {
 		// return all categories
@@ -118,10 +112,17 @@ router.get('/', async (req, res) => {
 
 				// send response
 			} else {
-				const categoryMap = [];
+				let categoryMap = [];
 				categories.forEach(category => {
 					categoryMap.push(category);
 				});
+				// send random with limit
+				if (rand && limit) {
+					categoryMap = _.sampleSize(categoryMap, limit);
+					// send random without limit
+				} else if (rand) {
+					categoryMap = _.shuffle(categoryMap);
+				}
 				res.send(categoryMap);
 			}
 
