@@ -62,36 +62,32 @@ router.post(
 			return res.status(400).json({ errors: errors.array() });
 		}
 
-		console.log(req);
-		console.log(req.file);
-
-		// // save request content
-		// const title = req.body.title.toLowerCase();
-		// let image;
-
-		// // save image path
-		// if (!req.file) {
-		// 	return res.status(400).json({ msg: 'Please upload an image file' });
-		// } else {
-		// 	image = req.file.path;
-		// }
+		// save request body
+		const { title, description, product, tags, categoryId, location } = req.body;
+		const images = req.files.map(file => {
+			return file.path;
+		});
+		const createdBy = req.user.id;
 
 		try {
-			// // get user from db
-			// const user = await User.findById(req.user.id);
-			// // error if user not admin
-			// if (!user.admin) {
-			// 	return res.status(401).json({ msg: 'Unauthorized' });
-			// }
-			// // instantiate new offer
-			// const offer = new Offer({
-			// 	image,
-			// 	title
-			// });
-			// // save offer
-			// await offer.save();
-			// // response
-			// res.json({ msg: 'Offer created successfully' });
+			// instantiate new offer
+			const offer = new Offer({
+				title,
+				description,
+				product,
+				tags,
+				categoryId,
+				createdBy,
+				location,
+				images
+			});
+
+			// save offer
+			await offer.save();
+
+			// response
+			res.json({ msg: 'Offer created successfully' });
+
 			// catch error & send response
 		} catch (err) {
 			console.error(err.message);

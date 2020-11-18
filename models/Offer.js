@@ -12,7 +12,7 @@ const OfferSchema = mongoose.Schema({
 		required: true,
 		index: true
 	},
-	descitpiton: {
+	description: {
 		type: String,
 		required: true
 	},
@@ -21,7 +21,7 @@ const OfferSchema = mongoose.Schema({
 		required: true
 	},
 	tags: {
-		type: Array,
+		type: String,
 		required: true
 	},
 	categoryId: {
@@ -33,7 +33,7 @@ const OfferSchema = mongoose.Schema({
 		type: Object,
 		required: true
 	},
-	createdByUserId: {
+	createdBy: {
 		type: String,
 		required: true
 	},
@@ -53,4 +53,4 @@ const OfferSchema = mongoose.Schema({
 });
 
 // export modules
-module.exports = mongoose.model('product', OfferSchema);
+module.exports = mongoose.model('offer', OfferSchema);

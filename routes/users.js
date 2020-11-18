@@ -8,6 +8,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 // Config
 const config = require('config');
 // Models
@@ -112,9 +113,10 @@ router.post(
 // @access    Public
 router.get('/', async (req, res) => {
 	// save request content
-	const { email, username, returnUser } = req.query;
+	const { email, username, returnUser, id } = req.query;
 
-	//console.log(returnUser);
+	// console.log(req.query);
+	// //console.log(returnUser);
 
 	try {
 		// don't return user
@@ -135,7 +137,7 @@ router.get('/', async (req, res) => {
 
 			// return user
 		} else {
-			const user = await User.findOne({ email, username });
+			const user = await User.findById(id);
 
 			// send response
 			if (!user) {
