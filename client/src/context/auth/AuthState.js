@@ -45,7 +45,7 @@ const AuthState = props => {
 		}
 
 		try {
-			const res = await axios.get('/server/auth');
+			const res = await axios.get('/api/auth');
 			dispatch({ type: USER_LOADED, payload: res.data });
 		} catch (err) {
 			dispatch({ type: AUTH_ERROR });
@@ -63,7 +63,7 @@ const AuthState = props => {
 		};
 
 		try {
-			const res = await axios.post('/server/users', formData, config);
+			const res = await axios.post('/api/users', formData, config);
 			dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {
@@ -86,7 +86,7 @@ const AuthState = props => {
 		};
 
 		try {
-			const res = await axios.post('/server/auth', formData, config);
+			const res = await axios.post('/api/auth', formData, config);
 			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 			loadUser();
 		} catch (err) {

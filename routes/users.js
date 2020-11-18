@@ -8,14 +8,15 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
 // Config
 const config = require('config');
 // Models
 const User = require('../models/User');
+const e = require('express');
 // const { json } = require('express');
 
-// @route     POST server/users
+// @route     POST api/users
 // @desc      Register a user
 // @access    Public
 router.post(
@@ -108,56 +109,83 @@ router.post(
 	}
 );
 
-// @route     GET server/users
-// @desc      Get user
+// @route     GET api/users/check
+// @desc      Check if user exists
 // @access    Public
-router.get('/', async (req, res) => {
+router.get('/check', async (req, res) => {
 	// save request content
-	const { email, username, returnUser, id } = req.query;
-
-	// console.log(req.query);
-	// //console.log(returnUser);
+	const { email, username, id } = req.query;
 
 	try {
-		// don't return user
-		if (!returnUser) {
-			// search db for email and username
-			const emailRes = await User.findOne({ email });
-			const userRes = await User.findOne({ username });
+		// search db for email username and id
+		let emailRes;
+		let usernameRes;
+		let idRes;
+		if (email) {
+			emailRes = await User.findOne({ email });
+		}
+		if (username) {
+			usernameRes = await User.findOne({ username });
+		}
+		if (ObjectId.isValid(id)) {
+			idRes = await User.findById(id);
+		} else if (id && !ObjectId.isValid(id)) {
+			return res.status(400).json({ msg: 'User id is invalid' });
+		}
 
-			if (emailRes && userRes) {
-				res.json({ msg1: 'Email found', msg2: 'Username found' });
-			} else if (emailRes) {
-				res.json({ msg: 'Email found' });
-			} else if (userRes) {
-				res.json({ msg: 'Username found' });
-			} else {
-				return res.status(200).json({ msg: 'No user was found' });
-			}
-
-			// return user
+		// response
+		if (idRes) {
+			res.json({ msg: 'User found' });
+		} else if (emailRes && usernameRes) {
+			res.json({ msg1: 'Email found', msg2: 'Username found' });
+		} else if (emailRes) {
+			res.json({ msg: 'Email found' });
+		} else if (usernameRes) {
+			res.json({ msg: 'Username found' });
 		} else {
-			const user = await User.findById(id);
+			return res.status(200).json({ msg: 'No user was found' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
 
+// @route     GET api/users/get
+// @desc      Get user by id
+// @access    Public
+router.get('/get', async (req, res) => {
+	// save request content
+	const { id } = req.query;
+
+	try {
+		// search db id
+		let user;
+		if (ObjectId.isValid(id)) {
+			user = await User.findById(id);
+		} else {
+			return res.status(400).json({ msg: 'User id is invalid' });
+		}
+
+		// send response
+		if (!user) {
+			return res.status(200).json({ msg: 'No user was found' });
+		} else {
+			// create payload
+			const payload = {
+				user: {
+					username: user.username,
+					city: user.city,
+					bio: user.bio,
+					avatarUrl: user.avatarUrl,
+					positiveKarma: user.positiveKarma,
+					negativeKarma: user.negativeKarma,
+					date: user.date
+				}
+			};
 			// send response
-			if (!user) {
-				return res.status(200).json({ msg: 'No user was found' });
-			} else {
-				// create payload
-				const payload = {
-					user: {
-						username: user.username,
-						city: user.city,
-						bio: user.bio,
-						avatarUrl: user.avatarUrl,
-						positiveKarma: user.positiveKarma,
-						negativeKarma: user.negativeKarma,
-						date: user.date
-					}
-				};
-				// send response
-				res.json(payload);
-			}
+			res.json(payload);
 		}
 	} catch (err) {
 		console.error(err.message);

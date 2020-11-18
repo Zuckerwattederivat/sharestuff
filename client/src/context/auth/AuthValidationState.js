@@ -128,7 +128,7 @@ const AuthValidationState = props => {
 
 		try {
 			// check username against db entries
-			const res = await axios.get('/server/users', { params: { username: username, email: email } });
+			const res = await axios.get('/api/users/check', { params: { username: username, email: email } });
 			if (res) {
 				// validate form
 				const usernameValidated = await checkUsername(res.data.msg, res.data.msg2, username);
