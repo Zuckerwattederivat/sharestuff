@@ -11,7 +11,6 @@ const _ = require('lodash');
 // Middleware
 const auth = require('../middleware/auth');
 // Models
-const User = require('../models/User');
 const Category = require('../models/Category');
 // Multer
 const multer = require('multer');
@@ -40,14 +39,14 @@ const upload = multer({
 	fileFilter: fileFilter
 });
 
-// @route     POST server/categories
-// @desc      Create categories
+// @route     POST api/categories
+// @desc      Create category
 // @access    Private
 router.post(
-	'/',
+	'/create',
 	[
 		auth,
-		upload.single('categoryImage'),
+		upload.single('image'),
 		check('title', 'Enter a category name').notEmpty(),
 		check('description', 'Describe the category').notEmpty()
 	],
@@ -92,14 +91,12 @@ router.post(
 	}
 );
 
-// @route     GET server/categories
-// @desc      Get categories all; by id; rand; limit
+// @route     GET api/categories
+// @desc      Get categories all
 // @access    Public
-router.get('/', async (req, res) => {
+router.get('/get', async (req, res) => {
 	// save request content
 	const { id, rand, limit } = req.query;
-
-	//console.log(id);
 
 	try {
 		// return all categories

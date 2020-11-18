@@ -59,7 +59,7 @@ const Home = () => {
 	// get categories
 	const getCategories = async () => {
 		// response
-		const res = await axios.get('/server/categories', { params: { rand: true, limit: 4 } });
+		const res = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
 		// set sate
 		if (res.data) {
 			setHomeState({ loading: false, categories: res.data });

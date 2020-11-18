@@ -11,7 +11,6 @@ const _ = require('lodash');
 // Middleware
 const auth = require('../middleware/auth');
 // Models
-const User = require('../models/User');
 const Offer = require('../models/Offer');
 // Multer
 const multer = require('multer');
@@ -40,11 +39,11 @@ const upload = multer({
 	fileFilter: fileFilter
 });
 
-// @route     POST server/offers
+// @route     POST api/offers
 // @desc      Create offer
 // @access    Private
 router.post(
-	'/',
+	'/create',
 	[
 		auth,
 		upload.array('images', 4),
@@ -64,10 +63,15 @@ router.post(
 
 		// save request body
 		const { title, description, product, tags, categoryId, location } = req.body;
-		const images = req.files.map(file => {
-			return file.path;
-		});
 		const createdBy = req.user.id;
+		let images = [];
+		if (req.files[0]) {
+			images = req.files.map(file => {
+				return file.path;
+			});
+		} else {
+			return res.status(400).json({ msg: 'Upload an image file' });
+		}
 
 		try {
 			// instantiate new offer

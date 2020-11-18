@@ -20,7 +20,7 @@ const e = require('express');
 // @desc      Register a user
 // @access    Public
 router.post(
-	'/',
+	'/register',
 	[
 		check('firstname', 'Please enter your first name').notEmpty(),
 		check('lastname', 'Please enter your last name').notEmpty(),

@@ -4,8 +4,9 @@
  * Verifies json web token
  */
 
-// variables
+// Node Modules
 const jwt = require('jsonwebtoken');
+// Config
 const config = require('config');
 
 // export middleware
