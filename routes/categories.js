@@ -8,6 +8,8 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const { v1: uuidv1 } = require('uuid');
 const _ = require('lodash');
+const jimp = require('jimp');
+const fs = require('fs');
 // Middleware
 const auth = require('../middleware/auth');
 // Models
@@ -51,17 +53,25 @@ router.post(
 		check('description', 'Describe the category').notEmpty()
 	],
 	async (req, res) => {
-		// check if validation errors exist and response with 400 if true
+		// check if validation errors exist respond with 400 if true & delete image
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			fs.unlink(req.file.path, err => {
+				if (err) {
+					console.error(err);
+				} else {
+					console.log(req.file.path + ' was deleted');
+				}
+			});
 			return res.status(400).json({ errors: errors.array() });
 		}
 
 		// save request content
 		const title = req.body.title.toLowerCase();
 		const description = req.body.description;
-		let image;
+
 		// save image path
+		let image;
 		if (!req.file) {
 			return res.status(400).json({ msg: 'Upload an image file' });
 		} else {
@@ -69,6 +79,19 @@ router.post(
 		}
 
 		try {
+			// image handler
+			await jimp
+				.read(image)
+				.then(catImage => {
+					return catImage
+						.resize(600, 400) // resize
+						.quality(90) // set JPEG quality
+						.write(image); // save
+				})
+				.catch(err => {
+					return err;
+				});
+
 			// instantiate new category
 			const category = new Category({
 				image,
@@ -82,8 +105,15 @@ router.post(
 			// response
 			res.json({ msg: `${category.title[0].toUpperCase() + category.title.slice(1)} category created successfully` });
 
-			// catch error & send response
+			// catch error & delete image & send response
 		} catch (err) {
+			fs.unlink(req.file.path, err => {
+				if (err) {
+					console.error(err);
+				} else {
+					console.log(req.file.path + ' was deleted');
+				}
+			});
 			console.error(err.message);
 			res.status(500).json({ msg: 'Server Error' });
 			res.status(500).send('Server error');
