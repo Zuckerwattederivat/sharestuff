@@ -59,6 +59,7 @@ router.post(
 			fs.unlink(req.file.path, err => {
 				if (err) {
 					console.error(err);
+					return;
 				} else {
 					console.log(req.file.path + ' was deleted');
 				}
@@ -89,7 +90,7 @@ router.post(
 						.write(image); // save
 				})
 				.catch(err => {
-					return err;
+					console.error(err);
 				});
 
 			// instantiate new category

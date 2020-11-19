@@ -8,6 +8,8 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const { v1: uuidv1 } = require('uuid');
 const _ = require('lodash');
+const jimp = require('jimp');
+const fs = require('fs');
 // Middleware
 const auth = require('../middleware/auth');
 // Models
@@ -58,6 +60,15 @@ router.post(
 		// check if validation errors exist and response with 400 if true
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			req.files.map(file => {
+				fs.unlink(file.path, err => {
+					if (err) {
+						console.error(err);
+					} else {
+						console.log(file.path + ' was deleted');
+					}
+				});
+			});
 			return res.status(400).json({ errors: errors.array() });
 		}
 
@@ -65,15 +76,36 @@ router.post(
 		const { title, description, product, tags, categoryId, location } = req.body;
 		const createdBy = req.user.id;
 		let images = [];
+		let imagesThumb = [];
 		if (req.files[0]) {
 			images = req.files.map(file => {
 				return file.path;
+			});
+			imagesThumb = req.files.map(file => {
+				const pathSplit = file.path.split('.');
+				const imageThumb = `${pathSplit[0]}-thumb.${pathSplit[1]}`;
+				return imageThumb;
 			});
 		} else {
 			return res.status(400).json({ msg: 'Upload an image file' });
 		}
 
 		try {
+			// image handler
+			await images.map((image, i) => {
+				jimp
+					.read(image)
+					.then(offerImage => {
+						return offerImage
+							.resize(offerImage.bitmap.width * 0.3, offerImage.bitmap.width * 0.3) // resize
+							.quality(90) // set JPEG quality
+							.write(imagesThumb[i]); // save
+					})
+					.catch(err => {
+						console.error(err);
+					});
+			});
+
 			// instantiate new offer
 			const offer = new Offer({
 				title,
@@ -83,7 +115,8 @@ router.post(
 				categoryId,
 				createdBy,
 				location,
-				images
+				images,
+				imagesThumb
 			});
 
 			// save offer
@@ -94,6 +127,15 @@ router.post(
 
 			// catch error & send response
 		} catch (err) {
+			req.files.map(file => {
+				fs.unlink(file.path, err => {
+					if (err) {
+						console.error(err);
+					} else {
+						console.log(file.path + ' was deleted');
+					}
+				});
+			});
 			console.error(err.message);
 			res.status(500).json({ msg: 'Server Error' });
 			res.status(500).send('Server error');
