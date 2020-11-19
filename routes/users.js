@@ -175,6 +175,7 @@ router.get('/get', async (req, res) => {
 			// create payload
 			const payload = {
 				user: {
+					_id: user._id,
 					username: user.username,
 					city: user.city,
 					bio: user.bio,
