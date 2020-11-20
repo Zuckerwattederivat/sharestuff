@@ -41,7 +41,7 @@ const upload = multer({
 	fileFilter: fileFilter
 });
 
-// @route     POST api/offers
+// @route     POST api/offers/create
 // @desc      Create offer
 // @access    Private
 router.post(
@@ -93,16 +93,17 @@ router.post(
 		try {
 			// image handler
 			await images.map((image, i) => {
-				jimp
+				return jimp
 					.read(image)
 					.then(offerImage => {
 						return offerImage
-							.resize(offerImage.bitmap.width * 0.3, offerImage.bitmap.width * 0.3) // resize
+							.cover(600, 400) // resize cover
 							.quality(90) // set JPEG quality
 							.write(imagesThumb[i]); // save
 					})
 					.catch(err => {
-						console.error(err);
+						console.error(err.message);
+						return res.status(500).json({ msg: 'Server error' });
 					});
 			});
 
@@ -143,59 +144,59 @@ router.post(
 	}
 );
 
-// @route     GET server/categories
-// @desc      Get categories all; by id; rand; limit
+// @route     GET api/offers/get
+// @desc      Get offers all; by id; rand; limit
 // @access    Public
-// router.get('/', async (req, res) => {
-// 	// save request content
-// 	const { id, rand, limit } = req.query;
+router.get('/get', async (req, res) => {
+	// save request content
+	const { id, rand, limit } = req.query;
 
-// 	//console.log(id);
+	//console.log(id);
 
-// 	try {
-// 		// return all categories
-// 		if (!id) {
-// 			const categories = await Category.find({});
+	try {
+		// return all offers
+		if (!id) {
+			const offers = await Offer.find({});
 
-// 			// send error response
-// 			if (!categories) {
-// 				return res.status(200).json({ msg: 'No category was found' });
+			// send error response
+			if (!offers) {
+				return res.status(200).json({ msg: 'No offer was found' });
 
-// 				// send response
-// 			} else {
-// 				let categoryMap = [];
-// 				categories.forEach(category => {
-// 					categoryMap.push(category);
-// 				});
-// 				// send random with limit
-// 				if (rand && limit) {
-// 					categoryMap = _.sampleSize(categoryMap, limit);
-// 					// send random without limit
-// 				} else if (rand) {
-// 					categoryMap = _.shuffle(categoryMap);
-// 				}
-// 				res.send(categoryMap);
-// 			}
+				// send response
+			} else {
+				let offerMap = [];
+				offers.forEach(offer => {
+					offerMap.push(offer);
+				});
+				// send random with limit
+				if (rand && limit) {
+					offerMap = _.sampleSize(offerMap, limit);
+					// send random without limit
+				} else if (rand) {
+					offerMap = _.shuffle(offerMap);
+				}
+				res.send(offerMap);
+			}
 
-// 			// return searched category
-// 		} else {
-// 			const category = await Category.findById(id);
+			// return searched offer
+		} else {
+			const offer = await offer.findById(id);
 
-// 			// send error response
-// 			if (!category) {
-// 				return res.status(200).json({ msg: 'No category was found' });
+			// send error response
+			if (!offer) {
+				return res.status(200).json({ msg: 'No offer was found' });
 
-// 				// send response
-// 			} else {
-// 				res.json(category);
-// 			}
-// 		}
-// 	} catch (err) {
-// 		console.error(err.message);
-// 		res.status(500).json({ msg: 'Server Error' });
-// 		res.status(500).send('Server error');
-// 	}
-// });
+				// send response
+			} else {
+				res.json(offer);
+			}
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
 
 // export router
 module.exports = router;

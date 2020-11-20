@@ -16,7 +16,7 @@ const User = require('../models/User');
 const e = require('express');
 // const { json } = require('express');
 
-// @route     POST api/users
+// @route     POST api/users/register
 // @desc      Register a user
 // @access    Public
 router.post(

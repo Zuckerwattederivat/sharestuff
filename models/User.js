@@ -61,7 +61,7 @@ const UserSchema = mongoose.Schema({
 	},
 	avatar: {
 		type: String,
-		default: 'public/img/avatar-placeholder.svg'
+		default: '/public/img/avatar-placeholder.svg'
 	},
 	bio: {
 		type: String,

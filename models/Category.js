@@ -18,7 +18,7 @@ const CategorySchema = mongoose.Schema({
 	},
 	image: {
 		type: String,
-		default: 'public/img/category-placeholder.jpg'
+		default: '/public/img/category-placeholder.jpg'
 	}
 });
 

@@ -37,14 +37,8 @@ const OfferSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	images: {
-		type: Array,
-		default: [ 'public/img/product-placeholder.jpg' ]
-	},
-	imagesThumb: {
-		type: Array,
-		default: [ 'public/img/product-placeholder.jpg' ]
-	},
+	images: [ { type: String, default: '/public/img/product-placeholder.jpg' } ],
+	imagesThumb: [ { type: String, default: '/public/img/product-placeholder.jpg' } ],
 	active: {
 		type: Boolean,
 		required: true,

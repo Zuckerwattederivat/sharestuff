@@ -41,7 +41,7 @@ const upload = multer({
 	fileFilter: fileFilter
 });
 
-// @route     POST api/categories
+// @route     POST api/categories/create
 // @desc      Create category
 // @access    Private
 router.post(
@@ -85,12 +85,13 @@ router.post(
 				.read(image)
 				.then(catImage => {
 					return catImage
-						.resize(600, 400) // resize
+						.cover(600, 400) // resize cover
 						.quality(90) // set JPEG quality
 						.write(image); // save
 				})
 				.catch(err => {
-					console.error(err);
+					console.error(err.message);
+					return res.status(500).json({ msg: 'Server error' });
 				});
 
 			// instantiate new category
@@ -122,7 +123,7 @@ router.post(
 	}
 );
 
-// @route     GET api/categories
+// @route     GET api/categories/get
 // @desc      Get categories all
 // @access    Public
 router.get('/get', async (req, res) => {
