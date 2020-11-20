@@ -46,7 +46,7 @@ const Home = () => {
 		offers: null
 	});
 	// destructure home state
-	const { loading, categories } = homeState;
+	const { loading, categories, offers } = homeState;
 
 	// load user
 	useEffect(() => {
@@ -57,18 +57,19 @@ const Home = () => {
 	}, []);
 
 	// get categories
-	const getCategories = async () => {
+	const getDbEntries = async () => {
 		// response
-		const res = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
+		const resCategories = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
+		const resOffers = await axios.get('/api/offers/get', { params: { rand: true, limit: 3 } });
 		// set sate
-		if (res.data) {
-			setHomeState({ loading: false, categories: res.data });
+		if ((resCategories.data, resOffers.data)) {
+			setHomeState({ loading: false, categories: resCategories.data, offers: resOffers.data });
 		}
 	};
 
 	// load assets
 	useEffect(() => {
-		getCategories();
+		getDbEntries();
 		// eslint-disable-next-line
 	}, []);
 
@@ -119,6 +120,33 @@ const Home = () => {
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Offers</span>
 							</Typography>
+							<Grid container width='100%' spacing={4}>
+								{offers.map(offer => {
+									return (
+										<Grid key={offer._id} item xs={12} sm={6} md={3}>
+											<motion.div
+												className={classes.motionDiv}
+												transition={{
+													duration: 1,
+													type: 'tween'
+												}}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
+											>
+												<CardMediaV1
+													link={`/offers/${offer.title}`}
+													image={`/${offer.images[0]}`}
+													title={offer.title}
+													btnname='Explorer'
+													btnicon={<ArrowRightIcon />}
+												>
+													{offer.description}
+												</CardMediaV1>
+											</motion.div>
+										</Grid>
+									);
+								})}
+							</Grid>
 						</Box>
 					]
 				)}

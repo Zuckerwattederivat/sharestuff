@@ -40,6 +40,8 @@ const upload = multer({
 	},
 	fileFilter: fileFilter
 });
+// utils
+const paragraphsToArray = require('../util/paragraphsToArray');
 
 // @route     POST api/offers/create
 // @desc      Create offer
@@ -73,7 +75,8 @@ router.post(
 		}
 
 		// save request body
-		const { title, description, product, tags, categoryId, location } = req.body;
+		const { title, product, tags, categoryId, location } = req.body;
+		const description = paragraphsToArray(req.body.description);
 		const createdBy = req.user.id;
 		let images = [];
 		let imagesThumb = [];
@@ -145,7 +148,7 @@ router.post(
 );
 
 // @route     GET api/offers/get
-// @desc      Get offers all; by id; rand; limit
+// @desc      Get active offers all; rand; limit; by id
 // @access    Public
 router.get('/get', async (req, res) => {
 	// save request content
@@ -156,7 +159,7 @@ router.get('/get', async (req, res) => {
 	try {
 		// return all offers
 		if (!id) {
-			const offers = await Offer.find({});
+			const offers = await Offer.find({ active: true });
 
 			// send error response
 			if (!offers) {
@@ -180,10 +183,14 @@ router.get('/get', async (req, res) => {
 
 			// return searched offer
 		} else {
-			const offer = await offer.findById(id);
+			const offer = await Offer.findById(id);
 
 			// send error response
 			if (!offer) {
+				return res.status(200).json({ msg: 'No offer was found' });
+
+				// if offer is inactive
+			} else if (!offer.active) {
 				return res.status(200).json({ msg: 'No offer was found' });
 
 				// send response
