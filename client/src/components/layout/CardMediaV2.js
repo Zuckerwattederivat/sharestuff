@@ -18,26 +18,31 @@ import utils from '../../utils/helpers';
 // define styles
 const useStyles = makeStyles(theme => ({
 	root: {
-		maxWidth: 600,
+		width: '100%',
 		minHeight: '100%',
 		display: 'flex',
 		justifyContent: 'space-between',
 		flexDirection: 'column'
 	},
 	media: {
-		height: 200
+		height: 300
 	},
 	cardActions: {
 		flexBasis: '10%',
 		display: 'flex',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
+		justifyContent: 'space-between',
+		alignItems: 'space-between',
 		padding: theme.spacing(1, 1, 1)
+	},
+	price: {
+		color: theme.palette.primary.main,
+		margin: 0,
+		padding: theme.spacing(1)
 	}
 }));
 
 // CardMediaV2 Component
-const CardMediaV1 = props => {
+const CardMediaV2 = props => {
 	// define classes
 	const classes = useStyles();
 
@@ -53,6 +58,7 @@ const CardMediaV1 = props => {
 				</CardContent>
 			</CardActionArea>
 			<CardActions className={classes.cardActions}>
+				{props.price && <Typography className={classes.price}>{props.price}</Typography>}
 				<Button size='small' color='primary' endIcon={props.btnicon} component={Link} to={props.link}>
 					{props.btnname}
 				</Button>
@@ -62,13 +68,14 @@ const CardMediaV1 = props => {
 };
 
 // Proptypes
-CardMediaV1.propTypes = {
+CardMediaV2.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	btnicon: PropTypes.object.isRequired,
 	btnname: PropTypes.string.isRequired,
-	link: PropTypes.string.isRequired
+	link: PropTypes.string.isRequired,
+	price: PropTypes.string
 };
 
 // export CardMediaV2 Component
-export default CardMediaV1;
+export default CardMediaV2;

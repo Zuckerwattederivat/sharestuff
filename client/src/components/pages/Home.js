@@ -10,6 +10,7 @@ import AuthContext from '../../context/auth/authContext';
 // Components
 import Hero from '../layout/Hero';
 import CardMediaV1 from '../layout/CardMediaV1';
+import CardMediaV2 from '../layout/CardMediaV2';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 
@@ -28,6 +29,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	motionDiv: {
 		height: '100%'
+	},
+	cardParagraph: {
+		minHeight: '1rem'
 	}
 }));
 
@@ -101,13 +105,15 @@ const Home = () => {
 												animate={{ opacity: 1 }}
 											>
 												<CardMediaV1
-													link={`/offers/${category.title}`}
+													link={`/offers?id=${category._id}`}
 													image={category.image}
 													title={category.title}
 													btnname='Explorer'
 													btnicon={<ArrowRightIcon />}
 												>
-													{category.description}
+													<Typography className={classes.cardParagraph} variant='body1'>
+														{category.description}
+													</Typography>
 												</CardMediaV1>
 											</motion.div>
 										</Grid>
@@ -121,31 +127,90 @@ const Home = () => {
 								Featured <span className={classes.textPrimary}>Offers</span>
 							</Typography>
 							<Grid container width='100%' spacing={4}>
-								{offers.map(offer => {
-									return (
-										<Grid key={offer._id} item xs={12} sm={6} md={3}>
-											<motion.div
-												className={classes.motionDiv}
-												transition={{
-													duration: 1,
-													type: 'tween'
-												}}
-												initial={{ opacity: 0 }}
-												animate={{ opacity: 1 }}
-											>
-												<CardMediaV1
-													link={`/offers/${offer.title}`}
-													image={`/${offer.images[0]}`}
-													title={offer.title}
-													btnname='Explorer'
-													btnicon={<ArrowRightIcon />}
-												>
-													{offer.description}
-												</CardMediaV1>
-											</motion.div>
-										</Grid>
-									);
-								})}
+								<Grid key={offers[0]._id} item xs={12} md={6}>
+									<motion.div
+										className={classes.motionDiv}
+										transition={{
+											duration: 1,
+											type: 'tween'
+										}}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+									>
+										<CardMediaV2
+											price={`Daily Price: ${offers[0].price}`}
+											link={`/offer?id=${offers[0]._id}`}
+											image={`${offers[0].images[0]}`}
+											title={offers[0].title}
+											btnname='View'
+											btnicon={<ArrowRightIcon />}
+										>
+											<Typography className={classes.cardParagraph} variant='body1'>
+												{offers[0].description.join(' ').length > 500 ? (
+													offers[0].description.join(' ').substring(0, 500) + '...'
+												) : (
+													offers[0].description.join(' ')
+												)}
+											</Typography>
+										</CardMediaV2>
+									</motion.div>
+								</Grid>
+								<Grid key={offers[1]._id} item xs={12} md={3}>
+									<motion.div
+										className={classes.motionDiv}
+										transition={{
+											duration: 1,
+											type: 'tween'
+										}}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+									>
+										<CardMediaV2
+											price={`Daily Price: ${offers[1].price}`}
+											link={`/offer?id=${offers[1]._id}`}
+											image={`${offers[1].images[0]}`}
+											title={offers[1].title}
+											btnname='View'
+											btnicon={<ArrowRightIcon />}
+										>
+											<Typography className={classes.cardParagraph} variant='body1'>
+												{offers[1].description.join(' ').length > 150 ? (
+													offers[1].description.join(' ').substring(0, 150) + '...'
+												) : (
+													offers[1].description.join(' ')
+												)}
+											</Typography>
+										</CardMediaV2>
+									</motion.div>
+								</Grid>
+								<Grid key={offers[2]._id} item xs={12} md={3}>
+									<motion.div
+										className={classes.motionDiv}
+										transition={{
+											duration: 1,
+											type: 'tween'
+										}}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+									>
+										<CardMediaV2
+											price={`Daily Price: ${offers[2].price}`}
+											link={`/offer?id=${offers[2]._id}`}
+											image={`${offers[2].images[0]}`}
+											title={offers[2].title}
+											btnname='View'
+											btnicon={<ArrowRightIcon />}
+										>
+											<Typography className={classes.cardParagraph} variant='body1'>
+												{offers[2].description.join(' ').length > 150 ? (
+													offers[2].description.join(' ').substring(0, 150) + '...'
+												) : (
+													offers[2].description.join(' ')
+												)}
+											</Typography>
+										</CardMediaV2>
+									</motion.div>
+								</Grid>
 							</Grid>
 						</Box>
 					]

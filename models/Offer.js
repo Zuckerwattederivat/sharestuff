@@ -20,6 +20,10 @@ const OfferSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	price: {
+		type: String,
+		required: true
+	},
 	tags: {
 		type: String,
 		required: true
