@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		zIndex: 20,
 		top: '-50px',
-		bottom: 0,
+		bottom: '10px',
 		left: 0,
 		width: '100%',
 		overflow: 'hidden',
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		display: 'block',
 		width: 'calc(144% + 1.3px)',
-		height: '50px'
+		height: '55px'
 	},
 	shapeFill: {
 		fill: theme.palette.background.custom
