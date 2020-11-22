@@ -87,7 +87,7 @@ const mainMenuLinks = [
 	},
 	{
 		id: 'offers',
-		href: '/offers/find',
+		href: '/offers',
 		icon: <LocalMallIcon />,
 		linkName: 'Find Offers'
 	},

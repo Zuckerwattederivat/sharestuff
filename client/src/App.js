@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Components
 import Home from './components/pages/Home';
 import Navbar from './components/navbar/Navbar';
+import Footer from './components/layout/Footer';
 // State
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
@@ -31,6 +32,7 @@ const App = () => {
 									<Route exact path='/' component={Home} />
 								</Switch>
 							</div>
+							<Footer />
 						</Router>
 					</AuthValidationState>
 				</NavbarState>
