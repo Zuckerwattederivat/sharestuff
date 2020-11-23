@@ -52,7 +52,8 @@ router.post(
 		auth,
 		upload.array('images', 4),
 		check('title', 'Enter a title for your offer').notEmpty(),
-		check('price', 'Enter the daily price of your offer').notEmpty(),
+		check('price', 'Enter the daily price of your offer').isNumeric(),
+		check('currency', 'Choose the denomination of your offer').isString(),
 		check('description', 'Describe what you are offering').notEmpty(),
 		check('product', 'What product are you offering?').notEmpty(),
 		check('tags', 'Add some tags for finding your offer').notEmpty(),
@@ -76,7 +77,7 @@ router.post(
 		}
 
 		// save request body
-		const { title, product, tags, categoryId, location, price } = req.body;
+		const { title, product, tags, categoryId, location, price, currency } = req.body;
 		const description = paragraphsToArray(req.body.description);
 		const createdBy = req.user.id;
 		let images = [];
@@ -117,6 +118,7 @@ router.post(
 				description,
 				product,
 				price,
+				currency,
 				tags,
 				categoryId,
 				createdBy,

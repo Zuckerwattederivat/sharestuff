@@ -2,7 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
-import { Container, Link, Divider, Box, Typography, Grid } from '@material-ui/core';
+import { Container, IconButton, Link, Divider, Box, Typography, Grid } from '@material-ui/core';
+import { ArrowUpward, ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 // define styles
@@ -18,6 +19,11 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.up('xl')]: {
 			padding: theme.spacing(0, 19)
 		}
+	},
+	upButton: {
+		position: 'fixed',
+		right: theme.spacing(1.6),
+		bottom: theme.spacing(1.6)
 	},
 	brand1: {
 		fontWeight: 'bold',
@@ -56,6 +62,9 @@ const Footer = props => {
 	return (
 		<footer className={classes.footer1}>
 			<Container className={classes.container} maxWidth='xl'>
+				<IconButton className={classes.upButton} color='inherit' variant='filled' onClick={() => window.scrollTo(0, 0)}>
+					<ArrowUpwardIcon />
+				</IconButton>
 				<Grid container spacing={4} className={classes.footer0}>
 					<Grid className={classes.gridItem} item xs={12} md={7}>
 						<Box>

@@ -21,6 +21,10 @@ const OfferSchema = mongoose.Schema({
 		required: true
 	},
 	price: {
+		type: Number,
+		required: true
+	},
+	currency: {
 		type: String,
 		required: true
 	},

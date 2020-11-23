@@ -9,7 +9,7 @@ import HeroImage from '../../assets/hero/hero-4.jpg';
 // define styles
 const useStyles = makeStyles(theme => ({
 	hero: {
-		height: '82vh',
+		height: '85vh',
 		backgroundImage: `url(${HeroImage})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover',
@@ -22,13 +22,13 @@ const useStyles = makeStyles(theme => ({
 		left: 0,
 		top: 0,
 		minWidth: '100%',
-		minHeight: '82vh'
+		minHeight: '85vh'
 	},
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '82vh',
+		height: '85vh',
 		maxWidth: '800px'
 	},
 	title: {

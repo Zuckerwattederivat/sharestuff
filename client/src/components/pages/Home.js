@@ -154,7 +154,7 @@ const Home = () => {
 											animate={{ opacity: 1 }}
 										>
 											<CardMediaV2
-												price={`Daily Price: ${offers[0].price}`}
+												price={`Daily Price: ${offers[0].price} ${offers[1].currency}`}
 												link={`/offer?id=${offers[0]._id}`}
 												image={`${offers[0].images[0]}`}
 												title={offers[0].title}
@@ -182,7 +182,7 @@ const Home = () => {
 											animate={{ opacity: 1 }}
 										>
 											<CardMediaV2
-												price={`Daily Price: ${offers[1].price}`}
+												price={`Daily Price: ${offers[1].price} ${offers[1].currency}`}
 												link={`/offer?id=${offers[1]._id}`}
 												image={`${offers[1].images[0]}`}
 												title={offers[1].title}
@@ -210,7 +210,7 @@ const Home = () => {
 											animate={{ opacity: 1 }}
 										>
 											<CardMediaV2
-												price={`Daily Price: ${offers[2].price}`}
+												price={`Daily Price: ${offers[2].price} ${offers[2].currency}`}
 												link={`/offer?id=${offers[2]._id}`}
 												image={`${offers[2].images[0]}`}
 												title={offers[2].title}
