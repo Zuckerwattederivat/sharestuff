@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { Container, IconButton, Link, Divider, Box, Typography, Grid } from '@material-ui/core';
-import { ArrowUpward, ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons';
+import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 // define styles

@@ -1,5 +1,5 @@
 // Node Modules
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
@@ -31,9 +31,16 @@ const useStyles = makeStyles(theme => ({
 	grow: {
 		flexGrow: 1
 	},
+	bgDark: {
+		backgroundColor: theme.palette.background.default,
+		boxShadow: theme.shadows[12]
+	},
+	shadowFalse: {
+		boxShadow: 'none'
+	},
 	navbar: {
+		transition: '0.4s ease-in-out',
 		padding: '0.3em 0',
-		boxShadow: 'none',
 		[theme.breakpoints.up('xl')]: {
 			backgroundColor: theme.palette.background.default
 		}
@@ -124,14 +131,27 @@ const Navbar = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { setMainMenuOpen, handleUserMenuOpen } = navbarContext;
+	const { setMainMenuOpen, handleUserMenuOpen, scrolled, setScrolled } = navbarContext;
 
 	// user menu id
 	const menuId = 'primary-user-account-menu';
 
+	// set scroll state
+	useEffect(() => {
+		window.addEventListener('scroll', setScrolled, { passive: true });
+		return () => {
+			window.removeEventListener('scroll', setScrolled);
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	return (
 		<div className={classes.grow}>
-			<AppBar className={classes.navbar} color='transparent' position='fixed'>
+			<AppBar
+				className={`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`}
+				color='transparent'
+				position='fixed'
+			>
 				<Toolbar>
 					<Link className={classes.logoCont} component={RouterLink} to='/'>
 						<img className={classes.logo} src={logoPrimary} alt='logo' />
