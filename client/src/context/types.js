@@ -37,3 +37,9 @@ export const CITY_ERROR = 'CITY_ERROR';
 export const CLEAR_INPUT_ERRORS = 'CLEAR_ERRORS';
 export const SET_COUNTRY_AUTO = 'SET_COUNTRY_AUTO';
 export const SET_COUNTRY_LABEL = 'SET_COUNTRY_LABEL';
+// search
+export const SET_CATEGORY = 'SET_CATEGORY';
+export const SET_OFFER = 'SET_OFFER';
+export const SET_PRODUCT = 'SET_PRODUCT';
+export const SET_LOCATION = 'SET_LOCATION';
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';

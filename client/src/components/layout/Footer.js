@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	footer1: {
+	footer: {
 		background: theme.palette.background.default,
 		padding: theme.spacing(4, 0)
 	},
@@ -60,7 +60,7 @@ const Footer = props => {
 	const classes = useStyles();
 
 	return (
-		<footer className={classes.footer1}>
+		<footer className={classes.footer}>
 			<Container className={classes.container} maxWidth='xl'>
 				<IconButton className={classes.upButton} color='inherit' variant='filled' onClick={() => window.scrollTo(0, 0)}>
 					<ArrowUpwardIcon />
@@ -136,7 +136,7 @@ const Footer = props => {
 					</Grid>
 				</Grid>
 				<Divider />
-				<Box className={classes.footer2}>
+				<Box>
 					<p className={classes.copyrightContainer}>
 						Copyright © {props.year} All Rights Reserved by <span className={classes.brand1}>{props.brand1}</span>
 						<span className={classes.brand2}>{props.brand2} </span>

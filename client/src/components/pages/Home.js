@@ -68,7 +68,7 @@ const Home = () => {
 		// eslint-disable-next-line
 	}, []);
 
-	// get categories
+	// get categories & offers
 	const getDbEntries = async () => {
 		// response
 		const resCategories = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
@@ -114,7 +114,7 @@ const Home = () => {
 													animate={{ opacity: 1 }}
 												>
 													<CardMediaV1
-														link={`/offers?id=${category._id}`}
+														link={`/offers?cat_id=${category._id}`}
 														image={category.image}
 														title={category.title}
 														btnname='Explorer'
@@ -155,7 +155,7 @@ const Home = () => {
 										>
 											<CardMediaV2
 												price={`Daily Price: ${offers[0].price} ${offers[1].currency}`}
-												link={`/offer?id=${offers[0]._id}`}
+												link={`/offers/offer?id=${offers[0]._id}`}
 												image={`${offers[0].images[0]}`}
 												title={offers[0].title}
 												btnname='View'
@@ -183,7 +183,7 @@ const Home = () => {
 										>
 											<CardMediaV2
 												price={`Daily Price: ${offers[1].price} ${offers[1].currency}`}
-												link={`/offer?id=${offers[1]._id}`}
+												link={`/offers/offer/id=${offers[1]._id}`}
 												image={`${offers[1].images[0]}`}
 												title={offers[1].title}
 												btnname='View'
@@ -211,7 +211,7 @@ const Home = () => {
 										>
 											<CardMediaV2
 												price={`Daily Price: ${offers[2].price} ${offers[2].currency}`}
-												link={`/offer?id=${offers[2]._id}`}
+												link={`/offers/offer?id=${offers[2]._id}`}
 												image={`${offers[2].images[0]}`}
 												title={offers[2].title}
 												btnname='View'

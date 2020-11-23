@@ -1,10 +1,10 @@
 // Node Modules
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { makeStyles, Grid, TextField, CircularProgress, IconButton } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
-// Assets
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // MainSearch Component
-const MainSearch = () => {
+const MainSearch = props => {
 	// define classes
 	const classes = useStyles();
 
@@ -42,7 +42,7 @@ const MainSearch = () => {
 	const loading = open && options.length === 0;
 	// input state
 	const [ searchParams, setSearchParams ] = useState({
-		item: '',
+		product: '',
 		location: '',
 		locationAuto: null
 	});
@@ -87,8 +87,19 @@ const MainSearch = () => {
 
 	// onSubmit
 	const onSubmit = e => {
+		// prevent default
 		e.preventDefault();
-		console.log(searchParams);
+
+		// push history
+		if (searchParams.product && searchParams.locationAuto) {
+			props.history.push(`/offers?product=${searchParams.product}&location_id=${searchParams.locationAuto.id}`);
+		} else if (searchParams.product && !searchParams.locationAuto) {
+			props.history.push(`/offers?product=${searchParams.product}`);
+		} else if (!searchParams.product && searchParams.locationAuto) {
+			props.history.push(`/offers?location_id=${searchParams.locationAuto.id}`);
+		} else {
+			props.history.push(`/offers`);
+		}
 	};
 
 	return (
@@ -103,7 +114,7 @@ const MainSearch = () => {
 						label='Product'
 						placeholder='vacum cleaner'
 						type='text'
-						onChange={handleInputChange('item')}
+						onChange={handleInputChange('product')}
 					/>
 				</Grid>
 				<Grid item xs={4} sm={4}>
@@ -161,4 +172,4 @@ const MainSearch = () => {
 };
 
 // export MainSearch
-export default MainSearch;
+export default withRouter(MainSearch);
