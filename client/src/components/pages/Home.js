@@ -53,10 +53,13 @@ const Home = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { loading, categories, offers, setHomeState } = queryContext;
+	const { loading, categories, offers, setHomeState, clearQueryState } = queryContext;
 
 	// load user && assets
 	useEffect(() => {
+		// clear query context
+		clearQueryState();
+
 		// load user
 		if (localStorage.token) {
 			authContext.loadUser();
@@ -80,7 +83,7 @@ const Home = () => {
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Categories</span>
 							</Typography>
-							{categories ? (
+							{categories[0] ? (
 								<Grid container width='100%' spacing={4}>
 									{categories.map(category => {
 										return (
@@ -122,7 +125,7 @@ const Home = () => {
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Offers</span>
 							</Typography>
-							{offers ? (
+							{offers[0] ? (
 								<Grid container width='100%' spacing={4}>
 									<Grid key={offers[0]._id} item xs={12} md={6}>
 										<motion.div

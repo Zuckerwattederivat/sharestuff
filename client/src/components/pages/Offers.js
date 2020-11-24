@@ -1,13 +1,12 @@
 // Node Modules
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
 import { Container, Breadcrumbs, Link, Typography } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import QueryState from '../../context/query/queryContext';
+import QueryContext from '../../context/query/queryContext';
 // Components
 import OffersSearch from '../search/OffersSearch';
 // Assets
@@ -27,20 +26,16 @@ const Offers = () => {
 	// load auth context
 	const authContext = useContext(AuthContext);
 
-	// load search context
-	const querystate = useContext(QueryState);
-
-	// offers state
-	const [ offerState, setOfferState ] = useState({
-		loading: true,
-		categories: null,
-		offers: null
-	});
-	// destructure offer state
-	const { loading, categories, offers } = offerState;
+	// load query context
+	const queryContext = useContext(QueryContext);
+	// destructure query context
+	const { categories, category, offers, setOffersState, clearQueryState } = queryContext;
 
 	// useffect on render
 	useEffect(() => {
+		// clear query state
+		clearQueryState();
+
 		// load user
 		if (localStorage.token) {
 			authContext.loadUser();
@@ -48,17 +43,8 @@ const Offers = () => {
 
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);
-
 		// set search context
-		// if (urlParams.get('cat_id')) {
-		// 	searchContext.setSearchState('SET_CATEGORY', urlParams.get('cat_id'));
-		// }
-		// if (urlParams.get('product')) {
-		// 	searchContext.setSearchState('SET_PRODUCT', urlParams.get('product'));
-		// }
-		// if (urlParams.get('location_id')) {
-		// 	searchContext.setSearchState('SET_LOCATION', urlParams.get('location_id'));
-		// }
+		setOffersState(urlParams.get('cat_id'), urlParams.get('location_id'), urlParams.get('product'));
 
 		// eslint-disable-next-line
 	}, []);
@@ -67,7 +53,7 @@ const Offers = () => {
 		<div className={classes.offers}>
 			<Container maxWidth='lg'>
 				<Breadcrumbs>
-					<Link component={RouterLink} to='/'>
+					<Link component={RouterLink} to='/' color='inherit'>
 						Home
 					</Link>
 					<Typography color='textPrimary'>Find Offers</Typography>

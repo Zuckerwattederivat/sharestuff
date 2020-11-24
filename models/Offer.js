@@ -18,7 +18,8 @@ const OfferSchema = mongoose.Schema({
 	},
 	product: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
 	price: {
 		type: Number,
@@ -26,20 +27,24 @@ const OfferSchema = mongoose.Schema({
 	},
 	currency: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
 	tags: {
-		type: String,
-		required: true
-	},
-	categoryId: {
 		type: String,
 		required: true,
 		index: true
 	},
+	categoryId: {
+		type: String,
+		required: true,
+		index: true,
+		index: true
+	},
 	location: {
 		type: Object,
-		required: true
+		required: true,
+		index: true
 	},
 	createdBy: {
 		type: String,
@@ -58,6 +63,9 @@ const OfferSchema = mongoose.Schema({
 		default: Date.now
 	}
 });
+
+// create text index
+OfferSchema.index({ '$**': 'text' });
 
 // export modules
 module.exports = mongoose.model('offer', OfferSchema);

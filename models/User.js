@@ -81,5 +81,8 @@ const UserSchema = mongoose.Schema({
 	}
 });
 
+// create text index
+UserSchema.index({ '$**': 'text' });
+
 // export model
 module.exports = mongoose.model('user', UserSchema);

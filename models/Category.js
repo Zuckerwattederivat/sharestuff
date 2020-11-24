@@ -22,5 +22,8 @@ const CategorySchema = mongoose.Schema({
 	}
 });
 
+// create text index
+CategorySchema.index({ '$**': 'text' });
+
 // export module
 module.exports = mongoose.model('Category', CategorySchema);

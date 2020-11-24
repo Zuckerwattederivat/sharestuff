@@ -209,5 +209,28 @@ router.get('/get', async (req, res) => {
 	}
 });
 
+// @route     GET api/offers/select
+// @desc      Get active offers by product, category, location
+// @access    Public
+router.get('/select', async (req, res) => {
+	// save request content
+	const { product, categoryId, tags, price, createdBy, location } = req.query;
+
+	console.log(product);
+
+	// search by text wildcard
+	const offers = await Offer.find({ $text: { $search: `${product} ${tags} ${price} ${createdBy}` } });
+
+	console.log(offers);
+
+	try {
+		// select by
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
 // export router
 module.exports = router;

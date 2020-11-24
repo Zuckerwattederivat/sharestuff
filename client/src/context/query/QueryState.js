@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import QueryContext from '../query/queryContext';
 import queryReducer from '../query/queryReducer';
-import { SET_LOADING, SET_ALL } from '../types';
+import { SET_LOADING, SET_ALL, CLEAR_ALL, SET_CATEGORIES, SET_OFFERS } from '../types';
 
 // QueryState
 const QueryState = props => {
@@ -10,7 +10,9 @@ const QueryState = props => {
 	const initialState = {
 		loading: true,
 		categories: null,
-		offers: null
+		category: null,
+		offers: null,
+		offer: null
 	};
 
 	// destructure reducer
@@ -40,15 +42,34 @@ const QueryState = props => {
 		}
 	};
 
+	// set state offers page
+	const setOffersState = async (catId = null, locationId = null, product = null) => {
+		const resCategory = await getCategories({ id: catId });
+		const resCategories = await getCategories({});
+		const resOffers = await getOffers({});
+
+		// set state
+		console.log(resOffers);
+	};
+
+	// clear query state
+	const clearQueryState = () => {
+		setQueryState(CLEAR_ALL);
+	};
+
 	return (
 		<QueryContext.Provider
 			value={{
 				loading: state.loading,
 				categories: state.categories,
+				category: state.category,
 				offers: state.offers,
+				offer: state.offer,
 				getCategories,
 				getOffers,
-				setHomeState
+				setHomeState,
+				setOffersState,
+				clearQueryState
 			}}
 		>
 			{props.children}
