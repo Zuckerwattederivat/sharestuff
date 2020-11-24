@@ -11,7 +11,7 @@ import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 import AuthValidationState from './context/auth/AuthValidationState';
 import NavbarState from './context/navbar/NavbarState';
-import SearchState from './context/search/SearchState';
+import QueryState from './context/query/QueryState';
 // Utils
 import setAuthToken from './utils/setAuthToken';
 
@@ -25,9 +25,9 @@ const App = () => {
 	return (
 		<AlertState>
 			<AuthState>
-				<NavbarState>
-					<SearchState>
-						<AuthValidationState>
+				<AuthValidationState>
+					<NavbarState>
+						<QueryState>
 							<Router>
 								<Navbar />
 								<div className='wrapper'>
@@ -38,9 +38,9 @@ const App = () => {
 								</div>
 								<Footer />
 							</Router>
-						</AuthValidationState>
-					</SearchState>
-				</NavbarState>
+						</QueryState>
+					</NavbarState>
+				</AuthValidationState>
 			</AuthState>
 		</AlertState>
 	);

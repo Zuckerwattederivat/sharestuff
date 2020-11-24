@@ -7,7 +7,7 @@ import {} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import SearchContext from '../../context/search/searchContext';
+import QueryState from '../../context/query/queryContext';
 // Components
 import OffersSearch from '../search/OffersSearch';
 // Assets
@@ -28,7 +28,7 @@ const Offers = () => {
 	const authContext = useContext(AuthContext);
 
 	// load search context
-	const searchContext = useContext(SearchContext);
+	const querystate = useContext(QueryState);
 
 	// offers state
 	const [ offerState, setOfferState ] = useState({
@@ -39,7 +39,7 @@ const Offers = () => {
 	// destructure offer state
 	const { loading, categories, offers } = offerState;
 
-	// useffect on start
+	// useffect on render
 	useEffect(() => {
 		// load user
 		if (localStorage.token) {
@@ -50,15 +50,15 @@ const Offers = () => {
 		const urlParams = new URLSearchParams(window.location.search);
 
 		// set search context
-		if (urlParams.get('cat_id')) {
-			searchContext.setSearchState('SET_CATEGORY', urlParams.get('cat_id'));
-		}
-		if (urlParams.get('product')) {
-			searchContext.setSearchState('SET_PRODUCT', urlParams.get('product'));
-		}
-		if (urlParams.get('location_id')) {
-			searchContext.setSearchState('SET_LOCATION', urlParams.get('location_id'));
-		}
+		// if (urlParams.get('cat_id')) {
+		// 	searchContext.setSearchState('SET_CATEGORY', urlParams.get('cat_id'));
+		// }
+		// if (urlParams.get('product')) {
+		// 	searchContext.setSearchState('SET_PRODUCT', urlParams.get('product'));
+		// }
+		// if (urlParams.get('location_id')) {
+		// 	searchContext.setSearchState('SET_LOCATION', urlParams.get('location_id'));
+		// }
 
 		// eslint-disable-next-line
 	}, []);

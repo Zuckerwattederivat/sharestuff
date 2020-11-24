@@ -1,12 +1,12 @@
 // Node Modules
-import React, { useEffect, useContext, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useContext } from 'react';
 import { Box, Container, Typography, Grid } from '@material-ui/core';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
 import AuthContext from '../../context/auth/authContext';
+import QueryContext from '../../context/query/queryContext';
 // Components
 import Hero from '../layout/Hero';
 import CardMediaV1 from '../layout/CardMediaV1';
@@ -50,38 +50,19 @@ const Home = () => {
 
 	// load auth context
 	const authContext = useContext(AuthContext);
+	// load query context
+	const queryContext = useContext(QueryContext);
+	// destructure query context
+	const { loading, categories, offers, setHomeState } = queryContext;
 
-	// home state
-	const [ homeState, setHomeState ] = useState({
-		loading: true,
-		categories: null,
-		offers: null
-	});
-	// destructure home state
-	const { loading, categories, offers } = homeState;
-
-	// load user
+	// load user && assets
 	useEffect(() => {
+		// load user
 		if (localStorage.token) {
 			authContext.loadUser();
 		}
-		// eslint-disable-next-line
-	}, []);
-
-	// get categories & offers
-	const getDbEntries = async () => {
-		// response
-		const resCategories = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
-		const resOffers = await axios.get('/api/offers/get', { params: { rand: true, limit: 3 } });
-		// set sate
-		if ((resCategories.data, resOffers.data)) {
-			setHomeState({ loading: false, categories: resCategories.data, offers: resOffers.data });
-		}
-	};
-
-	// load assets
-	useEffect(() => {
-		getDbEntries();
+		// set home state
+		setHomeState();
 		// eslint-disable-next-line
 	}, []);
 
