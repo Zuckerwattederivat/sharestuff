@@ -77,7 +77,8 @@ router.post(
 		}
 
 		// save request body
-		const { title, product, tags, categoryId, location, price, currency } = req.body;
+		const { title, product, tags, categoryId, price, currency } = req.body;
+		const location = JSON.parse(req.body.location);
 		const description = paragraphsToArray(req.body.description);
 		const createdBy = req.user.id;
 		let images = [];
@@ -182,7 +183,7 @@ router.get('/get', async (req, res) => {
 				} else if (rand) {
 					offerMap = _.shuffle(offerMap);
 				}
-				res.send(offerMap);
+				res.json(offerMap);
 			}
 
 			// return searched offer
@@ -212,16 +213,19 @@ router.get('/get', async (req, res) => {
 // @route     GET api/offers/select
 // @desc      Get active offers by product, category, location
 // @access    Public
-router.get('/select', async (req, res) => {
+router.get('/search', async (req, res) => {
 	// save request content
 	const { product, categoryId, tags, price, createdBy, location } = req.query;
 
-	console.log(product);
-
 	// search by text wildcard
-	const offers = await Offer.find({ $text: { $search: `${product} ${tags} ${price} ${createdBy}` } });
+	const offers = await Offer.find({
+		$text: { $search: `${product} ${tags} ${createdBy} ${categoryId} ${location}` }
+	});
 
-	console.log(offers);
+	// send response
+	if (offers) {
+		res.json(offers);
+	}
 
 	try {
 		// select by
