@@ -27,7 +27,7 @@ const QueryState = props => {
 	// get offers with params
 	const getOffers = async paramsObj => await axios.get('/api/offers/get', { params: paramsObj });
 
-	const selectOffers = async paramsObj => await axios.get('/api/offers/select', { params: paramsObj });
+	const searchOffers = async paramsObj => await axios.get('/api/offers/search', { params: paramsObj });
 
 	// set state home page
 	const setHomeState = async () => {
@@ -46,10 +46,9 @@ const QueryState = props => {
 
 	// set state offers page
 	const setOffersState = async (catId = null, locationId = null, product = null) => {
-		console.log(catId, locationId, product);
 		const resCategory = await getCategories({ id: catId });
 		const resCategories = await getCategories({});
-		const resOffers = await selectOffers({ categoryId: catId, product: product });
+		const resOffers = await searchOffers({ categoryId: catId, product: product });
 
 		// set state
 		console.log(resOffers);

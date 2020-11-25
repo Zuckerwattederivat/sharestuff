@@ -42,6 +42,7 @@ const upload = multer({
 });
 // utils
 const paragraphsToArray = require('../util/paragraphsToArray');
+const e = require('express');
 
 // @route     POST api/offers/create
 // @desc      Create offer
@@ -210,24 +211,74 @@ router.get('/get', async (req, res) => {
 	}
 });
 
-// @route     GET api/offers/select
-// @desc      Get active offers by product, category, location
+// @route     GET api/offers/search
+// @desc      Search active offers by field values
 // @access    Public
 router.get('/search', async (req, res) => {
 	// save request content
-	const { product, categoryId, tags, price, createdBy, location } = req.query;
-
-	// search by text wildcard
-	const offers = await Offer.find({
-		$text: { $search: `${product} ${tags} ${createdBy} ${categoryId} ${location}` }
-	});
-
-	// send response
-	if (offers) {
-		res.json(offers);
-	}
+	const { product, categoryId, tags, price, createdBy, location, filter } = req.body;
 
 	try {
+		// search by product and tags
+		let offersByProductAndTags;
+		if (product || tags)
+			offersByProductAndTags = await Offer.find({
+				$text: { $search: `${product} ${tags}` }
+			});
+
+		// search by Country
+		let offersByLocation;
+		if (location.street) {
+			offersByLocation = await Offer.find({
+				$text: { $search: `${location.street}` }
+			});
+		} else if (!location.street && location.borough) {
+			offersByLocation = await Offer.find({
+				$text: { $search: `${location.borough}` }
+			});
+		} else if (!location.street && !location.borough && location.locality) {
+			offersByLocation = await Offer.find({
+				$text: { $search: `${location.locality}` }
+			});
+		} else if (!location.street && !location.borough && !location.locality && location.country) {
+			offersByLocation = await Offer.find({
+				$text: { $search: `${location.country}` }
+			});
+		}
+
+		// search by categoryId
+		let offersByCategoryId;
+		if (categoryId)
+			offersByCategoryId = await Offer.find({
+				categoryId: categoryId
+			});
+
+		// search by creator id
+		let offersByCreator;
+		if (createdBy)
+			offersByCreator = await Offer.find({
+				createdBy: createdBy
+			});
+
+		// combine search arrays
+		const offers = [ offersByProductAndTags, offersByLocation, offersByCategoryId, offersByCreator ];
+
+		return res.json(offersByLocation);
+
+		// filter by price
+		const offersFiltered = [];
+		if (price) {
+			_.map(offers, offer => {
+				if (offer.price <= price) offers.push(offersFiltered);
+			});
+			return res.json(offersFiltered);
+		}
+
+		// // send response
+		// if (offers) {
+		// 	res.json(offers);
+		// }
+
 		// select by
 	} catch (err) {
 		console.error(err.message);
