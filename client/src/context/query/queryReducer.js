@@ -27,7 +27,9 @@ export default (state, action) => {
 		case CLEAR_ALL:
 			return {
 				categories: null,
+				category: null,
 				offers: null,
+				offer: null,
 				loading: true
 			};
 		default:

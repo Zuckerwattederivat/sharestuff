@@ -123,7 +123,7 @@ const Home = () => {
 						<br key='break-1' />,
 						<Box key='offers-box' width='100%'>
 							<Typography className={classes.h2} variant='h2'>
-								Featured <span className={classes.textPrimary}>Offers</span>
+								Newest <span className={classes.textPrimary}>Offers</span>
 							</Typography>
 							{offers[0] ? (
 								<Grid container width='100%' spacing={4}>

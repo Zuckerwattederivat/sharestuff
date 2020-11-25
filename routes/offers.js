@@ -43,6 +43,7 @@ const upload = multer({
 // utils
 const paragraphsToArray = require('../util/paragraphsToArray');
 const e = require('express');
+const { sortBy } = require('lodash');
 
 // @route     POST api/offers/create
 // @desc      Create offer
@@ -158,36 +159,44 @@ router.post(
 // @access    Public
 router.get('/get', async (req, res) => {
 	// save request content
-	const { id, rand, limit } = req.query;
+	const { id, sort, limit } = req.query;
 
 	//console.log(id);
 
 	try {
 		// return all offers
-		if (!id) {
+		if (!id && !sort) {
 			const offers = await Offer.find({ active: true });
 
 			// send error response
 			if (!offers) {
 				return res.status(200).json({ msg: 'No offer was found' });
-
 				// send response
 			} else {
-				let offerMap = [];
-				offers.forEach(offer => {
-					offerMap.push(offer);
-				});
-				// send random with limit
-				if (rand && limit) {
-					offerMap = _.sampleSize(offerMap, limit);
-					// send random without limit
-				} else if (rand) {
-					offerMap = _.shuffle(offerMap);
-				}
-				res.json(offerMap);
+				res.json(offers);
 			}
 
-			// return searched offer
+			// return offers by date and limit
+		} else if (!id && sort) {
+			let offers;
+
+			// with limit
+			if (limit) {
+				offers = await Offer.find({ active: true }).sort({ date: sort }).limit(parseInt(limit));
+				// without limit
+			} else {
+				offers = await Offer.find({ active: true }).sort({ date: sort });
+			}
+
+			// send error response
+			if (!offers) {
+				return res.status(200).json({ msg: 'No offer was found' });
+				// send response
+			} else {
+				res.json(offers);
+			}
+
+			// return offer by id
 		} else {
 			const offer = await Offer.findById(id);
 
@@ -216,40 +225,41 @@ router.get('/get', async (req, res) => {
 // @access    Public
 router.get('/search', async (req, res) => {
 	// save request content
-	const { product, categoryId, tags, price, createdBy, location, filter } = req.body;
+	const { product, categoryId, tags, price, createdBy, location } = req.body;
 
 	try {
-		// search by product and tags
+		//search by product and tags
 		let offersByProductAndTags;
 		if (product || tags)
 			offersByProductAndTags = await Offer.find({
+				active: true,
 				$text: { $search: `${product} ${tags}` }
 			});
 
 		// search by Country
 		let offersByLocation;
-		if (location.street) {
+		if (location.neighbourhood_gid) {
 			offersByLocation = await Offer.find({
-				$text: { $search: `${location.street}` }
+				active: true,
+				$text: { $search: `${location.neighbourhood_gid}` }
 			});
-		} else if (!location.street && location.borough) {
+		} else if (!location.neighbourhood_gid && location.locality_gid) {
 			offersByLocation = await Offer.find({
-				$text: { $search: `${location.borough}` }
+				active: true,
+				$text: { $search: `${location.locality_gid}` }
 			});
-		} else if (!location.street && !location.borough && location.locality) {
+		} else if (!location.neighbourhood_gid && !location.locality_gid && location.country_gid) {
 			offersByLocation = await Offer.find({
-				$text: { $search: `${location.locality}` }
-			});
-		} else if (!location.street && !location.borough && !location.locality && location.country) {
-			offersByLocation = await Offer.find({
-				$text: { $search: `${location.country}` }
+				active: true,
+				$text: { $search: `${location.country_gid}` }
 			});
 		}
 
-		// search by categoryId
+		// search by category id
 		let offersByCategoryId;
 		if (categoryId)
 			offersByCategoryId = await Offer.find({
+				active: true,
 				categoryId: categoryId
 			});
 
@@ -257,27 +267,18 @@ router.get('/search', async (req, res) => {
 		let offersByCreator;
 		if (createdBy)
 			offersByCreator = await Offer.find({
+				active: true,
 				createdBy: createdBy
 			});
 
-		// combine search arrays
-		const offers = [ offersByProductAndTags, offersByLocation, offersByCategoryId, offersByCreator ];
-
-		return res.json(offersByLocation);
-
-		// filter by price
-		const offersFiltered = [];
-		if (price) {
-			_.map(offers, offer => {
-				if (offer.price <= price) offers.push(offersFiltered);
-			});
-			return res.json(offersFiltered);
+		// merge results
+		if (offersByProductAndTags && offersByLocation) {
+			const remove = _.difference(offersByProductAndTags, offersByLocation);
+			const merged = _.union(offersByProductAndTags, offersByLocation);
+			const mergedUnique = _.uniqWith(merged, _.isEqual);
+			let offers = remove.map(item => _.without(mergedUnique, item));
+			console.log(offers);
 		}
-
-		// // send response
-		// if (offers) {
-		// 	res.json(offers);
-		// }
 
 		// select by
 	} catch (err) {

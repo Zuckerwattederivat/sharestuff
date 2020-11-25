@@ -36,7 +36,7 @@ const QueryState = props => {
 
 		// get db data
 		const resCategories = await getCategories({ rand: true, limit: 4 });
-		const resOffers = await getOffers({ rand: true, limit: 3 });
+		const resOffers = await getOffers({ sort: 'desc', limit: 3 });
 
 		// set state
 		if (resCategories && resOffers) {
@@ -46,12 +46,17 @@ const QueryState = props => {
 
 	// set state offers page
 	const setOffersState = async (catId = null, locationId = null, product = null) => {
+		// set loading
+		setQueryState(SET_LOADING, true);
+
+		// get db data
 		const resCategory = await getCategories({ id: catId });
 		const resCategories = await getCategories({});
-		const resOffers = await searchOffers({ categoryId: catId, product: product });
+		// const resOffers = await searchOffers({ categoryId: catId, product: product });
 
 		// set state
-		console.log(resOffers);
+		if (resCategory) {
+		}
 	};
 
 	// clear query state
