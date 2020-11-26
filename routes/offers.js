@@ -5,7 +5,7 @@
 // Node Modules
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
+const { check, validationResult, body } = require('express-validator');
 const { v1: uuidv1 } = require('uuid');
 const _ = require('lodash');
 const jimp = require('jimp');
@@ -225,56 +225,102 @@ router.get('/get', async (req, res) => {
 // @access    Public
 router.get('/search', async (req, res) => {
 	// save request content
-	const { product, categoryId, tags, price, createdBy, location } = req.body;
+	const { product, categoryId, tags, price, createdBy, location, filter } = req.body;
 
 	try {
 		//search by product and tags
-		let offersByProductAndTags;
-		if (product || tags)
-			offersByProductAndTags = await Offer.find({
+		const searchByProductAndTags = async () => {
+			const offers = await Offer.find({
 				active: true,
 				$text: { $search: `${product} ${tags}` }
 			});
+			if (offers) {
+				return Promise.resolve(offers);
+			} else {
+				return Promise.resolve(false);
+			}
+		};
 
-		// search by Country
-		let offersByLocation;
-		if (location.neighbourhood_gid) {
-			offersByLocation = await Offer.find({
-				active: true,
-				$text: { $search: `${location.neighbourhood_gid}` }
-			});
-		} else if (!location.neighbourhood_gid && location.locality_gid) {
-			offersByLocation = await Offer.find({
-				active: true,
-				$text: { $search: `${location.locality_gid}` }
-			});
-		} else if (!location.neighbourhood_gid && !location.locality_gid && location.country_gid) {
-			offersByLocation = await Offer.find({
-				active: true,
-				$text: { $search: `${location.country_gid}` }
-			});
-		}
+		// search by location
+		const searchByLocation = async () => {
+			let offers;
+			if (location.neighbourhood_gid) {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${location.neighbourhood_gid}` }
+				});
+			} else if (!location.neighbourhood_gid && location.locality_gid) {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${location.locality_gid}` }
+				});
+			} else if (!location.neighbourhood_gid && !location.locality_gid && location.country_gid) {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${location.country_gid}` }
+				});
+			}
+			if (offers) {
+				return Promise.resolve(offers);
+			} else {
+				return Promise.resolve(false);
+			}
+		};
 
 		// search by category id
-		let offersByCategoryId;
-		if (categoryId)
-			offersByCategoryId = await Offer.find({
+		const searchByCategoryId = async () => {
+			const offers = await Offer.find({
 				active: true,
 				categoryId: categoryId
 			});
+			if (offers) {
+				return Promise.resolve(offers);
+			} else {
+				return Promise.resolve(false);
+			}
+		};
 
 		// search by creator id
-		let offersByCreator;
-		if (createdBy)
-			offersByCreator = await Offer.find({
+		const searchByCreator = async () => {
+			const offers = await Offer.find({
 				active: true,
 				createdBy: createdBy
 			});
+			if (offers) {
+				return Promise.resolve(offers);
+			} else {
+				return Promise.resolve(false);
+			}
+		};
 
-		// merge results
-		res.json(offersByCreator);
+		// search by price
+		const searchByPrice = async () => {
+			const offers = await Offer.find({
+				active: true,
+				price: price
+			});
+			if (offers) {
+				return Promise.resolve(offers);
+			} else {
+				return Promise.resolve(false);
+			}
+		};
 
-		// select by
+		// search by location
+		if (filter.location) {
+			const offersByLocation = await searchByLocation();
+			let offers = [];
+			if (offersByLocation) {
+				_.forEach(filter, (value, key) => {
+					if (value === true) {
+						_.filter(offersByLocation, offer => {
+							if (offer[key] === req.body[key]) offers.push(offer);
+						});
+					}
+				});
+				return res.json(offers);
+			}
+		}
 	} catch (err) {
 		console.error(err.message);
 		res.status(500).json({ msg: 'Server Error' });

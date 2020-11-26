@@ -45,14 +45,17 @@ const QueryState = props => {
 	};
 
 	// set state offers page
-	const setOffersState = async (catId = null, locationId = null, product = null) => {
+	const setOffersState = async (catId = null, locationId = null, product = null, filter = null) => {
 		// set loading
 		setQueryState(SET_LOADING, true);
 
+		// get location
+		// TODO API TO GEOCODE
+		let location = [];
 		// get db data
 		const resCategory = await getCategories({ id: catId });
 		const resCategories = await getCategories({});
-		// const resOffers = await searchOffers({ categoryId: catId, product: product });
+		const resOffers = await searchOffers({ categoryId: catId, product: product, location: location, filter: filter });
 
 		// set state
 		if (resCategory) {

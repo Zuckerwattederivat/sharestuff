@@ -55,8 +55,11 @@ const Home = () => {
 	// destructure query context
 	const { loading, categories, offers, setHomeState, clearQueryState } = queryContext;
 
-	// load user && assets
+	// use effect
 	useEffect(() => {
+		// scroll to top
+		window.scrollTo(0, 0);
+
 		// clear query context
 		clearQueryState();
 

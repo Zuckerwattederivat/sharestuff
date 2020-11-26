@@ -1,6 +1,7 @@
 // Node Modules
 import React, { Fragment } from 'react';
 import { Container, makeStyles, Typography, Box } from '@material-ui/core';
+import { motion } from 'framer-motion';
 // Components
 import MainSearch from '../search/MainSearch';
 // Assets
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover',
 		backgroundPosition: '50% 45%',
-		filter: 'blur(4px)'
+		filter: 'blur(2px)'
 	},
 	overlay: {
 		background: 'rgba(0, 0, 0, 0.65)',
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 		width: '100%'
 	},
 	title: {
-		maxWidth: '750px',
+		maxWidth: '770px',
 		fontWeight: '600',
 		fontSize: theme.typography.h4.fontSize,
 		color: '#fff',
@@ -97,18 +98,36 @@ const Hero = () => {
 			</div>
 			<Container className={classes.container} maxWidth='xl'>
 				<Box width='800px'>
-					<Typography className={classes.title} variant='h1'>
-						<span className={classes.titleChild1}>
-							<span className={classes.textPrimary}>Rent</span> tools or other
-							<span className={classes.textPrimary}> items</span> from people near you.
-						</span>
-						<span className={classes.titleChild2}>
-							{' '}
-							Start working on your home projects
-							<span className={classes.textPrimary}> today</span>.
-						</span>
-					</Typography>
-					<MainSearch />
+					<motion.div
+						transition={{
+							duration: 0.6,
+							type: 'tween'
+						}}
+						initial={{ y: '-40%', opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+					>
+						<Typography className={classes.title} variant='h1'>
+							<span className={classes.titleChild1}>
+								<span className={classes.textPrimary}>Rent</span> tools or other
+								<span className={classes.textPrimary}> items</span> from people near you.
+							</span>
+							<span className={classes.titleChild2}>
+								{' '}
+								Start working on your home projects
+								<span className={classes.textPrimary}> today</span>.
+							</span>
+						</Typography>
+					</motion.div>
+					<motion.div
+						transition={{
+							duration: 0.6,
+							type: 'tween'
+						}}
+						initial={{ y: '-40%', opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+					>
+						<MainSearch />
+					</motion.div>
 				</Box>
 			</Container>
 		</Fragment>
