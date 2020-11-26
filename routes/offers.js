@@ -306,23 +306,26 @@ router.get('/search', async (req, res) => {
 			}
 		};
 
-		// search by location
+		// filter location query
 		if (filter.location) {
 			const offersByLocation = await searchByLocation();
 			let offers = [];
 			if (offersByLocation) {
 				_.forEach(filter, (value, key) => {
 					if (value === true) {
-						_.filter(offersByLocation, offer => {
+						_.map(offersByLocation, offer => {
 							if (key === 'price') {
 								if (offer[key] <= req.body[key]) offers.push(offer);
+							} else if (key === 'tags') {
+								console.log(key);
 							} else {
 								if (offer[key] === req.body[key]) offers.push(offer);
 							}
 						});
 					}
 				});
-				return res.json(offers);
+				// send response
+				offers[0] ? res.json(offers) : res.json(offersByLocation);
 			}
 		}
 	} catch (err) {
