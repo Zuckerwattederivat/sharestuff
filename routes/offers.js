@@ -314,7 +314,11 @@ router.get('/search', async (req, res) => {
 				_.forEach(filter, (value, key) => {
 					if (value === true) {
 						_.filter(offersByLocation, offer => {
-							if (offer[key] === req.body[key]) offers.push(offer);
+							if (key === 'price') {
+								if (offer[key] <= req.body[key]) offers.push(offer);
+							} else {
+								if (offer[key] === req.body[key]) offers.push(offer);
+							}
 						});
 					}
 				});

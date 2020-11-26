@@ -55,7 +55,7 @@ const QueryState = props => {
 		// get db data
 		const resCategory = await getCategories({ id: catId });
 		const resCategories = await getCategories({});
-		const resOffers = await searchOffers({ categoryId: catId, product: product, location: location, filter: filter });
+		// const resOffers = await searchOffers({ categoryId: catId, product: product, location: location, filter: filter });
 
 		// set state
 		if (resCategory) {
