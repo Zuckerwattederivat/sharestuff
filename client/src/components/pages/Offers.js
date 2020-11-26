@@ -33,6 +33,9 @@ const Offers = () => {
 
 	// useffect on render
 	useEffect(() => {
+		// scroll to top
+		window.scrollTo(0, 0);
+
 		// clear query state
 		clearQueryState();
 

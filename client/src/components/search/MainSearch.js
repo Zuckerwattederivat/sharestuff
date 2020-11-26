@@ -10,7 +10,6 @@ import { Autocomplete } from '@material-ui/lab';
 const useStyles = makeStyles(theme => ({
 	textfield: {
 		minWidth: '100%',
-		background: theme.palette.background.custom,
 		color: theme.palette.primary.main
 	},
 	buttonContainer: {

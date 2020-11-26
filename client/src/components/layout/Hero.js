@@ -1,10 +1,10 @@
 // Node Modules
-import React from 'react';
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import React, { Fragment } from 'react';
+import { Container, makeStyles, Typography, Box } from '@material-ui/core';
 // Components
 import MainSearch from '../search/MainSearch';
 // Assets
-import HeroImage from '../../assets/hero/hero-4.jpg';
+import HeroImage from '../../assets/hero/hero-2.jpg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -13,10 +13,11 @@ const useStyles = makeStyles(theme => ({
 		backgroundImage: `url(${HeroImage})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover',
-		backgroundPosition: '50% 45%'
+		backgroundPosition: '50% 45%',
+		filter: 'blur(4px)'
 	},
 	overlay: {
-		background: 'rgba(0, 0, 0, 0.7)',
+		background: 'rgba(0, 0, 0, 0.65)',
 		position: 'relative',
 		zIndex: 10,
 		left: 0,
@@ -25,13 +26,15 @@ const useStyles = makeStyles(theme => ({
 		minHeight: '85vh'
 	},
 	container: {
+		position: 'absolute',
+		zIndex: 20,
+		top: '25%',
 		display: 'flex',
-		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '85vh',
-		maxWidth: '800px'
+		width: '100%'
 	},
 	title: {
+		maxWidth: '750px',
 		fontWeight: '600',
 		fontSize: theme.typography.h4.fontSize,
 		color: '#fff',
@@ -49,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	shape: {
 		position: 'relative',
-		zIndex: 20,
+		zIndex: 30,
 		top: '-50px',
 		bottom: '10px',
 		left: 0,
@@ -61,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		display: 'block',
 		width: 'calc(144% + 1.3px)',
-		height: '55px'
+		height: '60px'
 	},
 	shapeFill: {
 		fill: theme.palette.background.custom
@@ -74,9 +77,26 @@ const Hero = () => {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.hero}>
-			<div className={classes.overlay}>
-				<Container className={classes.container} maxWidth='xl'>
+		<Fragment>
+			<div className={classes.hero}>
+				<div className={classes.overlay} />
+				<div className={classes.shape}>
+					<svg
+						className={classes.svg}
+						data-name='Layer 1'
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 1200 120'
+						preserveAspectRatio='none'
+					>
+						<path
+							d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z'
+							className={classes.shapeFill}
+						/>
+					</svg>
+				</div>
+			</div>
+			<Container className={classes.container} maxWidth='xl'>
+				<Box width='800px'>
 					<Typography className={classes.title} variant='h1'>
 						<span className={classes.titleChild1}>
 							<span className={classes.textPrimary}>Rent</span> tools or other
@@ -89,23 +109,9 @@ const Hero = () => {
 						</span>
 					</Typography>
 					<MainSearch />
-				</Container>
-			</div>
-			<div className={classes.shape}>
-				<svg
-					className={classes.svg}
-					data-name='Layer 1'
-					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 1200 120'
-					preserveAspectRatio='none'
-				>
-					<path
-						d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z'
-						className={classes.shapeFill}
-					/>
-				</svg>
-			</div>
-		</div>
+				</Box>
+			</Container>
+		</Fragment>
 	);
 };
 

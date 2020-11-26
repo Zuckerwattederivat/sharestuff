@@ -272,13 +272,7 @@ router.get('/search', async (req, res) => {
 			});
 
 		// merge results
-		if (offersByProductAndTags && offersByLocation) {
-			const remove = _.difference(offersByProductAndTags, offersByLocation);
-			const merged = _.union(offersByProductAndTags, offersByLocation);
-			const mergedUnique = _.uniqWith(merged, _.isEqual);
-			let offers = remove.map(item => _.without(mergedUnique, item));
-			console.log(offers);
-		}
+		res.json(offersByCreator);
 
 		// select by
 	} catch (err) {

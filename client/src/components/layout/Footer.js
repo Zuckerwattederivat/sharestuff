@@ -23,7 +23,8 @@ const useStyles = makeStyles(theme => ({
 	upButton: {
 		position: 'fixed',
 		right: theme.spacing(1.6),
-		bottom: theme.spacing(1.6)
+		bottom: theme.spacing(1.6),
+		zIndex: 1500
 	},
 	brand1: {
 		fontWeight: 'bold',
