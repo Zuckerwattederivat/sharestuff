@@ -79,10 +79,20 @@ router.post(
 		}
 
 		// save request body
-		const { title, product, tags, categoryId, price, currency } = req.body;
+		const { categoryId, price, currency, title } = req.body;
+		// save content to lower case
+		const product = req.body.product.toLowerCase();
+		const tagsRecieved = JSON.parse(req.body.tags);
+		const tags = tagsRecieved.map(e => {
+			return e.toLowerCase();
+		});
+		// save location
 		const location = JSON.parse(req.body.location);
+		// save desctiption paragraphs to array
 		const description = paragraphsToArray(req.body.description);
+		// save user
 		const createdBy = req.user.id;
+		// save image paths
 		let images = [];
 		let imagesThumb = [];
 		if (req.files[0]) {
@@ -224,15 +234,30 @@ router.get('/get', async (req, res) => {
 // @desc      Search active offers by field values
 // @access    Public
 router.get('/search', async (req, res) => {
-	// save request content
-	const { product, categoryId, tags, price, createdBy, location, filter } = req.body;
+	// save filter
+	const { filter } = req.body;
 
+	// filter parameters
+	const searchParameters = {
+		categoryId: req.body.categoryId,
+		price: req.body.price,
+		createdBy: req.body.createdBy,
+		location: req.body.location,
+		product: req.body.product.toLowerCase(),
+		tags: req.body.tags.map(e => {
+			return e.toLowerCase();
+		})
+	};
+
+	// add product to tags
+	searchParameters.tags.push(searchParameters.product);
+	console.log(searchParameters);
 	try {
 		//search by product and tags
 		const searchByProductAndTags = async () => {
 			const offers = await Offer.find({
 				active: true,
-				$text: { $search: `${product} ${tags}` }
+				$text: { $search: `${searchParameters.product} ${searchParameters.tags}` }
 			});
 			if (offers) {
 				return Promise.resolve(offers);
@@ -244,20 +269,24 @@ router.get('/search', async (req, res) => {
 		// search by location
 		const searchByLocation = async () => {
 			let offers;
-			if (location.neighbourhood_gid) {
+			if (searchParameters.location.neighbourhood_gid) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${location.neighbourhood_gid}` }
+					$text: { $search: `${searchParameters.location.neighbourhood_gid}` }
 				});
-			} else if (!location.neighbourhood_gid && location.locality_gid) {
+			} else if (!searchParameters.location.neighbourhood_gid && searchParameters.location.locality_gid) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${location.locality_gid}` }
+					$text: { $search: `${searchParameters.location.locality_gid}` }
 				});
-			} else if (!location.neighbourhood_gid && !location.locality_gid && location.country_gid) {
+			} else if (
+				!searchParameters.location.neighbourhood_gid &&
+				!searchParameters.location.locality_gid &&
+				searchParameters.location.country_gid
+			) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${location.country_gid}` }
+					$text: { $search: `${searchParameters.location.country_gid}` }
 				});
 			}
 			if (offers) {
@@ -271,7 +300,7 @@ router.get('/search', async (req, res) => {
 		const searchByCategoryId = async () => {
 			const offers = await Offer.find({
 				active: true,
-				categoryId: categoryId
+				categoryId: searchParameters.categoryId
 			});
 			if (offers) {
 				return Promise.resolve(offers);
@@ -284,7 +313,7 @@ router.get('/search', async (req, res) => {
 		const searchByCreator = async () => {
 			const offers = await Offer.find({
 				active: true,
-				createdBy: createdBy
+				createdBy: searchParameters.createdBy
 			});
 			if (offers) {
 				return Promise.resolve(offers);
@@ -297,7 +326,7 @@ router.get('/search', async (req, res) => {
 		const searchByPrice = async () => {
 			const offers = await Offer.find({
 				active: true,
-				price: price
+				price: searchParameters.price
 			});
 			if (offers) {
 				return Promise.resolve(offers);
@@ -306,26 +335,65 @@ router.get('/search', async (req, res) => {
 			}
 		};
 
-		// filter location query
-		if (filter.location) {
-			const offersByLocation = await searchByLocation();
-			let offers = [];
-			if (offersByLocation) {
-				_.forEach(filter, (value, key) => {
+		// filter for match
+		const filterMatching = offers => {
+			const filterNew = {
+				product: filter.product,
+				createdBy: filter.createdBy,
+				categoryId: filter.categoryId
+			};
+			let filtered = [];
+			if (filter.product || filter.createdBy || filter.categoryId) {
+				_.forEach(filterNew, (value, key) => {
 					if (value === true) {
-						_.map(offersByLocation, offer => {
-							if (key === 'price') {
-								if (offer[key] <= req.body[key]) offers.push(offer);
-							} else if (key === 'tags') {
-								console.log(key);
-							} else {
-								if (offer[key] === req.body[key]) offers.push(offer);
-							}
+						// console.log(key, value);
+						_.map(offers, offer => {
+							if (offer[key] === searchParameters[key]) filtered.push(offer);
 						});
 					}
 				});
-				// send response
-				offers[0] ? res.json(offers) : res.json(offersByLocation);
+				return Promise.resolve(filtered);
+			} else {
+				return Promise.resolve(offers);
+			}
+		};
+		// filter tags
+		const filterTags = offers => {
+			let filtered = [];
+			if (filter.tags) {
+				_.map(offers, offer => {
+					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
+						filtered.push(offer);
+				});
+				return Promise.resolve(filtered);
+			} else {
+				return Promise.resolve(offers);
+			}
+		};
+		// filter for lower value
+		const filterPrice = offers => {
+			let filtered = [];
+			if (filter.price) {
+				_.map(offers, offer => {
+					if (offer.price <= searchParameters.price) filtered.push(offer);
+				});
+				return Promise.resolve(filtered);
+			} else {
+				return Promise.resolve(offers);
+			}
+		};
+
+		// filter location query
+		if (filter.location) {
+			const offersByLocation = await searchByLocation();
+			if (offersByLocation) {
+				filterMatching(offersByLocation, req).then(resolve => {
+					filterTags(resolve).then(resolve => {
+						filterPrice(resolve).then(resolve => {
+							resolve[0] ? res.json(resolve) : res.json(offersByLocation);
+						});
+					});
+				});
 			}
 		}
 	} catch (err) {

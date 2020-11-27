@@ -141,7 +141,7 @@ const Home = () => {
 											animate={{ opacity: 1 }}
 										>
 											<CardMediaV2
-												price={`Daily Price: ${offers[0].price} ${offers[1].currency}`}
+												price={`Daily Price: ${offers[0].price} ${offers[0].currency}`}
 												link={`/offers/offer?id=${offers[0]._id}`}
 												image={`${offers[0].images[0]}`}
 												title={offers[0].title}
@@ -158,62 +158,66 @@ const Home = () => {
 											</CardMediaV2>
 										</motion.div>
 									</Grid>
-									<Grid key={offers[1]._id} item xs={12} md={3}>
-										<motion.div
-											className={classes.motionDiv}
-											transition={{
-												duration: 1,
-												type: 'tween'
-											}}
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-										>
-											<CardMediaV2
-												price={`Daily Price: ${offers[1].price} ${offers[1].currency}`}
-												link={`/offers/offer/id=${offers[1]._id}`}
-												image={`${offers[1].images[0]}`}
-												title={offers[1].title}
-												btnname='View'
-												btnicon={<ArrowRightIcon />}
+									{offers[1] && (
+										<Grid key={offers[1]._id} item xs={12} md={3}>
+											<motion.div
+												className={classes.motionDiv}
+												transition={{
+													duration: 1,
+													type: 'tween'
+												}}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
 											>
-												<Typography className={classes.cardParagraph} variant='body1'>
-													{offers[1].description.join(' ').length > 150 ? (
-														offers[1].description.join(' ').substring(0, 150) + '...'
-													) : (
-														offers[1].description.join(' ')
-													)}
-												</Typography>
-											</CardMediaV2>
-										</motion.div>
-									</Grid>
-									<Grid key={offers[2]._id} item xs={12} md={3}>
-										<motion.div
-											className={classes.motionDiv}
-											transition={{
-												duration: 1,
-												type: 'tween'
-											}}
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-										>
-											<CardMediaV2
-												price={`Daily Price: ${offers[2].price} ${offers[2].currency}`}
-												link={`/offers/offer?id=${offers[2]._id}`}
-												image={`${offers[2].images[0]}`}
-												title={offers[2].title}
-												btnname='View'
-												btnicon={<ArrowRightIcon />}
+												<CardMediaV2
+													price={`Daily Price: ${offers[1].price} ${offers[1].currency}`}
+													link={`/offers/offer/id=${offers[1]._id}`}
+													image={`${offers[1].images[0]}`}
+													title={offers[1].title}
+													btnname='View'
+													btnicon={<ArrowRightIcon />}
+												>
+													<Typography className={classes.cardParagraph} variant='body1'>
+														{offers[1].description.join(' ').length > 150 ? (
+															offers[1].description.join(' ').substring(0, 150) + '...'
+														) : (
+															offers[1].description.join(' ')
+														)}
+													</Typography>
+												</CardMediaV2>
+											</motion.div>
+										</Grid>
+									)}
+									{offers[2] && (
+										<Grid key={offers[2]._id} item xs={12} md={3}>
+											<motion.div
+												className={classes.motionDiv}
+												transition={{
+													duration: 1,
+													type: 'tween'
+												}}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
 											>
-												<Typography className={classes.cardParagraph} variant='body1'>
-													{offers[2].description.join(' ').length > 150 ? (
-														offers[2].description.join(' ').substring(0, 150) + '...'
-													) : (
-														offers[2].description.join(' ')
-													)}
-												</Typography>
-											</CardMediaV2>
-										</motion.div>
-									</Grid>
+												<CardMediaV2
+													price={`Daily Price: ${offers[2].price} ${offers[2].currency}`}
+													link={`/offers/offer?id=${offers[2]._id}`}
+													image={`${offers[2].images[0]}`}
+													title={offers[2].title}
+													btnname='View'
+													btnicon={<ArrowRightIcon />}
+												>
+													<Typography className={classes.cardParagraph} variant='body1'>
+														{offers[2].description.join(' ').length > 150 ? (
+															offers[2].description.join(' ').substring(0, 150) + '...'
+														) : (
+															offers[2].description.join(' ')
+														)}
+													</Typography>
+												</CardMediaV2>
+											</motion.div>
+										</Grid>
+									)}
 								</Grid>
 							) : (
 								<Box width='100%' textAlign='center'>

@@ -31,7 +31,7 @@ const OfferSchema = mongoose.Schema({
 		index: true
 	},
 	tags: {
-		type: String,
+		type: Array,
 		required: true,
 		index: true
 	},
