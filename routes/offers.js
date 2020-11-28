@@ -254,10 +254,23 @@ router.get('/search', async (req, res) => {
 	try {
 		//search by product and tags
 		const searchByProductAndTags = async () => {
-			const offers = await Offer.find({
-				active: true,
-				$text: { $search: `${searchParameters.product} ${searchParameters.tags}` }
-			});
+			let offers = [];
+			if (filter.product && !filter.tags) {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${searchParameters.product}` }
+				});
+			} else if (!filter.product && filter.tags) {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${searchParameters.tags}` }
+				});
+			} else {
+				offers = await Offer.find({
+					active: true,
+					$text: { $search: `${searchParameters.product} ${searchParameters.tags}` }
+				});
+			}
 			if (offers) {
 				return Promise.resolve(offers);
 			} else {
@@ -406,25 +419,38 @@ router.get('/search', async (req, res) => {
 					filterCategory(resolve).then(resolve => {
 						filterCreatedBy(resolve).then(resolve => {
 							filterPrice(resolve).then(resolve => {
-								return res.json(resolve);
+								if (resolve[0]) {
+									return res.json(resolve);
+								} else {
+									return res.status(200).json({ msg: 'No offer was found' });
+								}
 							});
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 
 		// filter product query
 		if (!filter.location && filter.product) {
+			console.log('wproduct');
 			const offersByProductOrTags = await searchByProductAndTags();
 			if (offersByProductOrTags) {
 				filterCategory(offersByProductOrTags).then(resolve => {
 					filterCreatedBy(resolve).then(resolve => {
 						filterPrice(resolve).then(resolve => {
-							return res.json(resolve);
+							if (resolve[0]) {
+								return res.json(resolve);
+							} else {
+								return res.status(200).json({ msg: 'No offer was found' });
+							}
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 
@@ -435,10 +461,16 @@ router.get('/search', async (req, res) => {
 				filterCategory(offersByProductOrTags).then(resolve => {
 					filterCreatedBy(resolve).then(resolve => {
 						filterPrice(resolve).then(resolve => {
-							return res.json(resolve);
+							if (resolve[0]) {
+								return res.json(resolve);
+							} else {
+								return res.status(200).json({ msg: 'No offer was found' });
+							}
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 
@@ -449,10 +481,16 @@ router.get('/search', async (req, res) => {
 				filterProductOrTags(offersByCategory).then(resolve => {
 					filterCreatedBy(resolve).then(resolve => {
 						filterPrice(resolve).then(resolve => {
-							return res.json(resolve);
+							if (resolve[0]) {
+								return res.json(resolve);
+							} else {
+								return res.status(200).json({ msg: 'No offer was found' });
+							}
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 
@@ -463,10 +501,16 @@ router.get('/search', async (req, res) => {
 				filterProductOrTags(offersByCreator).then(resolve => {
 					filterCategory(resolve).then(resolve => {
 						filterPrice(resolve).then(resolve => {
-							return res.json(resolve);
+							if (resolve[0]) {
+								return res.json(resolve);
+							} else {
+								return res.status(200).json({ msg: 'No offer was found' });
+							}
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 
@@ -484,10 +528,16 @@ router.get('/search', async (req, res) => {
 				filterProductOrTags(offersByPrice).then(resolve => {
 					filterCategory(resolve).then(resolve => {
 						filterCreatedBy(resolve).then(resolve => {
-							return res.json(resolve);
+							if (resolve[0]) {
+								return res.json(resolve);
+							} else {
+								return res.status(200).json({ msg: 'No offer was found' });
+							}
 						});
 					});
 				});
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
 			}
 		}
 	} catch (err) {
