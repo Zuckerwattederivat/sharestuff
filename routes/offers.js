@@ -248,10 +248,9 @@ router.get('/search', async (req, res) => {
 			return e.toLowerCase();
 		})
 	};
-
 	// add product to tags
 	searchParameters.tags.push(searchParameters.product);
-	console.log(searchParameters);
+
 	try {
 		//search by product and tags
 		const searchByProductAndTags = async () => {
@@ -326,7 +325,7 @@ router.get('/search', async (req, res) => {
 		const searchByPrice = async () => {
 			const offers = await Offer.find({
 				active: true,
-				price: searchParameters.price
+				price: { $lte: searchParameters.price }
 			});
 			if (offers) {
 				return Promise.resolve(offers);
@@ -335,35 +334,51 @@ router.get('/search', async (req, res) => {
 			}
 		};
 
-		// filter for match
-		const filterMatching = offers => {
-			const filterNew = {
-				product: filter.product,
-				createdBy: filter.createdBy,
-				categoryId: filter.categoryId
-			};
+		// filter product
+		const filterProductOrTags = offers => {
 			let filtered = [];
-			if (filter.product || filter.createdBy || filter.categoryId) {
-				_.forEach(filterNew, (value, key) => {
-					if (value === true) {
-						// console.log(key, value);
-						_.map(offers, offer => {
-							if (offer[key] === searchParameters[key]) filtered.push(offer);
-						});
-					}
+			if (filter.product && filter.tags) {
+				_.map(offers, offer => {
+					if (offer.product.includes(searchParameters.product)) filtered.push(offer);
+				});
+				_.map(offers, offer => {
+					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
+						filtered.push(offer);
+				});
+				return Promise.resolve(filtered);
+			} else if (filter.product && !filter.tags) {
+				_.map(offers, offer => {
+					if (offer.product.includes(searchParameters.product)) filtered.push(offer);
+				});
+				return Promise.resolve(filtered);
+			} else if (!filter.product && filter.tags) {
+				_.map(offers, offer => {
+					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
+						filtered.push(offer);
 				});
 				return Promise.resolve(filtered);
 			} else {
 				return Promise.resolve(offers);
 			}
 		};
-		// filter tags
-		const filterTags = offers => {
+		// filter category
+		const filterCategory = offers => {
 			let filtered = [];
-			if (filter.tags) {
+			if (filter.categoryId) {
 				_.map(offers, offer => {
-					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
-						filtered.push(offer);
+					if (offer.categoryId === searchParameters.categoryId) filtered.push(offer);
+				});
+				return Promise.resolve(filtered);
+			} else {
+				return Promise.resolve(offers);
+			}
+		};
+		// filter category
+		const filterCreatedBy = offers => {
+			let filtered = [];
+			if (filter.createdBy) {
+				_.map(offers, offer => {
+					if (offer.createdBy === searchParameters.createdBy) filtered.push(offer);
 				});
 				return Promise.resolve(filtered);
 			} else {
@@ -387,10 +402,89 @@ router.get('/search', async (req, res) => {
 		if (filter.location) {
 			const offersByLocation = await searchByLocation();
 			if (offersByLocation) {
-				filterMatching(offersByLocation, req).then(resolve => {
-					filterTags(resolve).then(resolve => {
+				filterProductOrTags(offersByLocation).then(resolve => {
+					filterCategory(resolve).then(resolve => {
+						filterCreatedBy(resolve).then(resolve => {
+							filterPrice(resolve).then(resolve => {
+								return res.json(resolve);
+							});
+						});
+					});
+				});
+			}
+		}
+
+		// filter product query
+		if (!filter.location && filter.product) {
+			const offersByProductOrTags = await searchByProductAndTags();
+			if (offersByProductOrTags) {
+				filterCategory(offersByProductOrTags).then(resolve => {
+					filterCreatedBy(resolve).then(resolve => {
 						filterPrice(resolve).then(resolve => {
-							resolve[0] ? res.json(resolve) : res.json(offersByLocation);
+							return res.json(resolve);
+						});
+					});
+				});
+			}
+		}
+
+		// filter tags query
+		if (!filter.location && !filter.product && filter.tags) {
+			const offersByProductOrTags = await searchByProductAndTags();
+			if (offersByProductOrTags) {
+				filterCategory(offersByProductOrTags).then(resolve => {
+					filterCreatedBy(resolve).then(resolve => {
+						filterPrice(resolve).then(resolve => {
+							return res.json(resolve);
+						});
+					});
+				});
+			}
+		}
+
+		// filter category id query
+		if (filter.categoryId && !filter.location && !filter.product && !filter.tags) {
+			const offersByCategory = await searchByCategoryId();
+			if (offersByCategory) {
+				filterProductOrTags(offersByCategory).then(resolve => {
+					filterCreatedBy(resolve).then(resolve => {
+						filterPrice(resolve).then(resolve => {
+							return res.json(resolve);
+						});
+					});
+				});
+			}
+		}
+
+		// filter user query
+		if (filter.createdBy && !filter.categoryId && !filter.location && !filter.product && !filter.tags) {
+			const offersByCreator = await searchByCreator();
+			if (offersByCreator) {
+				filterProductOrTags(offersByCreator).then(resolve => {
+					filterCategory(resolve).then(resolve => {
+						filterPrice(resolve).then(resolve => {
+							return res.json(resolve);
+						});
+					});
+				});
+			}
+		}
+
+		// filter price query
+		if (
+			filter.price &&
+			!filter.createdBy &&
+			!filter.categoryId &&
+			!filter.location &&
+			!filter.product &&
+			!filter.tags
+		) {
+			const offersByPrice = await searchByPrice();
+			if (offersByPrice) {
+				filterProductOrTags(offersByPrice).then(resolve => {
+					filterCategory(resolve).then(resolve => {
+						filterCreatedBy(resolve).then(resolve => {
+							return res.json(resolve);
 						});
 					});
 				});
