@@ -89,13 +89,15 @@ const MainSearch = props => {
 		// prevent default
 		e.preventDefault();
 
+		console.log(searchParams.locationAuto);
+
 		// push history
 		if (searchParams.product && searchParams.locationAuto) {
-			props.history.push(`/offers?product=${searchParams.product}&location_id=${searchParams.locationAuto.id}`);
+			props.history.push(`/offers?product=${searchParams.product}&location=${searchParams.locationAuto.label}`);
 		} else if (searchParams.product && !searchParams.locationAuto) {
 			props.history.push(`/offers?product=${searchParams.product}`);
 		} else if (!searchParams.product && searchParams.locationAuto) {
-			props.history.push(`/offers?location_id=${searchParams.locationAuto.id}`);
+			props.history.push(`/offers?location=${searchParams.locationAuto.label}`);
 		} else {
 			props.history.push(`/offers`);
 		}

@@ -8,12 +8,31 @@ import { SET_LOADING, SET_ALL, CLEAR_ALL, SET_CATEGORIES, SET_OFFERS } from '../
 const QueryState = props => {
 	// initial state
 	const initialState = {
+		errors: null,
 		loading: true,
 		categories: null,
 		category: null,
 		offers: null,
-		offer: null
+		offer: null,
+		filter: {
+			product: false,
+			tags: true,
+			price: true,
+			createdBy: false,
+			categoryId: false,
+			location: false,
+			sorted: 'desc'
+		}
 	};
+
+	// geoCodeApiKey
+	let geoCodeApiKey;
+	// set geoCodeApiKey
+	if (process.env.NODE_ENV !== 'production') {
+		geoCodeApiKey = process.env.REACT_APP_GEOCODE_API_KEY;
+	} else {
+		geoCodeApiKey = process.env.GEOCODE_API_KEY;
+	}
 
 	// destructure reducer
 	const [ state, dispatch ] = useReducer(queryReducer, initialState);
@@ -45,17 +64,31 @@ const QueryState = props => {
 	};
 
 	// set state offers page
-	const setOffersState = async (catId = null, locationId = null, product = null, filter = null) => {
+	const setOffersState = async searchParams => {
 		// set loading
 		setQueryState(SET_LOADING, true);
 
-		// get location
-		// TODO API TO GEOCODE
-		let location = [];
 		// get db data
-		const resCategory = await getCategories({ id: catId });
+		const resCategory = await getCategories({ id: searchParams.catId });
 		const resCategories = await getCategories({});
-		// const resOffers = await searchOffers({ categoryId: catId, product: product, location: location, filter: filter });
+
+		// if search by location
+		if (searchParams.location) {
+			const response = await axios.get(
+				`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`
+			);
+			if (response) {
+				const locationResponse = response.data.features[0].properties;
+				const resOffers = await searchOffers({
+					categoryId: searchParams.catId,
+					product: searchParams.product,
+					location: searchParams.location,
+					filter: state.filter
+				});
+			} else {
+				/// TODO SET ERRORS ///
+			}
+		}
 
 		// set state
 		if (resCategory) {
@@ -70,6 +103,7 @@ const QueryState = props => {
 	return (
 		<QueryContext.Provider
 			value={{
+				errors: state.errors,
 				loading: state.loading,
 				categories: state.categories,
 				category: state.category,

@@ -435,7 +435,6 @@ router.get('/search', async (req, res) => {
 
 		// filter product query
 		if (!filter.location && filter.product) {
-			console.log('wproduct');
 			const offersByProductOrTags = await searchByProductAndTags();
 			if (offersByProductOrTags) {
 				filterCategory(offersByProductOrTags).then(resolve => {

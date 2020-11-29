@@ -42,3 +42,4 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_OFFERS = 'SET_OFFERS';
 export const SET_ALL = 'SET_ALL';
 export const CLEAR_ALL = 'CLEAR_ALL';
+export const SET_FILTER = 'SET_FILTER';

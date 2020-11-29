@@ -1,4 +1,4 @@
-import { SET_CATEGORIES, SET_OFFERS, SET_ALL, SET_LOADING, CLEAR_ALL } from '../types';
+import { SET_CATEGORIES, SET_OFFERS, SET_ALL, SET_LOADING, CLEAR_ALL, SET_FILTER } from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
@@ -21,6 +21,13 @@ export default (state, action) => {
 				offers: action.payload.offers,
 				offer: action.payload.offer,
 				loading: false
+			};
+		case SET_FILTER:
+			return {
+				filter: {
+					...state.filter,
+					[action.payload.filter]: action.payload.value
+				}
 			};
 		case SET_LOADING:
 			return { ...state, loading: action.payload };

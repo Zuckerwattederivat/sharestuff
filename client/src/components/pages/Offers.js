@@ -46,8 +46,9 @@ const Offers = () => {
 
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);
+
 		// set search context
-		setOffersState(urlParams.get('cat_id'), urlParams.get('location_id'), urlParams.get('product'));
+		setOffersState(urlParams.get('cat_id'), urlParams.get('location'), urlParams.get('product'));
 
 		// eslint-disable-next-line
 	}, []);
