@@ -16,8 +16,8 @@ const QueryState = props => {
 		offer: null,
 		filter: {
 			product: false,
-			tags: true,
-			price: true,
+			tags: false,
+			price: false,
 			createdBy: false,
 			categoryId: false,
 			location: false,
@@ -109,11 +109,13 @@ const QueryState = props => {
 				category: state.category,
 				offers: state.offers,
 				offer: state.offer,
+				filter: state.filter,
 				getCategories,
 				getOffers,
 				setHomeState,
 				setOffersState,
-				clearQueryState
+				clearQueryState,
+				setQueryState
 			}}
 		>
 			{props.children}

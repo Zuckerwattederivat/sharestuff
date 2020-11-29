@@ -29,7 +29,7 @@ const Offers = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { categories, category, offers, setOffersState, clearQueryState } = queryContext;
+	const { categories, category, offers, setOffersState, clearQueryState, setQueryState } = queryContext;
 
 	// useffect on render
 	useEffect(() => {
@@ -46,9 +46,22 @@ const Offers = () => {
 
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);
+		const searchParams = {
+			catId: urlParams.get('cat_id'),
+			location: urlParams.get('location'),
+			product: urlParams.get('product')
+		};
 
-		// set search context
-		setOffersState(urlParams.get('cat_id'), urlParams.get('location'), urlParams.get('product'));
+		// set filter
+		searchParams.catId
+			? setQueryState('SET_FILTER', { key: 'categoryId', value: true })
+			: setQueryState('SET_FILTER', { key: 'categoryId', value: true });
+		searchParams.location
+			? setQueryState('SET_FILTER', { key: 'location', value: true })
+			: setQueryState('SET_FILTER', { key: 'location', value: false });
+		searchParams.product
+			? setQueryState('SET_FILTER', { key: 'product', value: true })
+			: setQueryState('SET_FILTER', { key: 'product', value: false });
 
 		// eslint-disable-next-line
 	}, []);

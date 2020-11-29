@@ -16,6 +16,7 @@ export default (state, action) => {
 			};
 		case SET_ALL:
 			return {
+				...state,
 				categories: action.payload.categories,
 				category: action.payload.category,
 				offers: action.payload.offers,
@@ -24,9 +25,10 @@ export default (state, action) => {
 			};
 		case SET_FILTER:
 			return {
+				...state,
 				filter: {
 					...state.filter,
-					[action.payload.filter]: action.payload.value
+					[action.payload.key]: action.payload.value
 				}
 			};
 		case SET_LOADING:
@@ -37,7 +39,16 @@ export default (state, action) => {
 				category: null,
 				offers: null,
 				offer: null,
-				loading: true
+				loading: true,
+				filter: {
+					product: false,
+					tags: false,
+					price: false,
+					createdBy: false,
+					categoryId: false,
+					location: false,
+					sorted: 'desc'
+				}
 			};
 		default:
 			return state;

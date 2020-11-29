@@ -89,8 +89,6 @@ const MainSearch = props => {
 		// prevent default
 		e.preventDefault();
 
-		console.log(searchParams.locationAuto);
-
 		// push history
 		if (searchParams.product && searchParams.locationAuto) {
 			props.history.push(`/offers?product=${searchParams.product}&location=${searchParams.locationAuto.label}`);
