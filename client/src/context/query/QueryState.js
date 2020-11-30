@@ -46,7 +46,14 @@ const QueryState = props => {
 	// get offers with params
 	const getOffers = async paramsObj => await axios.get('/api/offers/get', { params: paramsObj });
 
-	const searchOffers = async paramsObj => await axios.get('/api/offers/search', { params: paramsObj });
+	const searchOffers = async paramsObj => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+		await axios.post('/api/offers/search', paramsObj, config);
+	};
 
 	// set state home page
 	const setHomeState = async () => {
@@ -64,16 +71,15 @@ const QueryState = props => {
 	};
 
 	// set state offers page
-	const setOffersState = async searchParams => {
+	const setOffersState = async (searchParams, filter) => {
 		// set loading
 		setQueryState(SET_LOADING, true);
 
 		// get db data
-		const resCategory = await getCategories({ id: searchParams.catId });
 		const resCategories = await getCategories({});
 
 		// if search by location
-		if (searchParams.location) {
+		if (filter.location) {
 			const response = await axios.get(
 				`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`
 			);
@@ -82,16 +88,13 @@ const QueryState = props => {
 				const resOffers = await searchOffers({
 					categoryId: searchParams.catId,
 					product: searchParams.product,
-					location: searchParams.location,
-					filter: state.filter
+					location: locationResponse,
+					filter: filter
 				});
+				console.log(resOffers);
 			} else {
 				/// TODO SET ERRORS ///
 			}
-		}
-
-		// set state
-		if (resCategory) {
 		}
 	};
 

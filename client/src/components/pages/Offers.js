@@ -29,7 +29,7 @@ const Offers = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { categories, category, offers, setOffersState, clearQueryState, setQueryState } = queryContext;
+	const { categories, category, offers, filter, setOffersState, clearQueryState, setQueryState } = queryContext;
 
 	// useffect on render
 	useEffect(() => {
@@ -55,7 +55,7 @@ const Offers = () => {
 		// set filter
 		searchParams.catId
 			? setQueryState('SET_FILTER', { key: 'categoryId', value: true })
-			: setQueryState('SET_FILTER', { key: 'categoryId', value: true });
+			: setQueryState('SET_FILTER', { key: 'categoryId', value: false });
 		searchParams.location
 			? setQueryState('SET_FILTER', { key: 'location', value: true })
 			: setQueryState('SET_FILTER', { key: 'location', value: false });

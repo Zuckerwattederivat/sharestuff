@@ -230,10 +230,12 @@ router.get('/get', async (req, res) => {
 	}
 });
 
-// @route     GET api/offers/search
+// @route     POST api/offers/search
 // @desc      Search active offers by field values
 // @access    Public
-router.get('/search', async (req, res) => {
+router.post('/search', async (req, res) => {
+	console.log(req);
+
 	// save filter
 	const { filter } = req.body;
 
@@ -243,13 +245,17 @@ router.get('/search', async (req, res) => {
 		price: req.body.price,
 		createdBy: req.body.createdBy,
 		location: req.body.location,
-		product: req.body.product.toLowerCase(),
-		tags: req.body.tags.map(e => {
-			return e.toLowerCase();
-		})
+		product: req.body.product ? req.body.product.toLowerCase() : undefined,
+		tags: req.body.tags
+			? req.body.tags.map(e => {
+					if (e) return e.toLowerCase();
+				})
+			: undefined
 	};
 	// add product to tags
-	searchParameters.tags.push(searchParameters.product);
+	if (searchParameters.product) searchParameters.tags.push(searchParameters.product);
+
+	console.log(searchParameters, filter);
 
 	try {
 		//search by product and tags

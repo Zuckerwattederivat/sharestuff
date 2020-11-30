@@ -1,7 +1,6 @@
 // Node Modules
 import React, { useState, useEffect, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
 import { makeStyles, Grid, TextField, CircularProgress, IconButton } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
@@ -55,16 +54,19 @@ const MainSearch = props => {
 			let active = true;
 
 			if (searchParams.location !== '') {
-				(async () => {
-					const response = await axios.get(
-						`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`
-					);
-
-					if (active && response) {
-						const locations = response.data.features;
-						setOptions(Object.keys(locations).map(key => locations[key].properties));
-					}
-				})();
+				fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
+					.then(resolve => {
+						return resolve.json();
+					})
+					.then(resolve => {
+						if (active) {
+							const locations = resolve.features;
+							setOptions(Object.keys(locations).map(key => locations[key].properties));
+						}
+					})
+					.catch(err => {
+						console.log(err);
+					});
 			}
 
 			return () => {
