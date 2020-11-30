@@ -13,16 +13,7 @@ const QueryState = props => {
 		categories: null,
 		category: null,
 		offers: null,
-		offer: null,
-		filter: {
-			product: false,
-			tags: false,
-			price: false,
-			createdBy: false,
-			categoryId: false,
-			location: false,
-			sorted: 'desc'
-		}
+		offer: null
 	};
 
 	// geoCodeApiKey
@@ -71,30 +62,25 @@ const QueryState = props => {
 	};
 
 	// set state offers page
-	const setOffersState = async (searchParams, filter) => {
+	const setOffersState = searchParams => {
 		// set loading
 		setQueryState(SET_LOADING, true);
 
-		// get db data
-		const resCategories = await getCategories({});
+		// get categories
+		getCategories({}).then(resolve => {
+			setQueryState(SET_CATEGORIES, resolve.data);
+		});
 
-		// if search by location
-		if (filter.location) {
-			const response = await axios.get(
-				`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`
-			);
-			if (response) {
-				const locationResponse = response.data.features[0].properties;
-				const resOffers = await searchOffers({
-					categoryId: searchParams.catId,
-					product: searchParams.product,
-					location: locationResponse,
-					filter: filter
+		// search by location + other parameters
+		console.log(searchParams);
+		if (searchParams.filter.location) {
+			fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
+				.then(resolve => {
+					return resolve.json();
+				})
+				.then(resolve => {
+					searchOffers({});
 				});
-				console.log(resOffers);
-			} else {
-				/// TODO SET ERRORS ///
-			}
 		}
 	};
 
@@ -112,7 +98,6 @@ const QueryState = props => {
 				category: state.category,
 				offers: state.offers,
 				offer: state.offer,
-				filter: state.filter,
 				getCategories,
 				getOffers,
 				setHomeState,

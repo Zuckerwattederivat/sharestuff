@@ -65,7 +65,7 @@ const MainSearch = props => {
 						}
 					})
 					.catch(err => {
-						console.log(err);
+						console.error(err);
 					});
 			}
 

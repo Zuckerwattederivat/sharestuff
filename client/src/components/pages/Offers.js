@@ -29,20 +29,20 @@ const Offers = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { categories, category, offers, filter, setOffersState, clearQueryState, setQueryState } = queryContext;
+	const { categories, category, offers, setOffersState, clearQueryState, setQueryState } = queryContext;
 
 	// useffect on render
 	useEffect(() => {
+		// load user
+		if (localStorage.token) {
+			authContext.loadUser();
+		}
+
 		// scroll to top
 		window.scrollTo(0, 0);
 
 		// clear query state
 		clearQueryState();
-
-		// load user
-		if (localStorage.token) {
-			authContext.loadUser();
-		}
 
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);
@@ -52,16 +52,25 @@ const Offers = () => {
 			product: urlParams.get('product')
 		};
 
+		// filter
+		const filter = {
+			product: false,
+			tags: false,
+			price: false,
+			createdBy: false,
+			categoryId: false,
+			location: false,
+			sorted: 'desc'
+		};
 		// set filter
-		searchParams.catId
-			? setQueryState('SET_FILTER', { key: 'categoryId', value: true })
-			: setQueryState('SET_FILTER', { key: 'categoryId', value: false });
-		searchParams.location
-			? setQueryState('SET_FILTER', { key: 'location', value: true })
-			: setQueryState('SET_FILTER', { key: 'location', value: false });
-		searchParams.product
-			? setQueryState('SET_FILTER', { key: 'product', value: true })
-			: setQueryState('SET_FILTER', { key: 'product', value: false });
+		searchParams.catId ? (filter.categoryId = true) : (filter.categoryId = false);
+		searchParams.location ? (filter.location = true) : (filter.location = false);
+		searchParams.product ? (filter.product = true) : (filter.product = false);
+		// add filter to searchParams
+		searchParams.filter = filter;
+
+		// set offer sate
+		setOffersState(searchParams);
 
 		// eslint-disable-next-line
 	}, []);

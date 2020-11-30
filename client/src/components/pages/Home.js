@@ -57,16 +57,16 @@ const Home = () => {
 
 	// use effect
 	useEffect(() => {
+		// load user
+		if (localStorage.token) {
+			authContext.loadUser();
+		}
 		// scroll to top
 		window.scrollTo(0, 0);
 
 		// clear query context
 		clearQueryState();
 
-		// load user
-		if (localStorage.token) {
-			authContext.loadUser();
-		}
 		// set home state
 		setHomeState();
 		// eslint-disable-next-line
