@@ -285,24 +285,24 @@ router.post('/search', async (req, res) => {
 		// search by location
 		const searchByLocation = async () => {
 			let offers;
-			if (searchParameters.location.neighbourhood_gid) {
+			if (searchParameters.location.neighbourhood) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${searchParameters.location.neighbourhood_gid}` }
+					$text: { $search: `${searchParameters.location.neighbourhood}` }
 				});
-			} else if (!searchParameters.location.neighbourhood_gid && searchParameters.location.locality_gid) {
+			} else if (!searchParameters.location.neighbourhood && searchParameters.location.locality) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${searchParameters.location.locality_gid}` }
+					$text: { $search: `${searchParameters.location.locality}` }
 				});
 			} else if (
-				!searchParameters.location.neighbourhood_gid &&
-				!searchParameters.location.locality_gid &&
-				searchParameters.location.country_gid
+				!searchParameters.location.neighbourhood &&
+				!searchParameters.location.locality &&
+				searchParameters.location.country
 			) {
 				offers = await Offer.find({
 					active: true,
-					$text: { $search: `${searchParameters.location.country_gid}` }
+					$text: { $search: `${searchParameters.location.country}` }
 				});
 			}
 			if (offers) {
