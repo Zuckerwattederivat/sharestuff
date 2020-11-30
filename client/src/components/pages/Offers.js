@@ -29,7 +29,7 @@ const Offers = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { categories, category, offers, setOffersState, clearQueryState, setQueryState } = queryContext;
+	const { categories, category, offers, setOffersState } = queryContext;
 
 	// useffect on render
 	useEffect(() => {
@@ -40,9 +40,6 @@ const Offers = () => {
 
 		// scroll to top
 		window.scrollTo(0, 0);
-
-		// clear query state
-		clearQueryState();
 
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);

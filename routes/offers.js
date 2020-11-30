@@ -234,8 +234,6 @@ router.get('/get', async (req, res) => {
 // @desc      Search active offers by field values
 // @access    Public
 router.post('/search', async (req, res) => {
-	console.log(req);
-
 	// save filter
 	const { filter } = req.body;
 
@@ -308,6 +306,7 @@ router.post('/search', async (req, res) => {
 				});
 			}
 			if (offers) {
+				console.log(offers);
 				return Promise.resolve(offers);
 			} else {
 				return Promise.resolve(false);

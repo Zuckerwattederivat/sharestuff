@@ -53,7 +53,7 @@ const Home = () => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { loading, categories, offers, setHomeState, clearQueryState } = queryContext;
+	const { loading, categories, offers, setHomeState } = queryContext;
 
 	// use effect
 	useEffect(() => {
@@ -61,11 +61,9 @@ const Home = () => {
 		if (localStorage.token) {
 			authContext.loadUser();
 		}
+
 		// scroll to top
 		window.scrollTo(0, 0);
-
-		// clear query context
-		clearQueryState();
 
 		// set home state
 		setHomeState();

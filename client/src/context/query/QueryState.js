@@ -43,7 +43,7 @@ const QueryState = props => {
 				'Content-Type': 'application/json'
 			}
 		};
-		await axios.post('/api/offers/search', paramsObj, config);
+		return await axios.post('/api/offers/search', paramsObj, config);
 	};
 
 	// set state home page
@@ -67,19 +67,35 @@ const QueryState = props => {
 		setQueryState(SET_LOADING, true);
 
 		// get categories
-		getCategories({}).then(resolve => {
-			setQueryState(SET_CATEGORIES, resolve.data);
-		});
+		getCategories({})
+			.then(resolve => {
+				setQueryState(SET_CATEGORIES, resolve.data);
+			})
+			.catch(err => {
+				console.log(err);
+			});
 
 		// search by location + other parameters
-		console.log(searchParams);
 		if (searchParams.filter.location) {
 			fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
 				.then(resolve => {
 					return resolve.json();
 				})
 				.then(resolve => {
-					searchOffers({});
+					searchParams.location = resolve.features[0].properties;
+				})
+				.then(() => {
+					searchOffers(searchParams)
+						.then(resolve => {
+							console.log(resolve);
+							setQueryState(SET_OFFERS, resolve.data);
+						})
+						.catch(err => {
+							console.log(err);
+						});
+				})
+				.catch(err => {
+					console.log(err);
 				});
 		}
 	};
