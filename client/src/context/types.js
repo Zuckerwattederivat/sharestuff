@@ -39,6 +39,7 @@ export const SET_COUNTRY_AUTO = 'SET_COUNTRY_AUTO';
 export const SET_COUNTRY_LABEL = 'SET_COUNTRY_LABEL';
 // search
 export const SET_CATEGORIES = 'SET_CATEGORIES';
+export const SET_CATEGORY = 'SET_CATEGORY';
 export const SET_OFFERS = 'SET_OFFERS';
 export const SET_ALL = 'SET_ALL';
 export const CLEAR_ALL = 'CLEAR_ALL';

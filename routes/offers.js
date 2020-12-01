@@ -367,7 +367,7 @@ router.post('/search', async (req, res) => {
 		// filter product
 		const filterProductOrTags = offers => {
 			let filtered = [];
-			if (filter.product && filter.tags) {
+			if (filter.product || filter.tags) {
 				_.map(offers, offer => {
 					if (offer.product.includes(searchParameters.product)) filtered.push(offer);
 				});
@@ -376,17 +376,18 @@ router.post('/search', async (req, res) => {
 						filtered.push(offer);
 				});
 				return Promise.resolve(filtered);
-			} else if (filter.product && !filter.tags) {
-				_.map(offers, offer => {
-					if (offer.product.includes(searchParameters.product)) filtered.push(offer);
-				});
-				return Promise.resolve(filtered);
-			} else if (!filter.product && filter.tags) {
-				_.map(offers, offer => {
-					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
-						filtered.push(offer);
-				});
-				return Promise.resolve(filtered);
+				// } else if (filter.product && !filter.tags) {
+				// 	_.map(offers, offer => {
+				// 		if (offer.product.includes(searchParameters.product)) filtered.push(offer);
+				// 	});
+				// 	return Promise.resolve(filtered);
+				// } else if (!filter.product && filter.tags) {
+				// 	_.map(offers, offer => {
+				// 		if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
+				// 			filtered.push(offer);
+				// 	});
+				// 	return Promise.resolve(filtered);
+				// }
 			} else {
 				return Promise.resolve(offers);
 			}

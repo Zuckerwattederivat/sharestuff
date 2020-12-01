@@ -7,15 +7,13 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 // Context
 import AuthContext from '../../context/auth/authContext';
-import QueryContext from '../../context/query/queryContext';
 // Components
 import Hero from '../layout/Hero';
-import CardMediaV1 from '../layout/CardMediaV1';
-import CardMediaV2 from '../layout/CardMediaV2';
+import CardMediaV1 from '../cards/CardMediaV1';
+import CardMediaV2 from '../cards/CardMediaV2';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
-import { STATES } from 'mongoose';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -52,10 +50,7 @@ const Home = () => {
 
 	// load auth context
 	const authContext = useContext(AuthContext);
-	// // load query context
-	// const queryContext = useContext(QueryContext);
-	// // destructure query context
-	// const { loading, categories, offers, setHomeState } = queryContext;
+
 	// define home state
 	const [ homeState, setHomeState ] = useState({
 		loading: true,

@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import QueryContext from '../query/queryContext';
 import queryReducer from '../query/queryReducer';
-import { SET_LOADING, SET_ALL, CLEAR_ALL, SET_CATEGORIES, SET_OFFERS, OFFER_ERROR } from '../types';
+import { CLEAR_ALL, SET_CATEGORIES, SET_CATEGORY, SET_OFFERS, OFFER_ERROR } from '../types';
 
 // QueryState
 const QueryState = props => {
@@ -58,12 +58,21 @@ const QueryState = props => {
 				setQueryState(SET_CATEGORIES, resolve.data);
 			})
 			.catch(err => {
-				console.log(err);
+				setQueryState(OFFER_ERROR, err.data);
+			});
+
+		// get category
+		getCategories({ id: searchParams.categoryId })
+			.then(resolve => {
+				setQueryState(SET_CATEGORY, resolve.data);
+			})
+			.catch(err => {
+				console.error(err);
 			});
 
 		// search by location + other parameters
 		if (searchParams.filter.location) {
-			console.log('locastion');
+			//console.log('locations:', searchParams.filter);
 			fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
 				.then(resolve => {
 					return resolve.json();
@@ -77,19 +86,22 @@ const QueryState = props => {
 							!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
 						})
 						.catch(err => {
-							console.log(err);
+							setQueryState(OFFER_ERROR, err.data);
 						});
 				})
 				.catch(err => {
-					console.log(err);
+					setQueryState(OFFER_ERROR, err.data);
 				});
+
+			// search without location
 		} else if (!searchParams.filter.location) {
+			//console.log('no location:', searchParams.filter);
 			searchOffers(searchParams)
 				.then(resolve => {
 					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
 				})
 				.catch(err => {
-					console.log(err);
+					setQueryState(OFFER_ERROR, err.data);
 				});
 		}
 	};
