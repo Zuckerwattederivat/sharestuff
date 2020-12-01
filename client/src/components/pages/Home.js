@@ -88,7 +88,7 @@ const Home = () => {
 	return (
 		<div className={classes.home}>
 			<Hero />
-			<Container className={classes.categories} maxWidth='lg'>
+			<Container className={classes.categories} maxWidth='xl'>
 				{loading ? (
 					<Box width='100%' textAlign='center'>
 						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />

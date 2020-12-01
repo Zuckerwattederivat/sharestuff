@@ -114,7 +114,7 @@ const Offers = () => {
 
 	return (
 		<div className={classes.offers}>
-			<Container maxWidth='lg'>
+			<Container maxWidth='xl'>
 				<Breadcrumbs className={classes.breadcrumps}>
 					<Link component={RouterLink} to='/' color='inherit'>
 						Home
@@ -129,7 +129,7 @@ const Offers = () => {
 				) : (
 					<Box className={classes.categoryContainer} key='categories-box' width='100%'>
 						{categories ? (
-							<Grid container width='100%' spacing={1}>
+							<Grid container width='100%' spacing={2}>
 								{categories.map(el => {
 									return (
 										<Fragment key={`cont-${el._id}`}>

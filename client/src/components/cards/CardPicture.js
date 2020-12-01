@@ -25,11 +25,14 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column'
 	},
 	active: {
-		transform: 'scale(0.955)',
+		transform: 'scale(0.90)',
 		borderBottom: `2px solid ${theme.palette.primary.main}`
 	},
 	media: {
-		height: 150
+		height: 150,
+		[theme.breakpoints.up('xl')]: {
+			height: 220
+		}
 	},
 	cardContent: {
 		position: 'absolute',
