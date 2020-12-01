@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import QueryContext from '../query/queryContext';
 import queryReducer from '../query/queryReducer';
-import { SET_LOADING, SET_ALL, CLEAR_ALL, SET_CATEGORIES, SET_OFFERS } from '../types';
+import { SET_LOADING, SET_ALL, CLEAR_ALL, SET_CATEGORIES, SET_OFFERS, OFFER_ERROR } from '../types';
 
 // QueryState
 const QueryState = props => {
@@ -87,8 +87,7 @@ const QueryState = props => {
 				.then(() => {
 					searchOffers(searchParams)
 						.then(resolve => {
-							console.log(resolve);
-							setQueryState(SET_OFFERS, resolve.data);
+							!resolve.data[0].msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
 						})
 						.catch(err => {
 							console.log(err);

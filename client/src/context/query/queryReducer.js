@@ -1,4 +1,4 @@
-import { SET_CATEGORIES, SET_OFFERS, SET_ALL, SET_LOADING, CLEAR_ALL } from '../types';
+import { SET_CATEGORIES, SET_OFFERS, SET_ALL, SET_LOADING, CLEAR_ALL, OFFER_ERROR } from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
@@ -25,13 +25,15 @@ export default (state, action) => {
 			};
 		case SET_LOADING:
 			return { ...state, loading: action.payload };
+		case OFFER_ERROR:
+			return { ...state, errors: action.payload };
 		case CLEAR_ALL:
 			return {
+				...state,
 				categories: null,
 				category: null,
 				offers: null,
-				offer: null,
-				loading: true
+				offer: null
 			};
 		default:
 			return state;
