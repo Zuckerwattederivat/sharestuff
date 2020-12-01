@@ -10,10 +10,10 @@ const QueryState = props => {
 	const initialState = {
 		errors: null,
 		loading: true,
-		categories: null,
-		category: null,
-		offers: null,
-		offer: null
+		categories: [],
+		category: [],
+		offers: [],
+		offer: []
 	};
 
 	// geoCodeApiKey
@@ -37,6 +37,7 @@ const QueryState = props => {
 	// get offers with params
 	const getOffers = async paramsObj => await axios.get('/api/offers/get', { params: paramsObj });
 
+	// search offers
 	const searchOffers = async paramsObj => {
 		const config = {
 			headers: {
@@ -46,25 +47,10 @@ const QueryState = props => {
 		return await axios.post('/api/offers/search', paramsObj, config);
 	};
 
-	// set state home page
-	const setHomeState = async () => {
-		// set loading
-		setQueryState(SET_LOADING, true);
-
-		// get db data
-		const resCategories = await getCategories({ rand: true, limit: 4 });
-		const resOffers = await getOffers({ sort: 'desc', limit: 3 });
-
-		// set state
-		if (resCategories && resOffers) {
-			dispatch({ type: SET_ALL, payload: { categories: resCategories.data, offers: resOffers.data } });
-		}
-	};
-
 	// set state offers page
 	const setOffersState = searchParams => {
-		// set loading
-		setQueryState(SET_LOADING, true);
+		// clear all
+		clearQueryState();
 
 		// get categories
 		getCategories({})
@@ -77,6 +63,7 @@ const QueryState = props => {
 
 		// search by location + other parameters
 		if (searchParams.filter.location) {
+			console.log('locastion');
 			fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
 				.then(resolve => {
 					return resolve.json();
@@ -87,11 +74,19 @@ const QueryState = props => {
 				.then(() => {
 					searchOffers(searchParams)
 						.then(resolve => {
-							!resolve.data[0].msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+							!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
 						})
 						.catch(err => {
 							console.log(err);
 						});
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		} else if (!searchParams.filter.location) {
+			searchOffers(searchParams)
+				.then(resolve => {
+					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
 				})
 				.catch(err => {
 					console.log(err);
@@ -115,10 +110,7 @@ const QueryState = props => {
 				offer: state.offer,
 				getCategories,
 				getOffers,
-				setHomeState,
-				setOffersState,
-				clearQueryState,
-				setQueryState
+				setOffersState
 			}}
 		>
 			{props.children}

@@ -171,8 +171,6 @@ router.get('/get', async (req, res) => {
 	// save request content
 	const { id, sort, limit } = req.query;
 
-	//console.log(id);
-
 	try {
 		// return all offers
 		if (!id && !sort) {
@@ -248,14 +246,29 @@ router.post('/search', async (req, res) => {
 			? req.body.tags.map(e => {
 					if (e) return e.toLowerCase();
 				})
-			: undefined
+			: []
 	};
 	// add product to tags
 	if (searchParameters.product) searchParameters.tags.push(searchParameters.product);
 
-	console.log(searchParameters, filter);
-
 	try {
+		// return if filter is false
+		if (
+			!filter.product &&
+			!filter.tags[0] &&
+			!filter.price &&
+			!filter.createdBy &&
+			!filter.categoryId &&
+			!filter.location
+		) {
+			const offers = await Offer.find({});
+			if (offers) {
+				return res.json(offers);
+			} else {
+				return res.status(200).json({ msg: 'No offer was found' });
+			}
+		}
+
 		//search by product and tags
 		const searchByProductAndTags = async () => {
 			let offers = [];
@@ -306,7 +319,6 @@ router.post('/search', async (req, res) => {
 				});
 			}
 			if (offers) {
-				console.log(offers);
 				return Promise.resolve(offers);
 			} else {
 				return Promise.resolve(false);

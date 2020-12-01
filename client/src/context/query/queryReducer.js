@@ -29,11 +29,12 @@ export default (state, action) => {
 			return { ...state, errors: action.payload };
 		case CLEAR_ALL:
 			return {
-				...state,
-				categories: null,
-				category: null,
-				offers: null,
-				offer: null
+				loading: true,
+				errors: null,
+				categories: [],
+				category: [],
+				offers: [],
+				offer: []
 			};
 		default:
 			return state;

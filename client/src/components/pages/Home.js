@@ -1,9 +1,10 @@
 // Node Modules
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Box, Container, Typography, Grid } from '@material-ui/core';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import QueryContext from '../../context/query/queryContext';
@@ -14,6 +15,7 @@ import CardMediaV2 from '../layout/CardMediaV2';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
+import { STATES } from 'mongoose';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -50,10 +52,18 @@ const Home = () => {
 
 	// load auth context
 	const authContext = useContext(AuthContext);
-	// load query context
-	const queryContext = useContext(QueryContext);
-	// destructure query context
-	const { loading, categories, offers, setHomeState } = queryContext;
+	// // load query context
+	// const queryContext = useContext(QueryContext);
+	// // destructure query context
+	// const { loading, categories, offers, setHomeState } = queryContext;
+	// define home state
+	const [ homeState, setHomeState ] = useState({
+		loading: true,
+		categories: [],
+		offers: []
+	});
+	// destructure state
+	const { loading, categories, offers } = homeState;
 
 	// use effect
 	useEffect(() => {
@@ -65,8 +75,18 @@ const Home = () => {
 		// scroll to top
 		window.scrollTo(0, 0);
 
-		// set home state
-		setHomeState();
+		(async () => {
+			// get catgeories with params
+			const resCategories = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
+			// get offers with params
+			const resOffers = await axios.get('/api/offers/get', { params: { sort: 'desc', limit: 3 } });
+
+			// set state
+			if (resCategories && resOffers) {
+				setHomeState({ loading: false, categories: resCategories.data, offers: resOffers.data });
+			}
+		})();
+
 		// eslint-disable-next-line
 	}, []);
 
@@ -84,7 +104,7 @@ const Home = () => {
 							<Typography className={classes.h2} variant='h2'>
 								Featured <span className={classes.textPrimary}>Categories</span>
 							</Typography>
-							{categories[0] ? (
+							{categories ? (
 								<Grid container width='100%' spacing={4}>
 									{categories.map(category => {
 										return (
