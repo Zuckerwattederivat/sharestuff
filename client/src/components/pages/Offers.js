@@ -114,7 +114,7 @@ const Offers = () => {
 
 	return (
 		<div className={classes.offers}>
-			<Container maxWidth='xl'>
+			<Container maxWidth='lg'>
 				<Breadcrumbs className={classes.breadcrumps}>
 					<Link component={RouterLink} to='/' color='inherit'>
 						Home

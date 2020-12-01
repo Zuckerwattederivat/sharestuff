@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column'
 	},
 	active: {
-		transform: 'scale(0.96)',
+		transform: 'scale(0.955)',
 		borderBottom: `2px solid ${theme.palette.primary.main}`
 	},
 	media: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 10,
 		width: '100%',
 		height: '100%',
-		background: 'rgba(0, 0, 0, 0.3)'
+		background: 'rgba(0, 0, 0, 0.4)'
 	}
 }));
 
