@@ -157,6 +157,18 @@ const Offers = props => {
 		}
 	};
 
+	// clear all
+	const handleClearAll = () => {
+		// remove all from params and filter
+		const searchParams = setParamsAndFilter(true, true, true);
+
+		// push to url
+		setUrlParams(searchParams);
+
+		// set offer sate
+		setOffersState(searchParams);
+	};
+
 	return (
 		<div className={classes.offers}>
 			<Container maxWidth='xl'>
@@ -166,7 +178,12 @@ const Offers = props => {
 					</Link>
 					<Typography color='textPrimary'>Find Offers</Typography>
 				</Breadcrumbs>
-				<OffersSearch setUrl={setUrlParams} setSearch={setParamsAndFilter} setParentState={setOffersState} />
+				<OffersSearch
+					setUrl={setUrlParams}
+					setSearch={setParamsAndFilter}
+					setParentState={setOffersState}
+					clearAll={handleClearAll}
+				/>
 				<Box className={classes.categoryContainer} key='categories-box' width='100%'>
 					{categories && (
 						<Grid container width='100%' spacing={2}>

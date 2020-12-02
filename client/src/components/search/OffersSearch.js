@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, Box, TextField, CircularProgress, IconButton, Button } from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
+import { Search as SearchIcon, Clear as ClearIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 
 // define styles
@@ -34,7 +34,13 @@ const useStyles = makeStyles(theme => ({
 	locationInput: {
 		flexBasis: '100%',
 		[theme.breakpoints.up('sm')]: {
-			flexBasis: '88%'
+			flexBasis: '75%'
+		},
+		[theme.breakpoints.up('md')]: {
+			flexBasis: '80%'
+		},
+		[theme.breakpoints.up('lg')]: {
+			flexBasis: '85%'
 		}
 	},
 	buttonWide: {
@@ -46,7 +52,16 @@ const useStyles = makeStyles(theme => ({
 			display: 'none'
 		}
 	},
-	buttonSmall: {
+	clearAllButtonWide: {
+		height: '30px'
+	},
+	buttonSmall1: {
+		[theme.breakpoints.up('sm')]: {
+			display: 'none'
+		}
+	},
+	buttonSmall2: {
+		marginTop: theme.spacing(1),
 		[theme.breakpoints.up('sm')]: {
 			display: 'none'
 		}
@@ -122,6 +137,19 @@ const OffersSearch = props => {
 		[ open ]
 	);
 
+	// clear all
+	const clearAll = () => {
+		props.clearAll();
+		setSearchParams({ product: '', location: '', locationAuto: null });
+	};
+
+	// rerender on searchParams
+	useEffect(
+		() => {},
+		// eslint-disable-next-line
+		[ searchParams.product, searchParams.location, searchParams.locationAuto ]
+	);
+
 	// on submit
 	const onSubmit = e => {
 		// prevent default
@@ -152,6 +180,7 @@ const OffersSearch = props => {
 		<form onSubmit={onSubmit}>
 			<Box width='100%' className={classes.searchContainer}>
 				<TextField
+					size='medium'
 					id='product'
 					name='product'
 					className={classes.textfield}
@@ -160,11 +189,12 @@ const OffersSearch = props => {
 					placeholder='vacum cleaner'
 					type='text'
 					onChange={handleInputChange('product')}
-					defaultValue={searchParamsParent.product ? searchParamsParent.product : searchParams.product}
+					value={searchParamsParent.product ? searchParamsParent.product : searchParams.product}
 				/>
 				<Box className={classes.localContainer}>
 					<Autocomplete
 						className={classes.locationInput}
+						size='medium'
 						id='location'
 						name='location'
 						open={open}
@@ -179,6 +209,7 @@ const OffersSearch = props => {
 						getOptionLabel={option => option.label}
 						options={options}
 						loading={loading}
+						inputValue={!searchParams.locationAuto ? searchParams.location : searchParams.locationAuto.label}
 						renderInput={params => (
 							<TextField
 								{...params}
@@ -200,19 +231,35 @@ const OffersSearch = props => {
 						)}
 					/>
 					<Box className={classes.buttonWide}>
-						<IconButton name='submit' type='submit' width='100%' variant='contained'>
-							<SearchIcon className={classes.buttonIcon} />
+						<IconButton className={classes.buttonIcon} name='submit' type='submit' variant='contained'>
+							<SearchIcon />
+						</IconButton>
+						<IconButton name='clear' variant='contained' onClick={clearAll}>
+							<ClearIcon />
 						</IconButton>
 					</Box>
 				</Box>
 				<Button
-					className={classes.buttonSmall}
-					size='large'
+					className={classes.buttonSmall1}
+					name='submit'
+					type='submit'
+					size='medium'
 					variant='contained'
 					color='primary'
 					startIcon={<SearchIcon />}
 				>
 					Search
+				</Button>
+				<Button
+					onClick={clearAll}
+					className={classes.buttonSmall2}
+					name='clear'
+					size='medium'
+					variant='contained'
+					color='secondary'
+					startIcon={<ClearIcon />}
+				>
+					Clear
 				</Button>
 			</Box>
 		</form>
@@ -223,7 +270,8 @@ const OffersSearch = props => {
 OffersSearch.propTypes = {
 	setUrl: PropTypes.func.isRequired,
 	setSearch: PropTypes.func.isRequired,
-	setParentState: PropTypes.func.isRequired
+	setParentState: PropTypes.func.isRequired,
+	clearAll: PropTypes.func.isRequired
 };
 
 // export OffersSearch

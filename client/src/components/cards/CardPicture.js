@@ -2,15 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import {
-	Card,
-	CardActionArea,
-	CardActions,
-	CardContent,
-	CardMedia as CardImage,
-	Button,
-	Typography
-} from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia as CardImage, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 // Utils
 import utils from '../../utils/helpers';
