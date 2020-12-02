@@ -14,6 +14,7 @@ import CardMediaV2 from '../cards/CardMediaV2';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
+import NotFoundSvg from '../../assets/undraw/not-found.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -40,6 +41,18 @@ const useStyles = makeStyles(theme => ({
 	},
 	cardParagraph: {
 		minHeight: '1rem'
+	},
+	notFoundContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column',
+		'& h3': {
+			fontSize: '1.5rem',
+			fontWeight: 700,
+			color: theme.palette.primary.main,
+			margin: theme.spacing(1.5, 0)
+		}
 	}
 }));
 
@@ -130,8 +143,9 @@ const Home = () => {
 									})}
 								</Grid>
 							) : (
-								<Box width='100%' textAlign='center'>
+								<Box className={classes.notFoundContainer} width='100%' textAlign='center'>
 									<img className={classes.emptySvg} src={EmptySvg} alt='Empty' />
+									<Typography variant='h3'>No categories found</Typography>
 									<Typography variant='body1'>Sorry there aren't any categories yet...</Typography>
 								</Box>
 							)}
@@ -233,9 +247,10 @@ const Home = () => {
 									)}
 								</Grid>
 							) : (
-								<Box width='100%' textAlign='center'>
-									<img className={classes.emptySvg} src={EmptySvg} alt='Empty' />
-									<Typography variant='body1'>Sorry there aren't any offers yet...</Typography>
+								<Box className={classes.notFoundContainer} width='100%' textAlign='center'>
+									<img className={classes.emptySvg} src={NotFoundSvg} alt='Not found' />
+									<Typography variant='h3'>No offer was found</Typography>
+									<Typography variant='body1'>Sorry there aren't any offers yet</Typography>
 								</Box>
 							)}
 						</Box>

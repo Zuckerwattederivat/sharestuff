@@ -207,15 +207,7 @@ const OffersSearch = props => {
 						getOptionLabel={option => option.label}
 						options={options}
 						loading={loading}
-						inputValue={
-							searchParamsParent.location ? (
-								searchParamsParent.location
-							) : !searchParams.locationAuto ? (
-								searchParams.location
-							) : (
-								searchParams.locationAuto.label
-							)
-						}
+						inputValue={!searchParams.locationAuto ? searchParams.location : searchParams.locationAuto.label}
 						renderInput={params => (
 							<TextField
 								{...params}

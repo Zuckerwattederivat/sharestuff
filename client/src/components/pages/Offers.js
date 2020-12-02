@@ -13,22 +13,33 @@ import OffersSearch from '../search/OffersSearch';
 import CardPicture from '../cards/CardPicture';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
-import EmptySvg from '../../assets/undraw/empty.svg';
+import NotFoundSvg from '../../assets/undraw/not-found.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
+	textPrimary: {
+		color: theme.palette.primary.main
+	},
 	offers: {
 		minHeight: '100vh',
-		padding: theme.spacing(12, 0, 8)
+		padding: theme.spacing(12, 0, 0)
 	},
 	breadcrumps: {
 		margin: theme.spacing(0, 0, 4)
 	},
-	loadingGif: {
-		height: '20vh'
-	},
+
 	categoryContainer: {
-		margin: theme.spacing(2, 0)
+		minHeight: '80px',
+		margin: theme.spacing(2, 0),
+		[theme.breakpoints.up('sm')]: {
+			minHeight: '320px'
+		},
+		[theme.breakpoints.up('md')]: {
+			minHeight: '150px'
+		},
+		[theme.breakpoints.up('xl')]: {
+			minHeight: '220px'
+		}
 	},
 	categoryCards: {
 		[theme.breakpoints.down('xs')]: {
@@ -42,6 +53,31 @@ const useStyles = makeStyles(theme => ({
 	},
 	categoryButton: {
 		width: '100%'
+	},
+	searchTitle: {
+		fontSize: '1.7rem',
+		fontWeight: 700,
+		margin: theme.spacing(5, 0, 3)
+	},
+	loadingGif: {
+		height: '20vh'
+	},
+	noOffersContainer: {
+		minHeight: '50vh',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column',
+		'& h3': {
+			fontSize: '1.5rem',
+			fontWeight: 700,
+			color: theme.palette.primary.main,
+			margin: theme.spacing(1.5, 0)
+		}
+	},
+	notFoundSvg: {
+		height: '200px',
+		marginBottom: theme.spacing(2)
 	}
 }));
 
@@ -55,7 +91,7 @@ const Offers = props => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { loading, categories, category, offers, setOffersState } = queryContext;
+	const { errors, loading, categories, category, offers, setOffersState } = queryContext;
 
 	// set search params & filter
 	const setParamsAndFilter = (delCat = false, delLoc = false, delProd = false) => {
@@ -239,6 +275,21 @@ const Offers = props => {
 						</Grid>
 					)}
 				</Box>
+				{loading ? (
+					<Box width='100%' textAlign='center'>
+						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
+					</Box>
+				) : offers[0] ? (
+					<Typography className={classes.searchTitle} width='100%' variant='h2'>
+						Search <span className={classes.textPrimary}>Results</span>
+					</Typography>
+				) : (
+					<Box className={classes.noOffersContainer} width='100%' height='100%'>
+						<img className={classes.notFoundSvg} src={NotFoundSvg} alt='Empty' />
+						<Typography variant='h3'>{errors.msg}</Typography>
+						<Typography variant='body1'>Sorry your search returned no results.</Typography>
+					</Box>
+				)}
 			</Container>
 		</div>
 	);
