@@ -5,14 +5,12 @@ export default (state, action) => {
 		case SET_CATEGORIES:
 			return {
 				...state,
-				categories: action.payload,
-				loading: false
+				categories: action.payload
 			};
 		case SET_CATEGORY:
 			return {
 				...state,
-				category: action.payload,
-				loading: false
+				category: action.payload
 			};
 		case SET_OFFERS:
 			return {
@@ -32,12 +30,16 @@ export default (state, action) => {
 		case SET_LOADING:
 			return { ...state, loading: action.payload };
 		case OFFER_ERROR:
-			return { ...state, errors: action.payload };
+			return {
+				...state,
+				loading: false,
+				errors: action.payload
+			};
 		case CLEAR_ALL:
 			return {
+				...state,
 				loading: true,
 				errors: null,
-				categories: [],
 				category: [],
 				offers: [],
 				offer: []

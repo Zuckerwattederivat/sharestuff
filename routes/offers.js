@@ -375,7 +375,10 @@ router.post('/search', async (req, res) => {
 					if (_.difference(searchParameters.tags, offer.tags).length < searchParameters.tags.length)
 						filtered.push(offer);
 				});
-				return Promise.resolve(filtered);
+				const filteredWithoutDuplicates = _.uniqBy(filtered, e => {
+					return e._id;
+				});
+				return Promise.resolve(filteredWithoutDuplicates);
 				// } else if (filter.product && !filter.tags) {
 				// 	_.map(offers, offer => {
 				// 		if (offer.product.includes(searchParameters.product)) filtered.push(offer);

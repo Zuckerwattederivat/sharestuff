@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column'
 	},
 	active: {
-		transform: 'scale(0.90)',
 		borderBottom: `2px solid ${theme.palette.primary.main}`
 	},
 	media: {

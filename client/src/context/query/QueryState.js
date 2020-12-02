@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import QueryContext from '../query/queryContext';
 import queryReducer from '../query/queryReducer';
-import { CLEAR_ALL, SET_CATEGORIES, SET_CATEGORY, SET_OFFERS, OFFER_ERROR } from '../types';
+import { CLEAR_ALL, SET_LOADING, SET_CATEGORIES, SET_CATEGORY, SET_OFFERS, OFFER_ERROR } from '../types';
 
 // QueryState
 const QueryState = props => {
@@ -49,18 +49,21 @@ const QueryState = props => {
 
 	// set state offers page
 	const setOffersState = searchParams => {
+		// set loading
+		setQueryState(SET_LOADING, true);
 		// clear all
 		clearQueryState();
 
 		// get categories
-		getCategories({})
-			.then(resolve => {
-				setQueryState(SET_CATEGORIES, resolve.data);
-			})
-			.catch(err => {
-				setQueryState(OFFER_ERROR, err.data);
-			});
-
+		if (!state.categories[0]) {
+			getCategories({})
+				.then(resolve => {
+					setQueryState(SET_CATEGORIES, resolve.data);
+				})
+				.catch(err => {
+					setQueryState(OFFER_ERROR, err.data);
+				});
+		}
 		// get category
 		getCategories({ id: searchParams.categoryId })
 			.then(resolve => {
