@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: theme.spacing(1),
 		[theme.breakpoints.up('sm')]: {
 			flexBasis: '50%',
+			marginBottom: theme.spacing(0),
 			marginRight: theme.spacing(2)
 		}
 	},
@@ -51,9 +52,6 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'
 		}
-	},
-	clearAllButtonWide: {
-		height: '30px'
 	},
 	buttonSmall1: {
 		[theme.breakpoints.up('sm')]: {
@@ -209,7 +207,15 @@ const OffersSearch = props => {
 						getOptionLabel={option => option.label}
 						options={options}
 						loading={loading}
-						inputValue={!searchParams.locationAuto ? searchParams.location : searchParams.locationAuto.label}
+						inputValue={
+							searchParamsParent.location ? (
+								searchParamsParent.location
+							) : !searchParams.locationAuto ? (
+								searchParams.location
+							) : (
+								searchParams.locationAuto.label
+							)
+						}
 						renderInput={params => (
 							<TextField
 								{...params}
