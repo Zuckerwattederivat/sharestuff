@@ -280,9 +280,12 @@ const Offers = props => {
 						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
 					</Box>
 				) : offers[0] ? (
-					<Typography className={classes.searchTitle} width='100%' variant='h2'>
-						Search <span className={classes.textPrimary}>Results</span>
-					</Typography>
+					<Fragment>
+						<Typography className={classes.searchTitle} width='100%' variant='h2'>
+							Search <span className={classes.textPrimary}>Results</span>
+						</Typography>
+						<p>TODO: offers with pagination</p>
+					</Fragment>
 				) : (
 					<Box className={classes.noOffersContainer} width='100%' height='100%'>
 						<img className={classes.notFoundSvg} src={NotFoundSvg} alt='Empty' />
