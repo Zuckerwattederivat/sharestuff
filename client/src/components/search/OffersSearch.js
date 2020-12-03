@@ -84,12 +84,17 @@ const OffersSearch = props => {
 	const [ open, setOpen ] = useState(false);
 	const [ options, setOptions ] = useState([]);
 	const loading = open && options.length === 0;
+
 	// input state
 	const [ searchParams, setSearchParams ] = useState({
 		product: '',
 		location: '',
+		locationTyping: false,
 		locationAuto: null
 	});
+
+	// typing state
+	const [ typing, setTyping ] = useState(false);
 
 	// set search params
 	const searchParamsParent = props.setSearch();
@@ -138,7 +143,7 @@ const OffersSearch = props => {
 	// clear all
 	const clearAll = () => {
 		props.clearAll();
-		setSearchParams({ product: '', location: '', locationAuto: null });
+		setSearchParams({ product: '', location: '', locationTyping: false, locationAuto: null });
 	};
 
 	// rerender on searchParams
@@ -201,17 +206,27 @@ const OffersSearch = props => {
 						}}
 						onClose={() => {
 							setOpen(false);
+							setTyping(false);
 						}}
 						onChange={(e, option) => setSearchParams({ ...searchParams, locationAuto: option })}
 						getOptionSelected={(option, value) => option.label === value.label}
 						getOptionLabel={option => option.label}
 						options={options}
 						loading={loading}
-						inputValue={!searchParams.locationAuto ? searchParams.location : searchParams.locationAuto.label}
+						inputValue={
+							!typing && searchParamsParent.location ? (
+								searchParamsParent.location
+							) : !typing && searchParams.locationAuto ? (
+								searchParams.locationAuto.label
+							) : (
+								searchParams.location
+							)
+						}
 						renderInput={params => (
 							<TextField
 								{...params}
 								onChange={handleInputChange('location')}
+								onClick={() => setTyping(true)}
 								className={classes.textfield}
 								label='Location'
 								variant='outlined'
