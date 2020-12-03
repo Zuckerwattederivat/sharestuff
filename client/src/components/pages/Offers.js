@@ -318,7 +318,7 @@ const Offers = props => {
 						<Grid className={classes.offersGrid} container width='100%' spacing={4}>
 							{offersPaginated.map(el => {
 								return (
-									<Grid key={el._id} item xs={12} md={4}>
+									<Grid key={el._id} item xs={12} sm={6} md={4}>
 										<motion.div
 											className={classes.offersCard}
 											transition={{
