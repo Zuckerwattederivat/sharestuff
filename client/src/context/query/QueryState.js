@@ -65,13 +65,15 @@ const QueryState = props => {
 				});
 		}
 		// get category
-		getCategories({ id: searchParams.categoryId })
-			.then(resolve => {
-				setQueryState(SET_CATEGORY, resolve.data);
-			})
-			.catch(err => {
-				console.error(err);
-			});
+		if (searchParams.categoryId) {
+			getCategories({ id: searchParams.categoryId })
+				.then(resolve => {
+					setQueryState(SET_CATEGORY, resolve.data);
+				})
+				.catch(err => {
+					console.error(err);
+				});
+		}
 
 		// search by location + other parameters
 		if (searchParams.filter.location) {
