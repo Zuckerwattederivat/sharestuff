@@ -61,6 +61,7 @@ const QueryState = props => {
 	const getOffersPaginated = (offers, lowerRange, upperRange) => {
 		let offersPaginated = [];
 		if (lowerRange === 1) lowerRange = 0;
+		// eslint-disable-next-line
 		offers.map((el, i) => {
 			if (i >= lowerRange && i < upperRange) offersPaginated.push(el);
 		});
@@ -121,6 +122,7 @@ const QueryState = props => {
 								getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 							// calculate page count
 							let pageCount = Math.round(resolve.data.length / 12);
+							if (pageCount < 1) pageCount = 1;
 							// set page count
 							setQueryState(SET_PAGE_COUNT, pageCount);
 						})
@@ -142,7 +144,7 @@ const QueryState = props => {
 						getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 					// calculate page count
 					let pageCount = Math.round(resolve.data.length / 12);
-					pageCount < 1 ? (pageCount = 1) : (pageCount = pageCount);
+					if (pageCount < 1) pageCount = 1;
 					// set page count
 					setQueryState(SET_PAGE_COUNT, pageCount);
 				})

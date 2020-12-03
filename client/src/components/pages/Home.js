@@ -157,94 +157,45 @@ const Home = () => {
 							</Typography>
 							{offers[0] ? (
 								<Grid container width='100%' spacing={3}>
-									<Grid key={offers[0]._id} item xs={12} md={6}>
-										<motion.div
-											className={classes.motionDiv}
-											transition={{
-												duration: 1,
-												type: 'tween'
-											}}
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-										>
-											<CardMediaV2
-												price={`Daily Price: ${offers[0].price} ${offers[0].currency}`}
-												link={`/offers/offer?id=${offers[0]._id}`}
-												image={`${offers[0].images[0]}`}
-												title={offers[0].title}
-												btnname='View'
-												btnicon={<ArrowRightIcon />}
+									{offers.map((el, i) => {
+										return (
+											<Grid
+												key={el._id}
+												item
+												xs={12}
+												sm={i === 0 || i === 5 ? 12 : 6}
+												md={6}
+												lg={i === 0 || i === 5 ? 6 : 3}
 											>
-												<Typography className={classes.cardParagraph} variant='body1'>
-													{offers[0].description.join(' ').length > 500 ? (
-														offers[0].description.join(' ').substring(0, 500) + '...'
-													) : (
-														offers[0].description.join(' ')
-													)}
-												</Typography>
-											</CardMediaV2>
-										</motion.div>
-									</Grid>
-									{offers[1] && (
-										<Grid key={offers[1]._id} item xs={12} md={3}>
-											<motion.div
-												className={classes.motionDiv}
-												transition={{
-													duration: 1,
-													type: 'tween'
-												}}
-												initial={{ opacity: 0 }}
-												animate={{ opacity: 1 }}
-											>
-												<CardMediaV2
-													price={`Daily Price: ${offers[1].price} ${offers[1].currency}`}
-													link={`/offers/offer/id=${offers[1]._id}`}
-													image={`${offers[1].images[0]}`}
-													title={offers[1].title}
-													btnname='View'
-													btnicon={<ArrowRightIcon />}
+												<motion.div
+													className={classes.motionDiv}
+													transition={{
+														duration: 1,
+														type: 'tween'
+													}}
+													initial={{ opacity: 0 }}
+													animate={{ opacity: 1 }}
 												>
-													<Typography className={classes.cardParagraph} variant='body1'>
-														{offers[1].description.join(' ').length > 150 ? (
-															offers[1].description.join(' ').substring(0, 150) + '...'
-														) : (
-															offers[1].description.join(' ')
-														)}
-													</Typography>
-												</CardMediaV2>
-											</motion.div>
-										</Grid>
-									)}
-									{offers[2] && (
-										<Grid key={offers[2]._id} item xs={12} md={3}>
-											<motion.div
-												className={classes.motionDiv}
-												transition={{
-													duration: 1,
-													type: 'tween'
-												}}
-												initial={{ opacity: 0 }}
-												animate={{ opacity: 1 }}
-											>
-												<CardMediaV2
-													price={`Daily Price: ${offers[2].price} ${offers[2].currency}`}
-													link={`/offers/offer?id=${offers[2]._id}`}
-													image={`${offers[2].images[0]}`}
-													title={offers[2].title}
-													btnname='View'
-													btnicon={<ArrowRightIcon />}
-												>
-													<Typography className={classes.cardParagraph} variant='body1'>
-														{offers[2].description.join(' ').length > 150 ? (
-															offers[2].description.join(' ').substring(0, 150) + '...'
-														) : (
-															offers[2].description.join(' ')
-														)}
-													</Typography>
-												</CardMediaV2>
-											</motion.div>
-										</Grid>
-									)}
+													<CardMediaV2
+														price={`Daily Price: ${el.price} ${el.currency}`}
+														link={`/offers/offer?id=${el._id}`}
+														image={`${el.images[0]}`}
+														title={el.title}
+														btnname='View'
+														btnicon={<ArrowRightIcon />}
+													>
+														<Typography className={classes.cardParagraph} variant='body1'>
+															{el.description.join(' ').length > 500 ? (
+																el.description.join(' ').substring(0, 500) + '...'
+															) : (
+																el.description.join(' ')
+															)}
+														</Typography>
+													</CardMediaV2>
+												</motion.div>
+											</Grid>
+										);
+									})}
 								</Grid>
 							) : (
 								<Box className={classes.notFoundContainer} width='100%' textAlign='center'>
