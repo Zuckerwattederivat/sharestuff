@@ -7,7 +7,8 @@ import {
 	CLEAR_ALL,
 	OFFER_ERROR,
 	SET_PAGE,
-	SET_PAGE_COUNT
+	SET_PAGE_COUNT,
+	SET_OFFERS_PAGINATED
 } from '../types';
 
 export default (state, action) => {
@@ -25,7 +26,12 @@ export default (state, action) => {
 		case SET_OFFERS:
 			return {
 				...state,
-				offers: action.payload,
+				offers: action.payload
+			};
+		case SET_OFFERS_PAGINATED:
+			return {
+				...state,
+				offersPaginated: action.payload,
 				loading: false
 			};
 		case SET_ALL:
@@ -52,6 +58,7 @@ export default (state, action) => {
 				errors: null,
 				category: [],
 				offers: [],
+				offersPaginated: [],
 				offer: [],
 				page: 1,
 				pageCount: 1

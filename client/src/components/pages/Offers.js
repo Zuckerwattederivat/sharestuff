@@ -103,7 +103,18 @@ const Offers = props => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { errors, loading, categories, category, offers, page, pageCount, setOffersState, setPage } = queryContext;
+	const {
+		errors,
+		loading,
+		categories,
+		category,
+		offers,
+		offersPaginated,
+		page,
+		pageCount,
+		setOffersState,
+		setPage
+	} = queryContext;
 
 	// set search params & filter
 	const setParamsAndFilter = (delCat = false, delLoc = false, delProd = false) => {
@@ -219,6 +230,8 @@ const Offers = props => {
 
 	// handle pagination
 	const handlePagination = (e, value) => {
+		// scroll to top of results
+		window.scroll(0, 310);
 		// set page
 		setPage(value);
 	};
@@ -303,41 +316,37 @@ const Offers = props => {
 							Search <span className={classes.textPrimary}>Results</span>
 						</Typography>
 						<Grid className={classes.offersGrid} container width='100%' spacing={4}>
-							{offers.map((el, i) => {
-								const lowerRange = page === 1 ? page : page * 15;
-								const upperRange = page * 15;
-								if (i >= lowerRange - 1 && i < upperRange) {
-									return (
-										<Grid key={el._id} item xs={12} sm={4}>
-											<motion.div
-												className={classes.offersCard}
-												transition={{
-													duration: 1,
-													type: 'tween'
-												}}
-												initial={{ opacity: 0 }}
-												animate={{ opacity: 1 }}
+							{offersPaginated.map(el => {
+								return (
+									<Grid key={el._id} item xs={12} md={4}>
+										<motion.div
+											className={classes.offersCard}
+											transition={{
+												duration: 1,
+												type: 'tween'
+											}}
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+										>
+											<CardMediaV2
+												price={`Daily Price: ${el.price} ${el.currency}`}
+												link={`/offers/offer?id=${el._id}`}
+												image={`${el.images[0]}`}
+												title={el.title}
+												btnname='View'
+												btnicon={<ArrowRightIcon />}
 											>
-												<CardMediaV2
-													price={`Daily Price: ${el.price} ${el.currency}`}
-													link={`/offers/offer?id=${el._id}`}
-													image={`${el.images[0]}`}
-													title={el.title}
-													btnname='View'
-													btnicon={<ArrowRightIcon />}
-												>
-													<Typography className={classes.cardParagraph} variant='body1'>
-														{el.description.join(' ').length > 150 ? (
-															el.description.join(' ').substring(0, 150) + '...'
-														) : (
-															el.description.join(' ')
-														)}
-													</Typography>
-												</CardMediaV2>
-											</motion.div>
-										</Grid>
-									);
-								}
+												<Typography className={classes.cardParagraph} variant='body1'>
+													{el.description.join(' ').length > 150 ? (
+														el.description.join(' ').substring(0, 150) + '...'
+													) : (
+														el.description.join(' ')
+													)}
+												</Typography>
+											</CardMediaV2>
+										</motion.div>
+									</Grid>
+								);
 							})}
 						</Grid>
 						<div className={`${classes.root} ${classes.pagination}`}>

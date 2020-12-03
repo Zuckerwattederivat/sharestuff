@@ -8,6 +8,7 @@ import {
 	SET_CATEGORIES,
 	SET_CATEGORY,
 	SET_OFFERS,
+	SET_OFFERS_PAGINATED,
 	OFFER_ERROR,
 	SET_PAGE,
 	SET_PAGE_COUNT
@@ -22,6 +23,7 @@ const QueryState = props => {
 		categories: [],
 		category: [],
 		offers: [],
+		offersPaginated: [],
 		offer: [],
 		page: 1,
 		pageCount: 1
@@ -55,13 +57,28 @@ const QueryState = props => {
 		return await axios.post('/api/offers/search', paramsObj, config);
 	};
 
+	// get offers paginated
+	const getOffersPaginated = (offers, lowerRange, upperRange) => {
+		let offersPaginated = [];
+		if (lowerRange === 1) lowerRange = 0;
+		offers.map((el, i) => {
+			if (i >= lowerRange && i < upperRange) offersPaginated.push(el);
+		});
+		return Promise.resolve(offersPaginated);
+	};
+
 	// set pagination page
-	const setPage = page => setQueryState(SET_PAGE, page);
+	const setPage = page => {
+		// set loading
+		setQueryState(SET_LOADING, true);
+		// set offers paginated
+		getOffersPaginated(state.offers, page, page * 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
+		// set page
+		setQueryState(SET_PAGE, page);
+	};
 
 	// set state offers page
 	const setOffersState = searchParams => {
-		// set loading
-		setQueryState(SET_LOADING, true);
 		// clear all
 		clearQueryState();
 
@@ -100,9 +117,10 @@ const QueryState = props => {
 						.then(resolve => {
 							// set offers
 							!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+							if (!resolve.data.msg)
+								getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 							// calculate page count
-							let pageCount = resolve.data.length / 15;
-							pageCount < 1 ? (pageCount = 1) : (pageCount = pageCount);
+							let pageCount = Math.round(resolve.data.length / 12);
 							// set page count
 							setQueryState(SET_PAGE_COUNT, pageCount);
 						})
@@ -120,8 +138,10 @@ const QueryState = props => {
 				.then(resolve => {
 					// set offers
 					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+					if (!resolve.data.msg)
+						getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 					// calculate page count
-					let pageCount = resolve.data.length / 15;
+					let pageCount = Math.round(resolve.data.length / 12);
 					pageCount < 1 ? (pageCount = 1) : (pageCount = pageCount);
 					// set page count
 					setQueryState(SET_PAGE_COUNT, pageCount);
@@ -145,6 +165,7 @@ const QueryState = props => {
 				categories: state.categories,
 				category: state.category,
 				offers: state.offers,
+				offersPaginated: state.offersPaginated,
 				offer: state.offer,
 				page: state.page,
 				pageCount: state.pageCount,
