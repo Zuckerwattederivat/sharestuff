@@ -113,7 +113,7 @@ const Home = () => {
 								Featured <span className={classes.textPrimary}>Categories</span>
 							</Typography>
 							{categories ? (
-								<Grid container width='100%' spacing={4}>
+								<Grid container width='100%' spacing={3}>
 									{categories.map(category => {
 										return (
 											<Grid key={category._id} item xs={12} sm={6} md={3}>
@@ -156,7 +156,7 @@ const Home = () => {
 								Newest <span className={classes.textPrimary}>Offers</span>
 							</Typography>
 							{offers[0] ? (
-								<Grid container width='100%' spacing={4}>
+								<Grid container width='100%' spacing={3}>
 									<Grid key={offers[0]._id} item xs={12} md={6}>
 										<motion.div
 											className={classes.motionDiv}

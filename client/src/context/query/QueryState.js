@@ -2,7 +2,16 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import QueryContext from '../query/queryContext';
 import queryReducer from '../query/queryReducer';
-import { CLEAR_ALL, SET_LOADING, SET_CATEGORIES, SET_CATEGORY, SET_OFFERS, OFFER_ERROR } from '../types';
+import {
+	CLEAR_ALL,
+	SET_LOADING,
+	SET_CATEGORIES,
+	SET_CATEGORY,
+	SET_OFFERS,
+	OFFER_ERROR,
+	SET_PAGE,
+	SET_PAGE_COUNT
+} from '../types';
 
 // QueryState
 const QueryState = props => {
@@ -13,7 +22,9 @@ const QueryState = props => {
 		categories: [],
 		category: [],
 		offers: [],
-		offer: []
+		offer: [],
+		page: 1,
+		pageCount: 1
 	};
 
 	// geoCodeApiKey
@@ -34,9 +45,6 @@ const QueryState = props => {
 	// get catgeories with params
 	const getCategories = async paramsObj => await axios.get('/api/categories/get', { params: paramsObj });
 
-	// get offers with params
-	const getOffers = async paramsObj => await axios.get('/api/offers/get', { params: paramsObj });
-
 	// search offers
 	const searchOffers = async paramsObj => {
 		const config = {
@@ -46,6 +54,9 @@ const QueryState = props => {
 		};
 		return await axios.post('/api/offers/search', paramsObj, config);
 	};
+
+	// set pagination page
+	const setPage = page => setQueryState(SET_PAGE, page);
 
 	// set state offers page
 	const setOffersState = searchParams => {
@@ -77,7 +88,6 @@ const QueryState = props => {
 
 		// search by location + other parameters
 		if (searchParams.filter.location) {
-			//console.log('locations:', searchParams.filter);
 			fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${searchParams.location}&apikey=${geoCodeApiKey}`)
 				.then(resolve => {
 					return resolve.json();
@@ -88,7 +98,13 @@ const QueryState = props => {
 				.then(() => {
 					searchOffers(searchParams)
 						.then(resolve => {
+							// set offers
 							!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+							// calculate page count
+							let pageCount = resolve.data.length / 15;
+							pageCount < 1 ? (pageCount = 1) : (pageCount = pageCount);
+							// set page count
+							setQueryState(SET_PAGE_COUNT, pageCount);
 						})
 						.catch(err => {
 							setQueryState(OFFER_ERROR, err.data);
@@ -100,10 +116,15 @@ const QueryState = props => {
 
 			// search without location
 		} else if (!searchParams.filter.location) {
-			//console.log('no location:', searchParams.filter);
 			searchOffers(searchParams)
 				.then(resolve => {
+					// set offers
 					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+					// calculate page count
+					let pageCount = resolve.data.length / 15;
+					pageCount < 1 ? (pageCount = 1) : (pageCount = pageCount);
+					// set page count
+					setQueryState(SET_PAGE_COUNT, pageCount);
 				})
 				.catch(err => {
 					setQueryState(OFFER_ERROR, err.data);
@@ -125,9 +146,10 @@ const QueryState = props => {
 				category: state.category,
 				offers: state.offers,
 				offer: state.offer,
-				getCategories,
-				getOffers,
-				setOffersState
+				page: state.page,
+				pageCount: state.pageCount,
+				setOffersState,
+				setPage
 			}}
 		>
 			{props.children}

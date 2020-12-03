@@ -1,4 +1,14 @@
-import { SET_CATEGORIES, SET_CATEGORY, SET_OFFERS, SET_ALL, SET_LOADING, CLEAR_ALL, OFFER_ERROR } from '../types';
+import {
+	SET_CATEGORIES,
+	SET_CATEGORY,
+	SET_OFFERS,
+	SET_ALL,
+	SET_LOADING,
+	CLEAR_ALL,
+	OFFER_ERROR,
+	SET_PAGE,
+	SET_PAGE_COUNT
+} from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
@@ -42,8 +52,14 @@ export default (state, action) => {
 				errors: null,
 				category: [],
 				offers: [],
-				offer: []
+				offer: [],
+				page: 1,
+				pageCount: 1
 			};
+		case SET_PAGE:
+			return { ...state, page: action.payload };
+		case SET_PAGE_COUNT:
+			return { ...state, pageCount: action.payload };
 		default:
 			return state;
 	}

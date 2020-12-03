@@ -2,6 +2,7 @@
 import React, { useEffect, useContext, Fragment } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { Container, Breadcrumbs, Link, Typography, Box, Grid, Button } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -11,18 +12,24 @@ import QueryContext from '../../context/query/queryContext';
 // Components
 import OffersSearch from '../search/OffersSearch';
 import CardPicture from '../cards/CardPicture';
+import CardMediaV2 from '../cards/CardMediaV2';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import NotFoundSvg from '../../assets/undraw/not-found.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
+	root: {
+		'& > *': {
+			marginTop: theme.spacing(2)
+		}
+	},
 	textPrimary: {
 		color: theme.palette.primary.main
 	},
 	offers: {
 		minHeight: '100vh',
-		padding: theme.spacing(12, 0, 0)
+		padding: theme.spacing(12, 0, 8)
 	},
 	breadcrumps: {
 		margin: theme.spacing(0, 0, 4)
@@ -76,8 +83,13 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	notFoundSvg: {
-		height: '200px',
-		marginBottom: theme.spacing(2)
+		height: '200px'
+	},
+	offersCard: {
+		height: '100%'
+	},
+	pagination: {
+		margin: theme.spacing(6, 0, 0)
 	}
 }));
 
@@ -91,7 +103,7 @@ const Offers = props => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { errors, loading, categories, category, offers, setOffersState } = queryContext;
+	const { errors, loading, categories, category, offers, page, pageCount, setOffersState, setPage } = queryContext;
 
 	// set search params & filter
 	const setParamsAndFilter = (delCat = false, delLoc = false, delProd = false) => {
@@ -205,6 +217,12 @@ const Offers = props => {
 		setOffersState(searchParams);
 	};
 
+	// handle pagination
+	const handlePagination = (e, value) => {
+		// set page
+		setPage(value);
+	};
+
 	return (
 		<div className={classes.offers}>
 			<Container maxWidth='xl'>
@@ -284,7 +302,47 @@ const Offers = props => {
 						<Typography className={classes.searchTitle} width='100%' variant='h2'>
 							Search <span className={classes.textPrimary}>Results</span>
 						</Typography>
-						<p>TODO: offers with pagination</p>
+						<Grid className={classes.offersGrid} container width='100%' spacing={4}>
+							{offers.map((el, i) => {
+								const lowerRange = page === 1 ? page : page * 15;
+								const upperRange = page * 15;
+								if (i >= lowerRange - 1 && i < upperRange) {
+									return (
+										<Grid key={el._id} item xs={12} sm={4}>
+											<motion.div
+												className={classes.offersCard}
+												transition={{
+													duration: 1,
+													type: 'tween'
+												}}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
+											>
+												<CardMediaV2
+													price={`Daily Price: ${el.price} ${el.currency}`}
+													link={`/offers/offer?id=${el._id}`}
+													image={`${el.images[0]}`}
+													title={el.title}
+													btnname='View'
+													btnicon={<ArrowRightIcon />}
+												>
+													<Typography className={classes.cardParagraph} variant='body1'>
+														{el.description.join(' ').length > 150 ? (
+															el.description.join(' ').substring(0, 150) + '...'
+														) : (
+															el.description.join(' ')
+														)}
+													</Typography>
+												</CardMediaV2>
+											</motion.div>
+										</Grid>
+									);
+								}
+							})}
+						</Grid>
+						<div className={`${classes.root} ${classes.pagination}`}>
+							<Pagination count={pageCount} page={page} onChange={handlePagination} />
+						</div>
 					</Fragment>
 				) : (
 					<Box className={classes.noOffersContainer} width='100%' height='100%'>

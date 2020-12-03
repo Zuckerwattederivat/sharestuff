@@ -44,3 +44,5 @@ export const SET_OFFERS = 'SET_OFFERS';
 export const SET_ALL = 'SET_ALL';
 export const CLEAR_ALL = 'CLEAR_ALL';
 export const OFFER_ERROR = 'OFFER_ERROR';
+export const SET_PAGE = 'SET_PAGE';
+export const SET_PAGE_COUNT = 'SET_PAGE_COUNT';
