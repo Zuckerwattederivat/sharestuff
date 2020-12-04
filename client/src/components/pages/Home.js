@@ -1,12 +1,10 @@
 // Node Modules
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Grid } from '@material-ui/core';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-// Context
-import AuthContext from '../../context/auth/authContext';
 // Components
 import Hero from '../layout/Hero';
 import CardMediaV1 from '../cards/CardMediaV1';
@@ -61,9 +59,6 @@ const Home = () => {
 	// define classes
 	const classes = useStyles();
 
-	// load auth context
-	const authContext = useContext(AuthContext);
-
 	// define home state
 	const [ homeState, setHomeState ] = useState({
 		loading: true,
@@ -75,11 +70,6 @@ const Home = () => {
 
 	// use effect
 	useEffect(() => {
-		// load user
-		if (localStorage.token) {
-			authContext.loadUser();
-		}
-
 		// scroll to top
 		window.scrollTo(0, 0);
 

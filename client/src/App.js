@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Components
+import LoadUser from './components/auth/LoadUser';
 import Home from './components/pages/Home';
 import Offers from './components/pages/Offers';
 import Navbar from './components/navbar/Navbar';
@@ -25,22 +26,24 @@ const App = () => {
 	return (
 		<AlertState>
 			<AuthState>
-				<AuthValidationState>
-					<NavbarState>
-						<QueryState>
-							<Router>
-								<Navbar />
-								<div className='wrapper'>
-									<Switch>
-										<Route exact path='/' component={Home} />
-										<Route exact path='/offers' component={Offers} />
-									</Switch>
-								</div>
-								<Footer />
-							</Router>
-						</QueryState>
-					</NavbarState>
-				</AuthValidationState>
+				<LoadUser>
+					<AuthValidationState>
+						<NavbarState>
+							<QueryState>
+								<Router>
+									<Navbar />
+									<div className='wrapper'>
+										<Switch>
+											<Route exact path='/' component={Home} />
+											<Route exact path='/offers' component={Offers} />
+										</Switch>
+									</div>
+									<Footer />
+								</Router>
+							</QueryState>
+						</NavbarState>
+					</AuthValidationState>
+				</LoadUser>
 			</AuthState>
 		</AlertState>
 	);

@@ -6,7 +6,6 @@ import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
-import AuthContext from '../../context/auth/authContext';
 import QueryContext from '../../context/query/queryContext';
 // Components
 import OffersSearch from '../search/OffersSearch';
@@ -89,9 +88,6 @@ const Offers = props => {
 	// define classes
 	const classes = useStyles();
 
-	// load auth context
-	const authContext = useContext(AuthContext);
-
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
@@ -162,11 +158,6 @@ const Offers = props => {
 
 	// useffect on render
 	useEffect(() => {
-		// load user
-		if (localStorage.token) {
-			authContext.loadUser();
-		}
-
 		// scroll to top
 		window.scrollTo(0, 0);
 
@@ -348,7 +339,7 @@ const Offers = props => {
 					<Box className={classes.noOffersContainer} width='100%' height='100%'>
 						<img className={classes.notFoundSvg} src={NotFoundSvg} alt='Empty' />
 						<Typography variant='h3'>{errors.msg}</Typography>
-						<Typography variant='body1'>Sorry your search returned no results.</Typography>
+						<Typography variant='body1'>Sorry your search returned no results</Typography>
 					</Box>
 				)}
 			</Container>
