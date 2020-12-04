@@ -37,14 +37,16 @@ const useStyles = makeStyles(theme => ({
 	},
 	priceAndLocation: {
 		color: theme.palette.primary.main,
+		fontSize: '0.92rem',
 		margin: 0,
 		'& span': {
 			display: 'flex',
-			alignItems: 'center'
+			alignItems: 'center',
+			minHeight: '35px'
 		}
 	},
 	icon: {
-		margin: theme.spacing(0, 1, 1, 0)
+		margin: theme.spacing(0, 1, 0, 0)
 	}
 }));
 
@@ -67,10 +69,10 @@ const CardMediaV2 = props => {
 			<CardActions className={classes.cardActions}>
 				<Typography className={classes.priceAndLocation}>
 					<span>
-						<LocalOfferIcon className={classes.icon} /> {props.price}
+						<LocalOfferIcon size='small' className={classes.icon} /> {props.price}
 					</span>
 					<span>
-						<LocationIcon className={classes.icon} /> {props.location}
+						<LocationIcon size='small' className={classes.icon} /> {props.location}
 					</span>
 				</Typography>
 				<Button size='small' color='primary' endIcon={props.btnIcon} component={Link} to={props.link}>

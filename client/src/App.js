@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoadUser from './components/auth/LoadUser';
 import Home from './components/pages/Home';
 import Offers from './components/pages/Offers';
+import Offer from './components/pages/Offer';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/layout/Footer';
 // State
@@ -36,6 +37,7 @@ const App = () => {
 										<Switch>
 											<Route exact path='/' component={Home} />
 											<Route exact path='/offers' component={Offers} />
+											<Route exact path='/offers/offer' component={Offer} />
 										</Switch>
 									</div>
 									<Footer />

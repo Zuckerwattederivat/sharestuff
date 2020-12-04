@@ -172,7 +172,8 @@ const QueryState = props => {
 				page: state.page,
 				pageCount: state.pageCount,
 				setOffersState,
-				setPage
+				setPage,
+				clearQueryState
 			}}
 		>
 			{props.children}

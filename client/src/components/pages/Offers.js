@@ -298,7 +298,7 @@ const Offers = props => {
 						<Typography className={classes.searchTitle} width='100%' variant='h2'>
 							Search <span className={classes.textPrimary}>Results</span>
 						</Typography>
-						<Grid className={classes.offersGrid} container width='100%' spacing={4}>
+						<Grid className={classes.offersGrid} container width='100%' spacing={3}>
 							{offersPaginated.map(el => {
 								return (
 									<Grid key={el._id} item xs={12} sm={6} md={4}>
