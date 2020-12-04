@@ -208,13 +208,13 @@ const OffersSearch = props => {
 							setOpen(false);
 							setTyping(false);
 						}}
-						onChange={(e, option) => setSearchParams({ ...searchParams, locationAuto: option })}
+						onChange={(e, option) => setSearchParams({ ...searchParams, location: '', locationAuto: option })}
 						getOptionSelected={(option, value) => option.label === value.label}
 						getOptionLabel={option => option.label}
 						options={options}
 						loading={loading}
 						inputValue={
-							!typing && searchParamsParent.location ? (
+							!typing && searchParamsParent.location && !searchParams.locationAuto ? (
 								searchParamsParent.location
 							) : !typing && searchParams.locationAuto ? (
 								searchParams.locationAuto.label
