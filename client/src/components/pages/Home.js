@@ -87,7 +87,7 @@ const Home = () => {
 			// get catgeories with params
 			const resCategories = await axios.get('/api/categories/get', { params: { rand: true, limit: 4 } });
 			// get offers with params
-			const resOffers = await axios.get('/api/offers/get', { params: { sort: 'desc', limit: 3 } });
+			const resOffers = await axios.get('/api/offers/get', { params: { sort: 'desc', limit: 6 } });
 
 			// set state
 			if (resCategories && resOffers) {
@@ -177,12 +177,13 @@ const Home = () => {
 													animate={{ opacity: 1 }}
 												>
 													<CardMediaV2
-														price={`Daily Price: ${el.price} ${el.currency}`}
+														location={el.location.label}
+														price={`${el.price} ${el.currency} daily`}
 														link={`/offers/offer?id=${el._id}`}
 														image={`${el.images[0]}`}
 														title={el.title}
-														btnname='View'
-														btnicon={<ArrowRightIcon />}
+														btnName='View'
+														btnIcon={<ArrowRightIcon />}
 													>
 														<Typography className={classes.cardParagraph} variant='body1'>
 															{el.description.join(' ').length > 500 ? (

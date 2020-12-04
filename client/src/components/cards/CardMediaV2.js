@@ -11,6 +11,7 @@ import {
 	Button,
 	Typography
 } from '@material-ui/core';
+import { LocalOffer as LocalOfferIcon, LocationOn as LocationIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 // Utils
 import utils from '../../utils/helpers';
@@ -31,13 +32,19 @@ const useStyles = makeStyles(theme => ({
 		flexBasis: '10%',
 		display: 'flex',
 		justifyContent: 'space-between',
-		alignItems: 'space-between',
-		padding: theme.spacing(1, 1, 1)
+		alignItems: 'flex-end',
+		padding: theme.spacing(2, 1, 1, 2)
 	},
-	price: {
+	priceAndLocation: {
 		color: theme.palette.primary.main,
 		margin: 0,
-		padding: theme.spacing(1)
+		'& span': {
+			display: 'flex',
+			alignItems: 'center'
+		}
+	},
+	icon: {
+		margin: theme.spacing(0, 1, 1, 0)
 	}
 }));
 
@@ -58,9 +65,16 @@ const CardMediaV2 = props => {
 				</CardContent>
 			</CardActionArea>
 			<CardActions className={classes.cardActions}>
-				{props.price && <Typography className={classes.price}>{props.price}</Typography>}
-				<Button size='small' color='primary' endIcon={props.btnicon} component={Link} to={props.link}>
-					{props.btnname}
+				<Typography className={classes.priceAndLocation}>
+					<span>
+						<LocalOfferIcon className={classes.icon} /> {props.price}
+					</span>
+					<span>
+						<LocationIcon className={classes.icon} /> {props.location}
+					</span>
+				</Typography>
+				<Button size='small' color='primary' endIcon={props.btnIcon} component={Link} to={props.link}>
+					{props.btnName}
 				</Button>
 			</CardActions>
 		</Card>
@@ -71,10 +85,11 @@ const CardMediaV2 = props => {
 CardMediaV2.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	btnicon: PropTypes.object.isRequired,
-	btnname: PropTypes.string.isRequired,
+	btnIcon: PropTypes.object.isRequired,
+	btnName: PropTypes.string.isRequired,
 	link: PropTypes.string.isRequired,
-	price: PropTypes.string
+	price: PropTypes.string,
+	location: PropTypes.string
 };
 
 // export CardMediaV2 Component

@@ -2,7 +2,6 @@
 import React, { useEffect, useContext, Fragment } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { Container, Breadcrumbs, Link, Typography, Box, Grid, Button } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
 import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -13,17 +12,13 @@ import QueryContext from '../../context/query/queryContext';
 import OffersSearch from '../search/OffersSearch';
 import CardPicture from '../cards/CardPicture';
 import CardMediaV2 from '../cards/CardMediaV2';
+import Pagination from '../layout/Pagination';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import NotFoundSvg from '../../assets/undraw/not-found.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	root: {
-		'& > *': {
-			marginTop: theme.spacing(2)
-		}
-	},
 	textPrimary: {
 		color: theme.palette.primary.main
 	},
@@ -87,9 +82,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	offersCard: {
 		height: '100%'
-	},
-	pagination: {
-		margin: theme.spacing(6, 0, 0)
 	}
 }));
 
@@ -329,12 +321,13 @@ const Offers = props => {
 											animate={{ opacity: 1 }}
 										>
 											<CardMediaV2
-												price={`Daily Price: ${el.price} ${el.currency}`}
+												price={`${el.price} ${el.currency} daily`}
 												link={`/offers/offer?id=${el._id}`}
 												image={`${el.images[0]}`}
 												title={el.title}
-												btnname='View'
-												btnicon={<ArrowRightIcon />}
+												btnName='View'
+												btnIcon={<ArrowRightIcon />}
+												location={el.location.label}
 											>
 												<Typography className={classes.cardParagraph} variant='body1'>
 													{el.description.join(' ').length > 150 ? (
@@ -349,9 +342,7 @@ const Offers = props => {
 								);
 							})}
 						</Grid>
-						<div className={`${classes.root} ${classes.pagination}`}>
-							<Pagination count={pageCount} page={page} onChange={handlePagination} />
-						</div>
+						<Pagination page={page} pageCount={pageCount} onChange={handlePagination} />
 					</Fragment>
 				) : (
 					<Box className={classes.noOffersContainer} width='100%' height='100%'>
