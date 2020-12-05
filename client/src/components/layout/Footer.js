@@ -26,12 +26,12 @@ const useStyles = makeStyles(theme => ({
 		bottom: theme.spacing(1.6),
 		zIndex: 1500
 	},
-	brand1: {
+	title1: {
 		fontWeight: 'bold',
 		fontSize: '0.9rem',
 		color: theme.palette.primary.main
 	},
-	brand2: {
+	title2: {
 		fontWeight: 'bold',
 		fontSize: '0.9rem'
 	},
@@ -93,7 +93,7 @@ const Footer = props => {
 									</Link>
 								</li>
 								<li>
-									<Link href='https://goo.gl/maps/az5hgf9Y58V29TL6A' color='inherit'>
+									<Link href={props.locationLink} color='inherit'>
 										Address: {props.street} <br />
 										{props.zipAndCity + ' ' + props.country} <i className='fas fa-external-link-alt' />
 									</Link>
@@ -139,8 +139,8 @@ const Footer = props => {
 				<Divider />
 				<Box>
 					<p className={classes.copyrightContainer}>
-						Copyright © {props.year} All Rights Reserved by <span className={classes.brand1}>{props.brand1}</span>
-						<span className={classes.brand2}>{props.brand2} </span>
+						Copyright © {props.year} All Rights Reserved by <span className={classes.title1}>{props.title1}</span>
+						<span className={classes.title2}>{props.title2} </span>
 						{props.incorporation}
 						<br />
 						Version: {props.version}
@@ -153,27 +153,15 @@ const Footer = props => {
 
 // PropTypes
 Footer.protoTypes = {
-	brand1: PropTypes.string.isRequired,
-	brand2: PropTypes.string.isRequired,
+	title1: PropTypes.string.isRequired,
+	title2: PropTypes.string.isRequired,
 	street: PropTypes.string.isRequired,
 	zipAndCity: PropTypes.string.isRequired,
 	country: PropTypes.string.isRequired,
 	number: PropTypes.string.isRequired,
 	version: PropTypes.string.isRequired,
-	year: PropTypes.string.isRequired
-};
-
-// Default Props
-Footer.defaultProps = {
-	brand1: 'Share',
-	brand2: 'Stuff',
-	version: '1.0.0',
-	year: '2020',
-	incorporation: 'GmbH',
-	street: 'Heiligengeistfeld 66',
-	zipAndCity: '20359 Hamburg',
-	country: 'Germany',
-	number: '+493477394894'
+	year: PropTypes.string.isRequired,
+	locationLink: PropTypes.string.isRequired
 };
 
 // export Footer Component

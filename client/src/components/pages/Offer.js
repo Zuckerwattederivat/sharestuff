@@ -26,6 +26,8 @@ const Offer = props => {
 
 	// load query context
 	const queryContext = useContext(QueryContext);
+	// destructure query context
+	const { errors, loading, categories, offer } = queryContext;
 
 	return (
 		<div className={classes.offer}>
@@ -37,7 +39,7 @@ const Offer = props => {
 					<Link component={RouterLink} to='/offers' color='inherit'>
 						Find Offers
 					</Link>
-					<Typography color='textPrimary'>TODO OFFER NAME</Typography>
+					<Typography color='textPrimary'>TODO OFFER NAME </Typography>
 				</Breadcrumbs>
 			</Container>
 		</div>

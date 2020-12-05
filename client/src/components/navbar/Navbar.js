@@ -205,7 +205,7 @@ const Navbar = props => {
 			<UserMenu menuId={menuId} />
 			<Login />
 			<Register />
-			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} />
+			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} version={props.version} />
 		</div>
 	);
 };
@@ -213,13 +213,8 @@ const Navbar = props => {
 // PropTypes
 Navbar.propTypes = {
 	title1: PropTypes.string.isRequired,
-	title2: PropTypes.string.isRequired
-};
-
-// Default Props
-Navbar.defaultProps = {
-	title1: 'Share',
-	title2: 'Stuff'
+	title2: PropTypes.string.isRequired,
+	version: PropTypes.string.isRequired
 };
 
 // export Navbar Component
