@@ -2,13 +2,15 @@ import {
 	SET_CATEGORIES,
 	SET_CATEGORY,
 	SET_OFFERS,
+	SET_OFFER,
 	SET_ALL,
 	SET_LOADING,
 	CLEAR_ALL,
 	OFFER_ERROR,
 	SET_PAGE,
 	SET_PAGE_COUNT,
-	SET_OFFERS_PAGINATED
+	SET_OFFERS_PAGINATED,
+	SEARCH_CACHED
 } from '../types';
 
 export default (state, action) => {
@@ -27,6 +29,12 @@ export default (state, action) => {
 			return {
 				...state,
 				offers: action.payload
+			};
+		case SET_OFFER:
+			return {
+				...state,
+				offer: action.payload,
+				loading: false
 			};
 		case SET_OFFERS_PAGINATED:
 			return {
@@ -67,6 +75,8 @@ export default (state, action) => {
 			return { ...state, page: action.payload };
 		case SET_PAGE_COUNT:
 			return { ...state, pageCount: action.payload };
+		case SEARCH_CACHED:
+			return { ...state, searchCached: action.payload };
 		default:
 			return state;
 	}

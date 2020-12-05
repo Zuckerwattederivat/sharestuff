@@ -27,12 +27,21 @@ const Offer = props => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { errors, loading, categories, offer } = queryContext;
+	const { errors, loading, categories, offer, searchCached, setOfferState } = queryContext;
 
 	// on render
 	useEffect(() => {
 		// scroll to top
 		window.scrollTo(0, 0);
+
+		// get url params
+		const urlParams = new URLSearchParams(window.location.search);
+
+		// set search params
+		const id = urlParams.get('id');
+
+		// set offer state
+		setOfferState(id);
 
 		// eslint-disable-next-line
 	}, []);
@@ -44,10 +53,10 @@ const Offer = props => {
 					<Link component={RouterLink} to='/' color='inherit'>
 						Home
 					</Link>
-					<Link component={RouterLink} to='/offers' color='inherit'>
+					<Link component={RouterLink} to={searchCached ? searchCached : '/offers'} color='inherit'>
 						Find Offers
 					</Link>
-					<Typography color='textPrimary'>TODO OFFER NAME </Typography>
+					<Typography color='textPrimary'>{offer && offer.title}</Typography>
 				</Breadcrumbs>
 			</Container>
 		</div>
