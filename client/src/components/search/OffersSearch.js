@@ -85,9 +85,12 @@ const OffersSearch = props => {
 	const [ options, setOptions ] = useState([]);
 	const loading = open && options.length === 0;
 
+	// set search params
+	const searchParamsParent = props.setSearch();
+
 	// input state
 	const [ searchParams, setSearchParams ] = useState({
-		product: '',
+		product: searchParamsParent.product ? searchParamsParent.product : '',
 		location: '',
 		locationTyping: false,
 		locationAuto: null
@@ -95,9 +98,6 @@ const OffersSearch = props => {
 
 	// typing state
 	const [ typing, setTyping ] = useState(false);
-
-	// set search params
-	const searchParamsParent = props.setSearch();
 
 	// on input change
 	const handleInputChange = input => e => setSearchParams({ ...searchParams, [input]: e.target.value });
@@ -146,12 +146,14 @@ const OffersSearch = props => {
 		setSearchParams({ product: '', location: '', locationTyping: false, locationAuto: null });
 	};
 
-	// rerender on searchParams
-	useEffect(
-		() => {},
-		// eslint-disable-next-line
-		[ searchParams.product, searchParams.location, searchParams.locationAuto ]
-	);
+	// // rerender on searchParams
+	// useEffect(
+	// 	() => {
+	// 		console.log(searchParams);
+	// 	},
+	// 	// eslint-disable-next-line
+	// 	[ searchParams.product, searchParams.location, searchParams.locationAuto ]
+	// );
 
 	// on submit
 	const onSubmit = e => {
@@ -192,7 +194,7 @@ const OffersSearch = props => {
 					placeholder='vacum cleaner'
 					type='text'
 					onChange={handleInputChange('product')}
-					defaultValue={searchParamsParent.product ? searchParamsParent.product : searchParams.product}
+					value={searchParams.product}
 				/>
 				<Box className={classes.localContainer}>
 					<Autocomplete
