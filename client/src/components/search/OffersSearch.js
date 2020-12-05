@@ -192,7 +192,7 @@ const OffersSearch = props => {
 					placeholder='vacum cleaner'
 					type='text'
 					onChange={handleInputChange('product')}
-					value={searchParamsParent.product ? searchParamsParent.product : searchParams.product}
+					defaultValue={searchParamsParent.product ? searchParamsParent.product : searchParams.product}
 				/>
 				<Box className={classes.localContainer}>
 					<Autocomplete
