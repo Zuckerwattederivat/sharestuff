@@ -8,12 +8,12 @@ import {
 	SET_CATEGORIES,
 	SET_CATEGORY,
 	SET_OFFERS,
-	SET_OFFER,
 	SET_OFFERS_PAGINATED,
 	OFFER_ERROR,
 	SET_PAGE,
 	SET_PAGE_COUNT,
-	SEARCH_CACHED
+	SEARCH_CACHED,
+	SET_ALL
 } from '../types';
 
 // QueryState
@@ -27,6 +27,7 @@ const QueryState = props => {
 		offers: [],
 		offersPaginated: [],
 		offer: null,
+		creator: [],
 		page: 1,
 		pageCount: 1,
 		searchCached: ''
@@ -49,6 +50,9 @@ const QueryState = props => {
 
 	// get catgeories with params
 	const getCategories = async paramsObj => await axios.get('/api/categories/get', { params: paramsObj });
+
+	// get offers
+	const getOffers = async paramsObj => await axios.get('/api/offers/get', { params: paramsObj });
 
 	// search offers
 	const searchOffers = async paramsObj => {
@@ -115,7 +119,7 @@ const QueryState = props => {
 					setQueryState(SET_CATEGORIES, resolve.data);
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.response.data);
+					setQueryState(OFFER_ERROR, err.response.data.msg);
 				});
 		}
 		// get category
@@ -125,7 +129,7 @@ const QueryState = props => {
 					setQueryState(SET_CATEGORY, resolve.data);
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.response.data);
+					setQueryState(OFFER_ERROR, err.response.data.msg);
 				});
 		}
 
@@ -136,7 +140,7 @@ const QueryState = props => {
 					return resolve.json();
 				})
 				.then(resolve => {
-					if (resolve.features[0].properties) searchParams.location = resolve.features[0].properties;
+					if (resolve.features[0]) searchParams.location = resolve.features[0].properties;
 				})
 				.then(() => {
 					searchOffers(searchParams)
@@ -152,11 +156,11 @@ const QueryState = props => {
 							setQueryState(SET_PAGE_COUNT, pageCount);
 						})
 						.catch(err => {
-							setQueryState(OFFER_ERROR, err.response.data);
+							setQueryState(OFFER_ERROR, err.response.data.msg);
 						});
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.response.data);
+					setQueryState(OFFER_ERROR, { msg: 'API error' });
 				});
 
 			// search without location
@@ -174,33 +178,35 @@ const QueryState = props => {
 					setQueryState(SET_PAGE_COUNT, pageCount);
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.response.data);
+					setQueryState(OFFER_ERROR, err.response.data.msg);
 				});
 		}
 	};
 
 	// set state offer page
-	const setOfferState = offerId => {
+	const setOfferState = async offerId => {
 		// clear all
 		clearQueryState();
 
-		// get offer
-		searchOffer(offerId)
-			.then(resolve => {
-				// set offer
-				if (!resolve.data.msg) {
-					setQueryState(SET_OFFER, resolve.data);
-				} else {
-					setQueryState(OFFER_ERROR, resolve.data);
-				}
-				return resolve;
-			})
-			.catch(err => {
-				setQueryState(OFFER_ERROR, err.response.data);
-			})
-			.then(resolve => {
-				console.log(resolve.data);
-			});
+		try {
+			// search offer
+			const offer = await searchOffer(offerId);
+
+			if (!offer.data.msg) {
+				// search other offers by same user
+				const offersByCreator = await getOffers({ createdBy: offer.data.createdBy, limit: 4, sort: 'desc' });
+				// searc for creator info
+				const user = await axios.get('/api/users/get', { params: { id: offer.data.createdBy } });
+				// set state
+				setQueryState(SET_ALL, { offer: offer.data, offers: offersByCreator.data, creator: user.data });
+
+				// set error
+			} else {
+				return setQueryState(OFFER_ERROR, offer.data.msg);
+			}
+		} catch (err) {
+			setQueryState(OFFER_ERROR, err.response.data.msg);
+		}
 	};
 
 	return (
@@ -213,6 +219,7 @@ const QueryState = props => {
 				offers: state.offers,
 				offersPaginated: state.offersPaginated,
 				offer: state.offer,
+				creator: state.creator,
 				page: state.page,
 				pageCount: state.pageCount,
 				searchCached: state.searchCached,

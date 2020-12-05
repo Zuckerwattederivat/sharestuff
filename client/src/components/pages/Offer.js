@@ -56,7 +56,7 @@ const Offer = props => {
 					<Link component={RouterLink} to={searchCached ? searchCached : '/offers'} color='inherit'>
 						Find Offers
 					</Link>
-					<Typography color='textPrimary'>{offer && offer.title}</Typography>
+					<Typography color='textPrimary'>{offer ? offer.title : 'Offer'}</Typography>
 				</Breadcrumbs>
 			</Container>
 		</div>

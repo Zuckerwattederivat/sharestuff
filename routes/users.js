@@ -174,16 +174,15 @@ router.get('/get', async (req, res) => {
 		} else {
 			// create payload
 			const payload = {
-				user: {
-					_id: user._id,
-					username: user.username,
-					city: user.city,
-					bio: user.bio,
-					avatarUrl: user.avatarUrl,
-					positiveKarma: user.positiveKarma,
-					negativeKarma: user.negativeKarma,
-					date: user.date
-				}
+				_id: user._id,
+				avatar: user.avatar,
+				username: user.username,
+				city: user.city,
+				bio: user.bio,
+				avatarUrl: user.avatarUrl,
+				positiveKarma: user.positiveKarma,
+				negativeKarma: user.negativeKarma,
+				date: user.date
 			};
 			// send response
 			res.json(payload);

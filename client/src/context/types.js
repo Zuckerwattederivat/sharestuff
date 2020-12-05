@@ -43,6 +43,7 @@ export const SET_CATEGORY = 'SET_CATEGORY';
 export const SET_OFFERS = 'SET_OFFERS';
 export const SET_OFFER = 'SET_OFFER';
 export const SET_OFFERS_PAGINATED = 'SET_OFFERS_PAGINATED';
+export const SET_CREATOR = 'SET_CREATOR';
 export const SET_ALL = 'SET_ALL';
 export const CLEAR_ALL = 'CLEAR_ALL';
 export const OFFER_ERROR = 'OFFER_ERROR';

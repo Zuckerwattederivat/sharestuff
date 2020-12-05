@@ -169,15 +169,15 @@ router.post(
 // @access    Public
 router.get('/get', async (req, res) => {
 	// save request content
-	const { id, sort, limit } = req.query;
+	const { id, sort, limit, createdBy } = req.query;
 
 	try {
 		// return all offers
-		if (!id && !sort) {
+		if (!id && !sort && !createdBy) {
 			const offers = await Offer.find({ active: true });
 
 			// send error response
-			if (!offers) {
+			if (!offers[0]) {
 				return res.status(200).json({ msg: 'No offer was found' });
 				// send response
 			} else {
@@ -185,7 +185,7 @@ router.get('/get', async (req, res) => {
 			}
 
 			// return offers by date and limit
-		} else if (!id && sort) {
+		} else if (!id && sort && !createdBy) {
 			let offers;
 
 			// with limit
@@ -197,7 +197,31 @@ router.get('/get', async (req, res) => {
 			}
 
 			// send error response
-			if (!offers) {
+			if (!offers[0]) {
+				return res.status(200).json({ msg: 'No offer was found' });
+				// send response
+			} else {
+				res.json(offers);
+			}
+
+			// return offers by user id
+		} else if (createdBy && !id) {
+			let offers;
+
+			// with limit
+			if (limit && sort) {
+				offers = await Offer.find({ active: true, createdBy: createdBy }).sort({ date: sort }).limit(parseInt(limit));
+				// without limit
+			} else if (!limit && sort) {
+				offers = await Offer.find({ active: true, createdBy: createdBy }).sort({ date: sort });
+			} else if (limit && !sort) {
+				offers = await Offer.find({ active: true, createdBy: createdBy }).limit(parseInt(limit));
+			} else {
+				offers = await Offer.find({ active: true, createdBy: createdBy });
+			}
+
+			// send error response
+			if (!offers[0]) {
 				return res.status(200).json({ msg: 'No offer was found' });
 				// send response
 			} else {

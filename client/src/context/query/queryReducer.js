@@ -3,6 +3,7 @@ import {
 	SET_CATEGORY,
 	SET_OFFERS,
 	SET_OFFER,
+	SET_CREATOR,
 	SET_ALL,
 	SET_LOADING,
 	CLEAR_ALL,
@@ -36,6 +37,12 @@ export default (state, action) => {
 				offer: action.payload,
 				loading: false
 			};
+		case SET_CREATOR:
+			return {
+				...state,
+				creator: action.payload,
+				loading: false
+			};
 		case SET_OFFERS_PAGINATED:
 			return {
 				...state,
@@ -45,10 +52,11 @@ export default (state, action) => {
 		case SET_ALL:
 			return {
 				...state,
-				categories: action.payload.categories,
-				category: action.payload.category,
-				offers: action.payload.offers,
-				offer: action.payload.offer,
+				categories: action.payload.categories ? action.payload.categories : [],
+				category: action.payload.category ? action.payload.category : [],
+				offers: action.payload.offers ? action.payload.offers : [],
+				offer: action.payload.offer ? action.payload.offer : null,
+				creator: action.payload.creator ? action.payload.creator : [],
 				loading: false
 			};
 		case SET_LOADING:
@@ -67,7 +75,8 @@ export default (state, action) => {
 				category: [],
 				offers: [],
 				offersPaginated: [],
-				offer: [],
+				offer: null,
+				creator: [],
 				page: 1,
 				pageCount: 1
 			};
