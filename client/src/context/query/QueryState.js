@@ -90,7 +90,7 @@ const QueryState = props => {
 					setQueryState(SET_CATEGORIES, resolve.data);
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.data);
+					console.error(err);
 				});
 		}
 		// get category
@@ -111,7 +111,7 @@ const QueryState = props => {
 					return resolve.json();
 				})
 				.then(resolve => {
-					searchParams.location = resolve.features[0].properties;
+					if (searchParams.location.properties) searchParams.location = resolve.features[0].properties;
 				})
 				.then(() => {
 					searchOffers(searchParams)
@@ -127,11 +127,11 @@ const QueryState = props => {
 							setQueryState(SET_PAGE_COUNT, pageCount);
 						})
 						.catch(err => {
-							setQueryState(OFFER_ERROR, err.data);
+							console.error(err);
 						});
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.data);
+					console.error(err);
 				});
 
 			// search without location
@@ -149,10 +149,13 @@ const QueryState = props => {
 					setQueryState(SET_PAGE_COUNT, pageCount);
 				})
 				.catch(err => {
-					setQueryState(OFFER_ERROR, err.data);
+					console.error(err);
 				});
 		}
 	};
+
+	// set state offer page
+	const setOfferState = offerId => {};
 
 	// clear query state
 	const clearQueryState = () => {

@@ -152,7 +152,7 @@ router.get('/get', async (req, res) => {
 				} else if (rand) {
 					categoryMap = _.shuffle(categoryMap);
 				}
-				res.send(categoryMap);
+				res.json(categoryMap);
 			}
 
 			// return searched category

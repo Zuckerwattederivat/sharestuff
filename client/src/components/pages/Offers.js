@@ -338,7 +338,7 @@ const Offers = props => {
 				) : (
 					<Box className={classes.noOffersContainer} width='100%' height='100%'>
 						<img className={classes.notFoundSvg} src={NotFoundSvg} alt='Empty' />
-						<Typography variant='h3'>{errors.msg}</Typography>
+						<Typography variant='h3'>{errors.msg ? errors.msg : ''}</Typography>
 						<Typography variant='body1'>Sorry your search returned no results</Typography>
 					</Box>
 				)}

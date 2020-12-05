@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { Container, Breadcrumbs, Link, Typography } from '@material-ui/core';
 import {} from '@material-ui/icons';
@@ -28,6 +28,14 @@ const Offer = props => {
 	const queryContext = useContext(QueryContext);
 	// destructure query context
 	const { errors, loading, categories, offer } = queryContext;
+
+	// on render
+	useEffect(() => {
+		// scroll to top
+		window.scrollTo(0, 0);
+
+		// eslint-disable-next-line
+	}, []);
 
 	return (
 		<div className={classes.offer}>
