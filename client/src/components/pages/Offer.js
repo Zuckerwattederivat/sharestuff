@@ -1,11 +1,14 @@
 // Node Modules
 import React, { useContext, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
-import { Container, Breadcrumbs, Link, Typography, Box } from '@material-ui/core';
+import { Container, Breadcrumbs, Link, Typography, Grid, Box } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
-import { Carousel } from 'react-responsive-carousel';
+import AwesomeSlider from 'react-awesome-slider';
+// Styles
+import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
+import AnimationStyles from 'react-awesome-slider/src/styled/scale-out-animation/scale-out-animation.scss';
 // Context
 import QueryContext from '../../context/query/queryContext';
 // Assets
@@ -28,9 +31,7 @@ const useStyles = makeStyles(theme => ({
 		height: '20vh'
 	},
 	carouselSlide: {
-		height: '400px',
-		backgroundSize: 'cover',
-		backgroundPosition: 'center'
+		height: '400px'
 	}
 }));
 
@@ -78,20 +79,26 @@ const Offer = props => {
 						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
 					</Box>
 				) : (
-					<Box className={classes.contentBox} width='100%'>
-						<Carousel autoPlay={true} showThumbs={false}>
-							{offer &&
-								offer.imagesThumb.map((el, index) => {
-									return (
-										<div
-											key={`offer-img-${index}`}
-											className={classes.carouselSlide}
-											style={{ backgroundImage: `url(/${el})` }}
-										/>
-									);
-								})}
-						</Carousel>
-					</Box>
+					<Grid container className={classes.contentBox} width='100%' spacing={3}>
+						{offer && (
+							<Grid item xs={12} md={7} lg={8}>
+								<AwesomeSlider
+									className={classes.carousel}
+									name='offer-carousel'
+									organicArrows={true}
+									bullets={false}
+									loading={false}
+									animation='scaleOutAnimation'
+									mobileTouch={true}
+									cssModule={[ CoreStyles, AnimationStyles ]}
+								>
+									{offer.images.map((el, i) => {
+										return <div className={classes.carouselSlide} data-src={`/${el}`} key={`image-${i}`} />;
+									})}
+								</AwesomeSlider>
+							</Grid>
+						)}
+					</Grid>
 				)}
 			</Container>
 		</div>
