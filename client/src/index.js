@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 // Styles
 import Theme from './styles/Theme';
 import './styles/App.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 // Components
 import App from './App';
 

@@ -1,12 +1,16 @@
 // Node Modules
 import React, { useContext, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
-import { Container, Breadcrumbs, Link, Typography } from '@material-ui/core';
+import { Container, Breadcrumbs, Link, Typography, Box } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
+import { Carousel } from 'react-responsive-carousel';
 // Context
 import QueryContext from '../../context/query/queryContext';
+// Assets
+import LoadingGif from '../../assets/loading-transparent.gif';
+import NotFoundSvg from '../../assets/undraw/not-found.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -16,6 +20,17 @@ const useStyles = makeStyles(theme => ({
 	offer: {
 		minHeight: '100vh',
 		padding: theme.spacing(12, 0, 8)
+	},
+	contentBox: {
+		marginTop: theme.spacing(2)
+	},
+	loadingGif: {
+		height: '20vh'
+	},
+	carouselSlide: {
+		height: '400px',
+		backgroundSize: 'cover',
+		backgroundPosition: 'center'
 	}
 }));
 
@@ -58,6 +73,26 @@ const Offer = props => {
 					</Link>
 					<Typography color='textPrimary'>{offer ? offer.title : 'Offer'}</Typography>
 				</Breadcrumbs>
+				{loading ? (
+					<Box className={classes.contentBox} width='100%' textAlign='center'>
+						<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
+					</Box>
+				) : (
+					<Box className={classes.contentBox} width='100%'>
+						<Carousel autoPlay={true} showThumbs={false}>
+							{offer &&
+								offer.imagesThumb.map((el, index) => {
+									return (
+										<div
+											key={`offer-img-${index}`}
+											className={classes.carouselSlide}
+											style={{ backgroundImage: `url(/${el})` }}
+										/>
+									);
+								})}
+						</Carousel>
+					</Box>
+				)}
 			</Container>
 		</div>
 	);

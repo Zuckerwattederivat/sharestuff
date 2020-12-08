@@ -234,7 +234,7 @@ const Offers = props => {
 					setParentState={setOffersState}
 					clearAll={handleClearAll}
 				/>
-				<Box className={classes.categoryContainer} key='categories-box' width='100%'>
+				<Box className={classes.categoryContainer} width='100%'>
 					{categories && (
 						<Grid container width='100%' spacing={2}>
 							{categories.map(el => {
@@ -314,7 +314,7 @@ const Offers = props => {
 											<CardMediaV2
 												price={`${el.price} ${el.currency} daily`}
 												link={`/offers/offer?id=${el._id}`}
-												image={`${el.images[0]}`}
+												image={`${el.imagesThumb[0]}`}
 												title={el.title}
 												btnName='View'
 												btnIcon={<ArrowRightIcon />}
