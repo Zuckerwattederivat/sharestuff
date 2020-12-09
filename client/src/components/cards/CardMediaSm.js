@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	image: {
 		marginTop: theme.spacing(1),
-		width: 200,
-		[theme.breakpoints.up('md')]: {
+		height: 156,
+		[theme.breakpoints.up('sm')]: {
 			width: 128,
 			height: 128
 		}
