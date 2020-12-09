@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 		outline: 'none',
 		borderRadius: '10px',
 		color: '#fff',
-		width: '90%'
+		width: '80vw'
 	},
 	carouselSlide: {
 		height: '80vh',

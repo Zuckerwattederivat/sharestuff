@@ -90,8 +90,7 @@ MainMenu.propTypes = {
 
 // Default Props
 MainMenu.defaultProps = {
-	anchor: 'right',
-	version: '1.0.0'
+	anchor: 'right'
 };
 
 // export MainMenu Compinent
