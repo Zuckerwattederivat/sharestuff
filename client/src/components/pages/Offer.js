@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 	otherOffersHeading: {
 		fontSize: '1.15rem',
 		fontWeight: 500,
-		margin: theme.spacing(2, 0, 2, 1)
+		margin: theme.spacing(3, 0, 2, 1)
 	},
 	spanPrimary: {
 		color: theme.palette.primary.main
