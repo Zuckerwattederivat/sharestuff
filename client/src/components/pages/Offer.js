@@ -2,7 +2,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { withRouter, Link as RouterLink } from 'react-router-dom';
 import { Container, Breadcrumbs, Link, Typography, Grid, Box } from '@material-ui/core';
-import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
+import {
+	LocalOffer as LocalOfferIcon,
+	LocationOn as LocationIcon,
+	ThumbDown as ThumbDownIcon,
+	ThumbUp as ThumbUpIcon
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -45,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 	otherOffersHeading: {
 		fontSize: '1.15rem',
 		fontWeight: 500,
-		margin: theme.spacing(2, 0, 1, 1)
+		margin: theme.spacing(2, 0, 2, 1)
 	},
 	spanPrimary: {
 		color: theme.palette.primary.main
@@ -153,10 +158,12 @@ const Offer = props => {
 											className={classes.sideCards}
 											image={creator.avatar}
 											title={creator.username}
-											location={creator.city}
+											iconText0={[ <ThumbUpIcon fontSize='small' />, creator.positiveKarma, 'primary' ]}
+											iconText1={[ <ThumbDownIcon fontSize='small' />, creator.negativeKarma, 'secondary' ]}
+											iconText2={[ <LocationIcon fontSize='small' />, creator.city, 'inherit' ]}
 											link={`/user?id=${creator._id}`}
 										>
-											{creator.bio ? creator.bio : 'No Bio...'}
+											{creator.bio ? creator.bio.substring(0, 50) : 'No Bio...'}
 										</CardMediaSm>
 									</Grid>
 									<Typography className={classes.otherOffersHeading} variant='h3'>
@@ -170,11 +177,13 @@ const Offer = props => {
 													image={`/${el.imagesThumb[0]}`}
 													title={el.title}
 													onClick={() => handleCardsClick(el._id)}
-													price={`${el.price} ${el.currency} daily`}
-													location={el.location.label}
-													btnName='View'
-													btnIcon={<ArrowRightIcon />}
-													creator={creator.username}
+													iconText1={[
+														<LocalOfferIcon fontSize='small' />,
+														`${el.price} ${el.currency} daily`,
+														'primary'
+													]}
+													iconText2={[ <LocationIcon fontSize='small' />, el.location.label, 'primary' ]}
+													subtitle={`by ${creator.username}`}
 												>
 													{el.description.join(' ').length > 50 ? (
 														el.description.join(' ').substring(0, 50) + '...'
