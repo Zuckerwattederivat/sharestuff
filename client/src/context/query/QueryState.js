@@ -195,7 +195,7 @@ const QueryState = props => {
 			if (!offer.data.msg) {
 				// search other offers by same user
 				const offersByCreator = await getOffers({ createdBy: offer.data.createdBy, limit: 4, sort: 'desc' });
-				// searc for creator info
+				// search for creator info
 				const user = await axios.get('/api/users/get', { params: { id: offer.data.createdBy } });
 				// set state
 				setQueryState(SET_ALL, { offer: offer.data, offers: offersByCreator.data, creator: user.data });

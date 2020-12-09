@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 	otherOffersHeading: {
 		fontSize: '1.15rem',
 		fontWeight: 500,
-		margin: theme.spacing(1, 0, 1, 1)
+		margin: theme.spacing(2, 0, 1, 1)
 	},
 	spanPrimary: {
 		color: theme.palette.primary.main
@@ -104,7 +104,6 @@ const Offer = props => {
 
 		// update url param
 		props.history.push(`/offers/offer?id=${elId}`);
-
 		// get url params
 		const urlParams = new URLSearchParams(window.location.search);
 		// set search params
@@ -146,8 +145,20 @@ const Offer = props => {
 							</Carousel>
 						</Grid>
 						<Grid item md={5} lg={4}>
-							{offers && creator ? (
+							{offers &&
+							creator && (
 								<Grid container width='100%' spacing={2}>
+									<Grid item xs={12}>
+										<CardMediaSm
+											className={classes.sideCards}
+											image={creator.avatar}
+											title={creator.username}
+											location={creator.city}
+											link={`/user?id=${creator._id}`}
+										>
+											{creator.bio ? creator.bio : 'No Bio...'}
+										</CardMediaSm>
+									</Grid>
 									<Typography className={classes.otherOffersHeading} variant='h3'>
 										More Offers by <span className={classes.spanPrimary}>{creator.username}</span>
 									</Typography>
@@ -155,7 +166,7 @@ const Offer = props => {
 										return (
 											<Grid item xs={12} key={`user-offers-${index}`}>
 												<CardMediaSm
-													className={classes.otherOffersCard}
+													className={classes.sideCards}
 													image={`/${el.imagesThumb[0]}`}
 													title={el.title}
 													onClick={() => handleCardsClick(el._id)}
@@ -175,8 +186,6 @@ const Offer = props => {
 										);
 									})}
 								</Grid>
-							) : (
-								''
 							)}
 						</Grid>
 					</Grid>
