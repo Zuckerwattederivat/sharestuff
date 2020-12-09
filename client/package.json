@@ -11,10 +11,9 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
     "framer-motion": "^2.9.4",
-    "node-sass": "^4.14.1",
     "react": "^16.13.1",
-    "react-awesome-slider": "^4.1.0",
     "react-dom": "^16.13.1",
+    "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "uuid": "^8.3.1"

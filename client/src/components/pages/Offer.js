@@ -1,16 +1,15 @@
 // Node Modules
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { Container, Breadcrumbs, Link, Typography, Grid, Box } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { motion } from 'framer-motion';
-import AwesomeSlider from 'react-awesome-slider';
-// Styles
-import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
-import AnimationStyles from 'react-awesome-slider/src/styled/scale-out-animation/scale-out-animation.scss';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 // Context
 import QueryContext from '../../context/query/queryContext';
+// Components
+import ModalImage from '../layout/ModalImage';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import NotFoundSvg from '../../assets/undraw/not-found.svg';
@@ -30,8 +29,17 @@ const useStyles = makeStyles(theme => ({
 	loadingGif: {
 		height: '20vh'
 	},
+	carousel: {
+		cursor: 'pointer'
+	},
 	carouselSlide: {
-		height: '400px'
+		height: '400px',
+		backgroundPosition: 'center',
+		backgroundSize: 'cover',
+		backgroundRepeat: 'no-repeat',
+		[theme.breakpoints.up('lg')]: {
+			height: '500px'
+		}
 	}
 }));
 
@@ -44,6 +52,9 @@ const Offer = props => {
 	const queryContext = useContext(QueryContext);
 	// destructure query context
 	const { errors, loading, categories, offer, searchCached, setOfferState } = queryContext;
+
+	// image modal state
+	const [ modalOpen, setModalOpen ] = useState(false);
 
 	// on render
 	useEffect(() => {
@@ -61,6 +72,9 @@ const Offer = props => {
 
 		// eslint-disable-next-line
 	}, []);
+
+	// handle carousel click
+	const handleCarouselClick = () => setModalOpen(true);
 
 	return (
 		<div className={classes.offer}>
@@ -82,25 +96,23 @@ const Offer = props => {
 					<Grid container className={classes.contentBox} width='100%' spacing={3}>
 						{offer && (
 							<Grid item xs={12} md={7} lg={8}>
-								<AwesomeSlider
-									className={classes.carousel}
-									name='offer-carousel'
-									organicArrows={true}
-									bullets={false}
-									loading={false}
-									animation='scaleOutAnimation'
-									mobileTouch={true}
-									cssModule={[ CoreStyles, AnimationStyles ]}
-								>
-									{offer.images.map((el, i) => {
-										return <div className={classes.carouselSlide} data-src={`/${el}`} key={`image-${i}`} />;
+								<Carousel className={classes.carousel} onClickItem={() => handleCarouselClick()} showThumbs={false}>
+									{offer.images.map((image, index) => {
+										return (
+											<div
+												key={`slide-${index}`}
+												className={classes.carouselSlide}
+												style={{ backgroundImage: `url(/${image})` }}
+											/>
+										);
 									})}
-								</AwesomeSlider>
+								</Carousel>
 							</Grid>
 						)}
 					</Grid>
 				)}
 			</Container>
+			{offer && <ModalImage modalOpen={modalOpen} setModalOpen={setModalOpen} images={offer.images} />}
 		</div>
 	);
 };

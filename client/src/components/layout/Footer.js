@@ -152,7 +152,7 @@ const Footer = props => {
 };
 
 // PropTypes
-Footer.protoTypes = {
+Footer.propTypes = {
 	title1: PropTypes.string.isRequired,
 	title2: PropTypes.string.isRequired,
 	street: PropTypes.string.isRequired,
