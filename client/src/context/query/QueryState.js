@@ -209,6 +209,8 @@ const QueryState = props => {
 		}
 	};
 
+	// TODO BOOK OFFER
+
 	return (
 		<QueryContext.Provider
 			value={{

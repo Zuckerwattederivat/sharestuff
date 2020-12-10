@@ -58,6 +58,10 @@ const OfferSchema = mongoose.Schema({
 		required: true,
 		default: true
 	},
+	bookedBy: {
+		type: String,
+		default: null
+	},
 	date: {
 		type: Date,
 		default: Date.now

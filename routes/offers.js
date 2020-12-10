@@ -149,6 +149,7 @@ router.post(
 			// catch error & send response
 		} catch (err) {
 			req.files.map(file => {
+				// delete image
 				fs.unlink(file.path, err => {
 					if (err) {
 						console.error(err);
@@ -156,6 +157,18 @@ router.post(
 						console.log(file.path + ' was deleted');
 					}
 				});
+				// delete thumb
+				const filePath = file.path.split('.');
+				const filePathThumb = filePath[0] + '-thumb.' + filePath[1];
+				setTimeout(() => {
+					fs.unlink(filePathThumb, err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(file.path + ' was deleted');
+						}
+					});
+				}, 2000);
 			});
 			console.error(err.message);
 			res.status(500).json({ msg: 'Server Error' });
