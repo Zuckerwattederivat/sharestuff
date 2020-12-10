@@ -9,12 +9,12 @@ const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
+// Middleware
+const auth = require('../middleware/auth');
 // Config
 const config = require('config');
 // Models
 const User = require('../models/User');
-const e = require('express');
-// const { json } = require('express');
 
 // @route     POST api/users/register
 // @desc      Register a user
@@ -186,6 +186,77 @@ router.get('/get', async (req, res) => {
 			};
 			// send response
 			res.json(payload);
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
+// @route     PUT api/users/update
+// @desc      Update existing user
+// @access    Private
+router.put('/update', auth, async (req, res) => {
+	// save request content
+	const { address, zipCode, city, country, phone, email, bookedOfferId, bio, positiveKarma, negativeKarma } = req.body;
+
+	try {
+		// errors array
+		let errors = [];
+		// get user
+		const user = await User.findById(req.user.id);
+
+		// update adress
+		if ((address && zipCode && city, country)) {
+			const res = await User.updateOne(
+				{ _id: ObjectId(req.user.id) },
+				{ address: address, zipCode: zipCode, city: city, country: country }
+			);
+			if (!res) errors.push('Address could not be updated');
+		}
+
+		// update phone number
+		if (phone) {
+			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { phone: phone });
+			if (!res) errors.push('Phone number could not be updated');
+		}
+
+		// update email address
+		if (phone) {
+			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { email: email });
+			if (!res) errors.push('Email could not be updated');
+		}
+
+		// update booked offers
+		if (bookedOfferId) {
+			await User.updateOne({ _id: ObjectId(req.user.id) }, { bookedOffers: [ ...user.bookedOffers, bookedOfferId ] });
+			if (!res) errors.push('Offer could not be added');
+		}
+
+		// update bio
+		if (bio) {
+			await User.updateOne({ _id: ObjectId(req.user.id) }, { bio: bio });
+			if (!res) errors.push('Bio could not be updated');
+		}
+
+		// update positive karma + 1
+		if (positiveKarma === 'add') {
+			await User.updateOne({ _id: ObjectId(req.user.id) }, { positiveKarma: user.positiveKarma + 1 });
+			if (!res) errors.push('Bio could not be updated');
+		}
+
+		// update negative karma -1
+		if (positiveKarma === 'add') {
+			await User.updateOne({ _id: ObjectId(req.user.id) }, { negativeKarma: user.negativeKarma - 1 });
+			if (!res) errors.push('Bio could not be updated');
+		}
+
+		// send response
+		if (errors[0]) {
+			return res.status(400).json({ errors: errors });
+		} else {
+			return res.status(200).json({ msg: 'Update successful' });
 		}
 	} catch (err) {
 		console.error(err.message);
