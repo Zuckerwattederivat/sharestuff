@@ -213,43 +213,43 @@ router.put('/update', auth, async (req, res) => {
 				{ _id: ObjectId(req.user.id) },
 				{ address: address, zipCode: zipCode, city: city, country: country }
 			);
-			if (!res) errors.push('Address could not be updated');
+			if (res.nModified !== 1) errors.push('Address could not be updated');
 		}
 
 		// update phone number
 		if (phone) {
 			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { phone: phone });
-			if (!res) errors.push('Phone number could not be updated');
+			if (res.nModified !== 1) errors.push('Phone number could not be updated');
 		}
 
 		// update email address
 		if (phone) {
 			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { email: email });
-			if (!res) errors.push('Email could not be updated');
+			if (res.nModified !== 1) errors.push('Email could not be updated');
 		}
 
 		// update booked offers
 		if (bookedOfferId) {
 			await User.updateOne({ _id: ObjectId(req.user.id) }, { bookedOffers: [ ...user.bookedOffers, bookedOfferId ] });
-			if (!res) errors.push('Offer could not be added');
+			if (res.nModified !== 1) errors.push('Offer could not be added');
 		}
 
 		// update bio
 		if (bio) {
-			await User.updateOne({ _id: ObjectId(req.user.id) }, { bio: bio });
-			if (!res) errors.push('Bio could not be updated');
+			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { bio: bio });
+			if (res.nModified !== 1) errors.push('Bio could not be updated');
 		}
 
 		// update positive karma + 1
 		if (positiveKarma === 'add') {
-			await User.updateOne({ _id: ObjectId(req.user.id) }, { positiveKarma: user.positiveKarma + 1 });
-			if (!res) errors.push('Bio could not be updated');
+			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { positiveKarma: user.positiveKarma + 1 });
+			if (res.nModified !== 1) errors.push('Karma could not be updated');
 		}
 
 		// update negative karma -1
 		if (positiveKarma === 'add') {
-			await User.updateOne({ _id: ObjectId(req.user.id) }, { negativeKarma: user.negativeKarma - 1 });
-			if (!res) errors.push('Bio could not be updated');
+			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { negativeKarma: user.negativeKarma - 1 });
+			if (res.nModified !== 1) errors.push('Karma could not be updated');
 		}
 
 		// send response

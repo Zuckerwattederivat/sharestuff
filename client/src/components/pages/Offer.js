@@ -205,7 +205,7 @@ const Offer = props => {
 											iconText2={[ <LocationIcon fontSize='small' />, creator.city, 'inherit' ]}
 											link={`/user?id=${creator._id}`}
 										>
-											{creator.bio ? creator.bio.substring(0, 50) : 'No Bio...'}
+											{creator.bio ? creator.bio : 'No Bio...'}
 										</CardMediaSm>
 									</Grid>
 									<Typography className={classes.otherOffersHeading} variant='h3'>

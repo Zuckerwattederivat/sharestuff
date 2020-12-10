@@ -29,10 +29,14 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(0, 0, 0.5, 0.5)
 	},
 	icon: {
+		fontSize: '0.92rem',
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 		margin: theme.spacing(0, 1, 0.5, 0)
+	},
+	text: {
+		fontSize: '0.92rem'
 	},
 	button: {
 		margin: theme.spacing(0, 0.5, 0.5, 0)
