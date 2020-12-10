@@ -6,7 +6,8 @@ import {
 	LocalOffer as LocalOfferIcon,
 	LocationOn as LocationIcon,
 	ThumbDown as ThumbDownIcon,
-	ThumbUp as ThumbUpIcon
+	ThumbUp as ThumbUpIcon,
+	BookmarkBorder as BookmarkBorderIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -16,6 +17,7 @@ import QueryContext from '../../context/query/queryContext';
 // Components
 import ModalImage from '../layout/ModalImage';
 import CardMediaSm from '../cards/CardMediaSm';
+import CardText from '../cards/CardText';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import NotFoundSvg from '../../assets/undraw/not-found.svg';
@@ -50,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 	otherOffersHeading: {
 		fontSize: '1.15rem',
 		fontWeight: 500,
-		margin: theme.spacing(3, 0, 2, 1)
+		margin: theme.spacing(2, 0, 2, 1)
 	},
 	spanPrimary: {
 		color: theme.palette.primary.main
@@ -137,17 +139,47 @@ const Offer = props => {
 				) : offer ? (
 					<Grid container className={classes.contentBox} width='100%' spacing={3}>
 						<Grid item xs={12} md={7} lg={8}>
-							<Carousel className={classes.carousel} onClickItem={() => setModalOpen(true)} showThumbs={false}>
-								{offer.images.map((image, index) => {
-									return (
-										<div
-											key={`slide-${index}`}
-											className={classes.carouselSlide}
-											style={{ backgroundImage: `url(/${image})` }}
-										/>
-									);
-								})}
-							</Carousel>
+							<Grid container spacing={2}>
+								<Grid item xs={12}>
+									<Carousel className={classes.carousel} onClickItem={() => setModalOpen(true)} showThumbs={false}>
+										{offer.images.map((image, index) => {
+											return (
+												<div
+													key={`slide-${index}`}
+													className={classes.carouselSlide}
+													style={{ backgroundImage: `url(/${image})` }}
+												/>
+											);
+										})}
+									</Carousel>
+								</Grid>
+								<Grid item xs={12}>
+									<CardText
+										title={offer.title}
+										iconText0={{
+											iconColor: 'primary',
+											icon: <LocalOfferIcon />,
+											text: `${offer.price} ${offer.currency} daily`,
+											textColor: 'primary'
+										}}
+										iconText1={{
+											iconColor: 'primary',
+											icon: <LocationIcon />,
+											text: offer.location.label,
+											textColor: 'primary'
+										}}
+										btnName='Book'
+										btnProps={{
+											size: 'medium',
+											variant: 'contained',
+											color: 'primary',
+											startIcon: <BookmarkBorderIcon />
+										}}
+									>
+										{offer.description}
+									</CardText>
+								</Grid>
+							</Grid>
 						</Grid>
 						<Grid item md={5} lg={4}>
 							{offers &&
