@@ -45,8 +45,11 @@ const useStyles = makeStyles(theme => ({
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
 		backgroundRepeat: 'no-repeat',
-		[theme.breakpoints.up('lg')]: {
-			height: '500px'
+		[theme.breakpoints.up('sm')]: {
+			height: '550px'
+		},
+		[theme.breakpoints.up('xl')]: {
+			height: '800px'
 		}
 	},
 	otherOffersHeading: {
@@ -120,6 +123,12 @@ const Offer = props => {
 		setOfferState(id);
 	};
 
+	// handle booking click
+	const handleBookingClick = () => {
+		// TODO: Book Offer
+		console.log('book offer');
+	};
+
 	return (
 		<div className={classes.offer}>
 			<Container className={classes.container} maxWidth='xl'>
@@ -175,6 +184,7 @@ const Offer = props => {
 											color: 'primary',
 											startIcon: <BookmarkBorderIcon />
 										}}
+										btnClick={handleBookingClick}
 									>
 										{offer.description}
 									</CardText>

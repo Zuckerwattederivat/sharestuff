@@ -78,16 +78,19 @@ const CardText = props => {
 						<span />
 					)}
 				</Box>
-				<Button
-					className={classes.button}
-					variant={props.btnProps.variant}
-					size={props.btnProps.size}
-					color={props.btnProps.color}
-					startIcon={props.btnProps.startIcon}
-					endIcon={props.btnProps.endIcon}
-				>
-					{props.btnName}
-				</Button>
+				{props.btnClick && (
+					<Button
+						className={classes.button}
+						variant={props.btnProps.variant}
+						size={props.btnProps.size}
+						color={props.btnProps.color}
+						startIcon={props.btnProps.startIcon}
+						endIcon={props.btnProps.endIcon}
+						onClick={props.btnClick}
+					>
+						{props.btnName}
+					</Button>
+				)}
 			</CardActions>
 		</Card>
 	);
