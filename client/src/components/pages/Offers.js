@@ -70,10 +70,14 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		flexDirection: 'column',
 		'& h3': {
+			textAlign: 'center',
 			fontSize: '1.5rem',
 			fontWeight: 700,
 			color: theme.palette.primary.main,
 			margin: theme.spacing(1.5, 0)
+		},
+		'& p': {
+			textAlign: 'center'
 		}
 	},
 	notFoundSvg: {
