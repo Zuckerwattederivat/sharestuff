@@ -234,18 +234,6 @@ const QueryState = props => {
 				setQueryState(BOOKING_LOADING, false);
 			}
 		} catch (err) {
-			try {
-				// update user & offer
-				const updateUser = await axios.put(
-					'/api/users/update',
-					{ bookedOfferId: offerId, removeBookedOffer: true },
-					config
-				);
-				const updateOffer = await axios.put('/api/offers/unbook', { offerId: offerId }, config);
-			} catch (err) {
-				console.error(err.response.data.msg);
-			}
-
 			if (Array.isArray(err.response.data.msg)) {
 				setQueryState(BOOKING_ERROR, err.response.data.msg);
 			} else {
