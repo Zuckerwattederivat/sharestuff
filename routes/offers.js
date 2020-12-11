@@ -10,6 +10,7 @@ const { v1: uuidv1 } = require('uuid');
 const _ = require('lodash');
 const jimp = require('jimp');
 const fs = require('fs');
+const ObjectId = require('mongoose').Types.ObjectId;
 // Middleware
 const auth = require('../middleware/auth');
 // Models
@@ -42,8 +43,6 @@ const upload = multer({
 });
 // utils
 const paragraphsToArray = require('../util/paragraphsToArray');
-const e = require('express');
-const { sortBy } = require('lodash');
 
 // @route     POST api/offers/create
 // @desc      Create offer
@@ -298,7 +297,7 @@ router.post('/search', async (req, res) => {
 			!filter.categoryId &&
 			!filter.location
 		) {
-			const offers = await Offer.find({});
+			const offers = await Offer.find({ active: true });
 			if (offers) {
 				return res.json(offers);
 			} else {
@@ -320,6 +319,7 @@ router.post('/search', async (req, res) => {
 					$text: { $search: `${searchParameters.tags}` }
 				});
 			} else {
+				console.log('hell9');
 				offers = await Offer.find({
 					active: true,
 					$text: { $search: `${searchParameters.product} ${searchParameters.tags}` }
@@ -596,6 +596,76 @@ router.post('/search', async (req, res) => {
 			} else {
 				return res.status(200).json({ msg: 'No offer was found' });
 			}
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
+// @route     PUT api/offers/book
+// @desc      Book offer
+// @access    Private
+router.put('/book', auth, async (req, res) => {
+	// save request data
+	const { offerId } = req.body;
+
+	try {
+		// define errors
+		let err;
+
+		// update offer
+		if (offerId) {
+			const res = await Offer.updateOne({ _id: ObjectId(offerId) }, { active: false, bookedBy: req.user.id });
+			if (res.nModified !== 1) err = 'Could not book the offer';
+		} else {
+			err = 'Recieved no offer id';
+		}
+
+		// send response
+		if (err) {
+			res.status(400).json({ err: err });
+		} else {
+			res.status(200).json({ msg: 'Offer was booked' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
+// @route     PUT api/offers/unbook
+// @desc      Unbook offer
+// @access    Private
+router.put('/unbook', auth, async (req, res) => {
+	// save request data
+	const { offerId } = req.body;
+
+	try {
+		// define errors
+		let err;
+		// search offer
+		const offer = await Offer.findById(offerId);
+
+		// update offer
+		if (offer.bookedBy === req.user.id || offer.createdBy === req.user.id) {
+			if (offerId) {
+				const res = await Offer.updateOne({ _id: ObjectId(offerId) }, { active: true, bookedBy: null });
+				if (res.nModified !== 1) err = 'Could not unbook the offer';
+			} else {
+				err = 'Recieved no offer id';
+			}
+		} else {
+			return res.status(401).json({ err: 'You are unauthorized to unbook this offer' });
+		}
+
+		// send response
+		if (err) {
+			res.status(400).json({ err: err });
+		} else {
+			res.status(200).json({ msg: 'Offer was unbooked' });
 		}
 	} catch (err) {
 		console.error(err.message);

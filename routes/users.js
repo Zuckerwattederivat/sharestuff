@@ -247,7 +247,7 @@ router.put('/update', auth, async (req, res) => {
 		}
 
 		// update negative karma -1
-		if (positiveKarma === 'add') {
+		if (negativeKarma === 'add') {
 			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { negativeKarma: user.negativeKarma - 1 });
 			if (res.nModified !== 1) errors.push('Karma could not be updated');
 		}
