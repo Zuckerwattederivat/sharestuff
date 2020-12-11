@@ -13,7 +13,9 @@ import {
 	SET_PAGE,
 	SET_PAGE_COUNT,
 	SEARCH_CACHED,
-	SET_ALL
+	SET_ALL,
+	BOOKING_LOADING,
+	BOOKING_ERROR
 } from '../types';
 
 // QueryState
@@ -21,6 +23,8 @@ const QueryState = props => {
 	// initial state
 	const initialState = {
 		errors: null,
+		bookingError: [],
+		bookingLoading: true,
 		loading: true,
 		categories: [],
 		category: [],
@@ -209,12 +213,53 @@ const QueryState = props => {
 		}
 	};
 
-	// TODO BOOK OFFER
+	// book offer
+	const bookOffer = async offerId => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		// set loading
+		setQueryState(BOOKING_LOADING, true);
+
+		try {
+			// update user & offer
+			const updateUser = await axios.put('/api/users/update', { bookedOfferId: offerId }, config);
+			const updateOffer = await axios.put('/api/offers/book', { offerId: offerId }, config);
+
+			if (updateUser && updateOffer) {
+				// set loading
+				setQueryState(BOOKING_LOADING, false);
+			}
+		} catch (err) {
+			try {
+				// update user & offer
+				const updateUser = await axios.put(
+					'/api/users/update',
+					{ bookedOfferId: offerId, removeBookedOffer: true },
+					config
+				);
+				const updateOffer = await axios.put('/api/offers/unbook', { offerId: offerId }, config);
+			} catch (err) {
+				console.error(err.response.data.msg);
+			}
+
+			if (Array.isArray(err.response.data.msg)) {
+				setQueryState(BOOKING_ERROR, err.response.data.msg);
+			} else {
+				setQueryState(BOOKING_ERROR, [ err.response.data.msg ]);
+			}
+		}
+	};
 
 	return (
 		<QueryContext.Provider
 			value={{
 				errors: state.errors,
+				bookingError: state.bookingError,
+				bookingLoading: state.bookingLoading,
 				loading: state.loading,
 				categories: state.categories,
 				category: state.category,
@@ -228,7 +273,8 @@ const QueryState = props => {
 				setOffersState,
 				setOfferState,
 				setPage,
-				clearQueryState
+				clearQueryState,
+				bookOffer
 			}}
 		>
 			{props.children}

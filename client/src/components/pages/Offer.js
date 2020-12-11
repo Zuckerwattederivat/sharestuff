@@ -14,8 +14,10 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 // Context
 import QueryContext from '../../context/query/queryContext';
+import AuthContext from '../../context/auth/authContext';
 // Components
 import ModalImage from '../layout/ModalImage';
+import ModalResponse from '../layout/ModalResponse';
 import CardMediaSm from '../cards/CardMediaSm';
 import CardText from '../cards/CardText';
 // Assets
@@ -86,10 +88,27 @@ const Offer = props => {
 	// load query context
 	const queryContext = useContext(QueryContext);
 	// destructure query context
-	const { errors, loading, categories, offers, offer, creator, searchCached, setOfferState } = queryContext;
+	const {
+		errors,
+		loading,
+		offers,
+		offer,
+		creator,
+		bookingLoading,
+		bookingError,
+		searchCached,
+		setOfferState,
+		bookOffer
+	} = queryContext;
+
+	// authContext user
+	const { user } = useContext(AuthContext);
 
 	// image modal state
-	const [ modalOpen, setModalOpen ] = useState(false);
+	const [ imageModalOpen, setImageModalOpen ] = useState(false);
+
+	// booking modal state
+	const [ bookingModalOpen, setBookingModalOpen ] = useState(false);
 
 	// on render
 	useEffect(() => {
@@ -125,8 +144,9 @@ const Offer = props => {
 
 	// handle booking click
 	const handleBookingClick = () => {
-		// TODO: Book Offer
-		console.log('book offer');
+		setBookingModalOpen(true);
+		// book offer
+		bookOffer(offer._id, user._id);
 	};
 
 	return (
@@ -150,7 +170,7 @@ const Offer = props => {
 						<Grid item xs={12} md={7} lg={8}>
 							<Grid container spacing={2}>
 								<Grid item xs={12}>
-									<Carousel className={classes.carousel} onClickItem={() => setModalOpen(true)} showThumbs={false}>
+									<Carousel className={classes.carousel} onClickItem={() => setImageModalOpen(true)} showThumbs={false}>
 										{offer.images.map((image, index) => {
 											return (
 												<div
@@ -182,6 +202,7 @@ const Offer = props => {
 											size: 'medium',
 											variant: 'contained',
 											color: 'primary',
+											disabled: user ? false : true,
 											startIcon: <BookmarkBorderIcon />
 										}}
 										btnClick={handleBookingClick}
@@ -248,7 +269,15 @@ const Offer = props => {
 					</Box>
 				)}
 			</Container>
-			{offer && <ModalImage modalOpen={modalOpen} setModalOpen={setModalOpen} images={offer.images} />}
+			{offer && <ModalImage modalOpen={imageModalOpen} setModalOpen={setImageModalOpen} images={offer.images} />}
+			{offer && (
+				<ModalResponse
+					modalOpen={bookingModalOpen}
+					setModalOpen={setBookingModalOpen}
+					loading={bookingLoading}
+					errors={bookingError}
+				/>
+			)}
 		</div>
 	);
 };

@@ -11,7 +11,9 @@ import {
 	SET_PAGE,
 	SET_PAGE_COUNT,
 	SET_OFFERS_PAGINATED,
-	SEARCH_CACHED
+	SEARCH_CACHED,
+	BOOKING_LOADING,
+	BOOKING_ERROR
 } from '../types';
 
 export default (state, action) => {
@@ -67,10 +69,16 @@ export default (state, action) => {
 				loading: false,
 				errors: action.payload
 			};
+		case BOOKING_LOADING:
+			return { ...state, bookingLoading: action.payload };
+		case BOOKING_ERROR:
+			return { ...state, bookingError: action.payload, bookingLoading: false };
 		case CLEAR_ALL:
 			return {
 				...state,
 				loading: true,
+				bookingLoading: true,
+				bookingError: [],
 				errors: null,
 				category: [],
 				offers: [],

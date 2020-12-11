@@ -37,7 +37,7 @@ export const CITY_ERROR = 'CITY_ERROR';
 export const CLEAR_INPUT_ERRORS = 'CLEAR_ERRORS';
 export const SET_COUNTRY_AUTO = 'SET_COUNTRY_AUTO';
 export const SET_COUNTRY_LABEL = 'SET_COUNTRY_LABEL';
-// search
+// query
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_CATEGORY = 'SET_CATEGORY';
 export const SET_OFFERS = 'SET_OFFERS';
@@ -50,3 +50,5 @@ export const OFFER_ERROR = 'OFFER_ERROR';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_PAGE_COUNT = 'SET_PAGE_COUNT';
 export const SEARCH_CACHED = 'SEARCH_CACHED';
+export const BOOKING_LOADING = 'BOOKING_LOADING';
+export const BOOKING_ERROR = 'BOOKING_ERROR';

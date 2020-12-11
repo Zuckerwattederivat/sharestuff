@@ -613,19 +613,19 @@ router.put('/book', auth, async (req, res) => {
 
 	try {
 		// define errors
-		let err;
+		let errors = [];
 
 		// update offer
 		if (offerId) {
 			const res = await Offer.updateOne({ _id: ObjectId(offerId) }, { active: false, bookedBy: req.user.id });
-			if (res.nModified !== 1) err = 'Could not book the offer';
+			if (res.nModified !== 1) errors.push('Could not book the offer');
 		} else {
-			err = 'Recieved no offer id';
+			errors.push('Recieved no offer id');
 		}
 
 		// send response
-		if (err) {
-			res.status(400).json({ err: err });
+		if (errors[0]) {
+			res.status(400).json({ msg: errors });
 		} else {
 			res.status(200).json({ msg: 'Offer was booked' });
 		}
@@ -645,7 +645,7 @@ router.put('/unbook', auth, async (req, res) => {
 
 	try {
 		// define errors
-		let err;
+		let errors = [];
 		// search offer
 		const offer = await Offer.findById(offerId);
 
@@ -653,17 +653,17 @@ router.put('/unbook', auth, async (req, res) => {
 		if (offer.bookedBy === req.user.id || offer.createdBy === req.user.id) {
 			if (offerId) {
 				const res = await Offer.updateOne({ _id: ObjectId(offerId) }, { active: true, bookedBy: null });
-				if (res.nModified !== 1) err = 'Could not unbook the offer';
+				if (res.nModified !== 1) errors.push('Could not unbook the offer');
 			} else {
-				err = 'Recieved no offer id';
+				errors.push('Recieved no offer id');
 			}
 		} else {
-			return res.status(401).json({ err: 'You are unauthorized to unbook this offer' });
+			return res.status(401).json({ msg: 'You are unauthorized to unbook this offer' });
 		}
 
 		// send response
-		if (err) {
-			res.status(400).json({ err: err });
+		if (errors[0]) {
+			res.status(400).json({ msg: errors });
 		} else {
 			res.status(200).json({ msg: 'Offer was unbooked' });
 		}

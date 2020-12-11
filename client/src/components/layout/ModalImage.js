@@ -39,8 +39,8 @@ const ModalImage = props => {
 		<div>
 			<Modal
 				className={classes.imageModal}
-				aria-labelledby='register-modal-title'
-				aria-describedby='register-modal-description'
+				aria-labelledby='image-modal'
+				aria-describedby='image-modal-description'
 				open={props.modalOpen}
 				onClose={() => props.setModalOpen(false)}
 				closeAfterTransition
@@ -55,8 +55,8 @@ const ModalImage = props => {
 						damping: 10,
 						stiffness: 70
 					}}
-					initial={{ transform: 'scale(0)' }}
-					animate={{ transform: 'scale(1)' }}
+					initial={{ y: '100vh' }}
+					animate={{ y: 0 }}
 				>
 					<Carousel className={classes.carousel} showThumbs={false}>
 						{props.images.map((image, index) => {

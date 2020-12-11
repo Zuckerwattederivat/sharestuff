@@ -91,6 +91,7 @@ const CardText = props => {
 						startIcon={props.btnProps.startIcon}
 						endIcon={props.btnProps.endIcon}
 						onClick={props.btnClick}
+						disabled={props.btnProps.disabled}
 					>
 						{props.btnName}
 					</Button>
@@ -117,7 +118,8 @@ CardText.defaultProps = {
 		variant: 'text',
 		size: 'medium',
 		color: 'primary',
-		endIcon: <ArrowRightIcon />
+		endIcon: <ArrowRightIcon />,
+		disabled: false
 	}
 };
 
