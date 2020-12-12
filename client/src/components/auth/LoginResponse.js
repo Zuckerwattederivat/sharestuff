@@ -36,9 +36,11 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	response: {
+		fontSize: '1.5rem',
+		fontWeight: 700,
 		textAlign: 'center',
 		width: '100%',
-		margin: theme.spacing(3, 0, 3)
+		margin: theme.spacing(1.5, 0, 3)
 	},
 	buttonContainer: {
 		[theme.breakpoints.down('xs')]: {
@@ -144,7 +146,7 @@ const LoginResponse = props => {
 						{isAuthenticated ? (
 							<Fragment>
 								<img className={classes.messageSvg} src={WelcomeSvg} alt='Add User Drawing' />
-								<Typography className={classes.response} variant='h5'>
+								<Typography className={classes.response} variant='h5' color='primary'>
 									Welcome back {user && user.username}!
 								</Typography>
 								<Box width='100%' display='flex' justifyContent='flex-end'>
@@ -164,7 +166,7 @@ const LoginResponse = props => {
 							<Fragment>
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
 								<div className={classes.response}>
-									<Typography className={classes.response} variant='h5'>
+									<Typography className={classes.response} variant='h5' color='secondary'>
 										Something went wrong :(
 									</Typography>
 									<Alerts />

@@ -12,7 +12,7 @@ import AlertContext from '../../context/alert/alertContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
-import ConfirmedSvg from '../../assets/undraw/confirmed.svg';
+import CheckMarkGif from '../../assets/check-mark-transparent.gif';
 import ErrorSvg from '../../assets/undraw/cancel.svg';
 
 // define styles
@@ -36,9 +36,11 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	response: {
+		fontSize: '1.5rem',
+		fontWeight: 700,
 		textAlign: 'center',
 		width: '100%',
-		margin: theme.spacing(3, 0, 3)
+		margin: theme.spacing(1.5, 0, 3)
 	},
 	buttonContainer: {
 		[theme.breakpoints.down('xs')]: {
@@ -143,8 +145,8 @@ const RegisterResponse = props => {
 					>
 						{isAuthenticated ? (
 							<Fragment>
-								<img className={classes.messageSvg} src={ConfirmedSvg} alt='Add User Drawing' />
-								<Typography className={classes.response} variant='h5'>
+								<img className={classes.messageSvg} src={CheckMarkGif} alt='Success' />
+								<Typography className={classes.response} variant='h5' color='primary'>
 									Your account has been created successfully!
 								</Typography>
 								<Box width='100%' display='flex' justifyContent='flex-end'>
@@ -164,7 +166,7 @@ const RegisterResponse = props => {
 							<Fragment>
 								<img className={classes.messageSvg} src={ErrorSvg} alt='Add User Drawing' />
 								<div className={classes.response}>
-									<Typography className={classes.response} variant='h5'>
+									<Typography className={classes.response} variant='h5' color='secondary'>
 										Somethin went wrong :(
 									</Typography>
 									<Alerts />
