@@ -215,31 +215,7 @@ const QueryState = props => {
 
 	// book offer
 	const bookOffer = async offerId => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		};
-
-		// set loading
-		setQueryState(BOOKING_LOADING, true);
-
-		try {
-			// update user & offer
-			const updateUser = await axios.put('/api/users/update', { bookedOfferId: offerId }, config);
-			const updateOffer = await axios.put('/api/offers/book', { offerId: offerId }, config);
-
-			if (updateUser && updateOffer) {
-				// set loading
-				setQueryState(BOOKING_LOADING, false);
-			}
-		} catch (err) {
-			if (Array.isArray(err.response.data.msg)) {
-				setQueryState(BOOKING_ERROR, err.response.data.msg);
-			} else {
-				setQueryState(BOOKING_ERROR, [ err.response.data.msg ]);
-			}
-		}
+		console.log(offerId);
 	};
 
 	return (

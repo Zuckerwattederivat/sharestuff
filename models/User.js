@@ -75,10 +75,6 @@ const UserSchema = mongoose.Schema({
 		type: Number,
 		default: 0
 	},
-	bookedOffers: {
-		type: Array,
-		default: []
-	},
 	date: {
 		type: Date,
 		default: Date.now

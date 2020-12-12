@@ -200,19 +200,7 @@ router.get('/get', async (req, res) => {
 // @access    Private
 router.put('/update', auth, async (req, res) => {
 	// save request content
-	const {
-		address,
-		zipCode,
-		city,
-		country,
-		phone,
-		email,
-		bookedOfferId,
-		removeBookedOffer,
-		bio,
-		positiveKarma,
-		negativeKarma
-	} = req.body;
+	const { address, zipCode, city, country, phone, email, bio, positiveKarma, negativeKarma } = req.body;
 
 	try {
 		// errors array
@@ -221,19 +209,7 @@ router.put('/update', auth, async (req, res) => {
 		const user = await User.findById(req.user.id);
 
 		// return if no parameters
-		if (
-			!address &&
-			!zipCode &&
-			!city &&
-			!country &&
-			!phone &&
-			!email &&
-			!bookedOfferId &&
-			!removeBookedOffer &&
-			!bio &&
-			!positiveKarma &&
-			!negativeKarma
-		) {
+		if (!address && !zipCode && !city && !country && !phone && !email && !bio && !positiveKarma && !negativeKarma) {
 			errors.push('Nothing to update');
 		}
 
@@ -256,30 +232,6 @@ router.put('/update', auth, async (req, res) => {
 		if (phone) {
 			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { email: email });
 			if (res.nModified !== 1) errors.push('Email could not be updated');
-		}
-
-		// update booked offers
-		if (bookedOfferId) {
-			// check if offer exists
-			const offer = await Offer.findById(bookedOfferId);
-			if (!offer) return res.status(400).json({ errors: 'Offer does not exist' });
-			// update user
-			const res = await User.updateOne(
-				{ _id: ObjectId(req.user.id) },
-				{ bookedOffers: [ ...user.bookedOffers, bookedOfferId ] }
-			);
-			if (res.nModified !== 1) errors.push('Offer could not be removed');
-		}
-
-		// remove booked offer
-		if (bookedOfferId && removeBookedOffer) {
-			// check if offer exists
-			const offer = await Offer.findById(bookedOfferId);
-			if (!offer) return res.status(400).json({ errors: 'Offer does not exist' });
-			// update user
-			const bookedOffersNew = user.bookedOffers.filter(item => item === offer._id);
-			console.log(bookedOffersNew);
-			const res = await User.updateOne({ _id: ObjectId(req.user.id) }, { bookedOffers: bookedOffersNew });
 		}
 
 		// update bio
