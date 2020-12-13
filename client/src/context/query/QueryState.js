@@ -15,7 +15,8 @@ import {
 	SEARCH_CACHED,
 	SET_ALL,
 	BOOKING_LOADING,
-	BOOKING_ERROR
+	BOOKING_ERROR,
+	OFFER_BOOKED
 } from '../types';
 
 // QueryState
@@ -25,6 +26,7 @@ const QueryState = props => {
 		errors: null,
 		bookingError: null,
 		bookingLoading: true,
+		offerBooked: false,
 		loading: true,
 		categories: [],
 		category: [],
@@ -232,7 +234,7 @@ const QueryState = props => {
 			const bookedOffer = await axios.post('/api/bookings/create', { offerId: offerId }, config);
 
 			// set loading
-			if (bookedOffer) setQueryState(BOOKING_LOADING, false);
+			if (bookedOffer) setQueryState(OFFER_BOOKED);
 		} catch (err) {
 			if (err.response.data.msg) {
 				setQueryState(BOOKING_ERROR, err.response.data.msg);
@@ -248,6 +250,7 @@ const QueryState = props => {
 				errors: state.errors,
 				bookingError: state.bookingError,
 				bookingLoading: state.bookingLoading,
+				offerBooked: state.offerBooked,
 				loading: state.loading,
 				categories: state.categories,
 				category: state.category,

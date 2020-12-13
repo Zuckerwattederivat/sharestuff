@@ -100,6 +100,7 @@ const Offer = props => {
 		creator,
 		bookingLoading,
 		bookingError,
+		offerBooked,
 		searchCached,
 		setOfferState,
 		bookOffer
@@ -201,12 +202,12 @@ const Offer = props => {
 											text: offer.location.label,
 											textColor: 'primary'
 										}}
-										btnName='Book'
+										btnName={user ? offerBooked ? 'Already Booked' : 'Book' : 'Book'}
 										btnProps={{
 											size: 'medium',
 											variant: 'contained',
 											color: 'primary',
-											disabled: user ? false : true,
+											disabled: user ? (offerBooked ? true : false) : true,
 											startIcon: <BookmarkBorderIcon />
 										}}
 										btnClick={handleBookingClick}

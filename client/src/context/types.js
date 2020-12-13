@@ -52,3 +52,4 @@ export const SET_PAGE_COUNT = 'SET_PAGE_COUNT';
 export const SEARCH_CACHED = 'SEARCH_CACHED';
 export const BOOKING_LOADING = 'BOOKING_LOADING';
 export const BOOKING_ERROR = 'BOOKING_ERROR';
+export const OFFER_BOOKED = 'OFFER_BOOKED';
