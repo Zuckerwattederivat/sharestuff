@@ -78,7 +78,7 @@ export default (state, action) => {
 				...state,
 				loading: true,
 				bookingLoading: true,
-				bookingError: [],
+				bookingError: null,
 				errors: null,
 				category: [],
 				offers: [],

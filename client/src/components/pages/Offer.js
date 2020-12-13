@@ -17,6 +17,7 @@ import QueryContext from '../../context/query/queryContext';
 import AuthContext from '../../context/auth/authContext';
 // Components
 import ModalImage from '../layout/ModalImage';
+import ModalResponse from '../layout/ModalResponse';
 import CardMediaSm from '../cards/CardMediaSm';
 import CardText from '../cards/CardText';
 // Assets
@@ -110,6 +111,9 @@ const Offer = props => {
 	// image modal state
 	const [ imageModalOpen, setImageModalOpen ] = useState(false);
 
+	// booking modal state
+	const [ bookingModalOpen, setBookingModalOpen ] = useState(false);
+
 	// on render
 	useEffect(() => {
 		// scroll to top
@@ -144,7 +148,8 @@ const Offer = props => {
 
 	// handle booking click
 	const handleBookingClick = () => {
-		// book offer
+		setBookingModalOpen(true);
+		// // book offer
 		bookOffer(offer._id);
 	};
 
@@ -269,6 +274,18 @@ const Offer = props => {
 				)}
 			</Container>
 			{offer && <ModalImage modalOpen={imageModalOpen} setModalOpen={setImageModalOpen} images={offer.images} />}
+			{offer && (
+				<ModalResponse
+					modalOpen={bookingModalOpen}
+					setModalOpen={setBookingModalOpen}
+					loading={bookingLoading}
+					error={bookingError}
+					errorHeading={bookingError}
+					errorText='Please try again'
+					successHeading='You booked the offer successfully'
+					successText='Go to your messages to contact the vendor'
+				/>
+			)}
 		</div>
 	);
 };

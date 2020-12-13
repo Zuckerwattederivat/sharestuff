@@ -23,7 +23,7 @@ const QueryState = props => {
 	// initial state
 	const initialState = {
 		errors: null,
-		bookingError: [],
+		bookingError: null,
 		bookingLoading: true,
 		loading: true,
 		categories: [],
@@ -199,10 +199,13 @@ const QueryState = props => {
 			if (!offer.data.msg) {
 				// search other offers by same user
 				const offersByCreator = await getOffers({ createdBy: offer.data.createdBy, limit: 4, sort: 'desc' });
+				const offersByCreatorMinusActive = offersByCreator.data.filter(item => item._id !== offerId);
+
 				// search for creator info
 				const user = await axios.get('/api/users/get', { params: { id: offer.data.createdBy } });
+
 				// set state
-				setQueryState(SET_ALL, { offer: offer.data, offers: offersByCreator.data, creator: user.data });
+				setQueryState(SET_ALL, { offer: offer.data, offers: offersByCreatorMinusActive, creator: user.data });
 
 				// set error
 			} else {
@@ -215,7 +218,28 @@ const QueryState = props => {
 
 	// book offer
 	const bookOffer = async offerId => {
-		console.log(offerId);
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		// set loading true
+		setQueryState(BOOKING_LOADING, true);
+
+		try {
+			// book offer
+			const bookedOffer = await axios.post('/api/bookings/create', { offerId: offerId }, config);
+
+			// set loading
+			if (bookedOffer) setQueryState(BOOKING_LOADING, false);
+		} catch (err) {
+			if (err.response.data.msg) {
+				setQueryState(BOOKING_ERROR, err.response.data.msg);
+			} else {
+				setQueryState(BOOKING_ERROR, err.response.data.errors.msg);
+			}
+		}
 	};
 
 	return (

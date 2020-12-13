@@ -21,7 +21,7 @@ router.post('/create', [ auth, check('offerId', 'No offer was given ').notEmpty(
 	// check if validation errors exist and response with 400 if true
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
+		return res.status(400).json({ errors: errors.array()[0] });
 	}
 
 	// get paramters
@@ -87,7 +87,7 @@ router.delete('/delete', [ auth, check('bookingId', 'No Booking was given ').not
 	// check if validation errors exist and response with 400 if true
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
+		return res.status(400).json({ errors: errors.array()[0] });
 	}
 
 	// get paramters
@@ -115,7 +115,7 @@ router.delete('/delete', [ auth, check('bookingId', 'No Booking was given ').not
 						// if offer update was successful
 					} else {
 						// remove booking
-						const payload = await Booking.find({ _id: bookingId }).remove().exec();
+						const payload = await Booking.find({ _id: bookingId }).deleteOne().exec();
 
 						// send response
 						if (payload.deletedCount === 1) {
