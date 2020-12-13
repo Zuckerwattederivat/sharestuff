@@ -3,9 +3,11 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Components
 import LoadUser from './components/auth/LoadUser';
+import PrivateRoute from './components/routing/PrivateRoute';
 import Home from './components/pages/Home';
 import Offers from './components/pages/Offers';
 import Offer from './components/pages/Offer';
+import Profile from './components/pages/Profile';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/layout/Footer';
 // State
@@ -52,6 +54,7 @@ const App = () => {
 											<Route exact path='/' component={Home} />
 											<Route exact path='/offers' component={Offers} />
 											<Route exact path='/offers/offer' component={Offer} />
+											<PrivateRoute exact path='/profile' component={Profile} />
 										</Switch>
 									</div>
 									<Footer

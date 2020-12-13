@@ -106,7 +106,13 @@ const UserMenu = props => {
 					<MenuItem key='notifications' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
 						<NotificationsIcon fontSize='small' className={classes.dropdownIcons} /> Notifications
 					</MenuItem>,
-					<MenuItem key='profile' onClick={handleUserMenuClose}>
+					<MenuItem
+						key='profile'
+						onClick={handleUserMenuClose}
+						component={Link}
+						to='/profile'
+						onClick={() => handleUserMenuClose()}
+					>
 						<PersonIcon fontSize='small' className={classes.dropdownIcons} /> Profile
 					</MenuItem>,
 					<MenuItem key='account' onClick={handleUserMenuClose}>
