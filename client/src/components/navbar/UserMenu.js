@@ -86,20 +86,20 @@ const UserMenu = props => {
 						<Typography className={classes.username}>{user && user.username}</Typography>
 					</Box>,
 					<Divider key='divider-top' className={classes.divider} />,
-					user &&
-					user.admin === true && [
-						<MenuItem
-							component={Link}
-							to='/admin'
-							key='admin'
-							onClick={() => {
-								handleUserMenuClose();
-							}}
-						>
-							<i className={`fas fa-tools ${classes.fontAwesomeIcon}`} /> Admin Panel
-						</MenuItem>,
-						<Divider key='divider-bottom' className={classes.divider} />
-					],
+					// user &&
+					// user.admin === true && [
+					// 	<MenuItem
+					// 		component={Link}
+					// 		to='/admin'
+					// 		key='admin'
+					// 		onClick={() => {
+					// 			handleUserMenuClose();
+					// 		}}
+					// 	>
+					// 		<i className={`fas fa-tools ${classes.fontAwesomeIcon}`} /> Admin Panel
+					// 	</MenuItem>,
+					// 	<Divider key='divider-bottom' className={classes.divider} />
+					// ],
 					<MenuItem key='messages' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
 						<MessageIcon fontSize='small' className={classes.dropdownIcons} /> Messages
 					</MenuItem>,
