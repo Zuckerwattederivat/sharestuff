@@ -180,8 +180,8 @@ const Home = () => {
 														btnIcon={<ArrowRightIcon />}
 													>
 														<Typography className={classes.cardParagraph} variant='body1'>
-															{el.description.join(' ').length > 500 ? (
-																el.description.join(' ').substring(0, 500) + '...'
+															{el.description.join(' ').length > 300 ? (
+																el.description.join(' ').substring(0, 300) + '...'
 															) : (
 																el.description.join(' ')
 															)}
