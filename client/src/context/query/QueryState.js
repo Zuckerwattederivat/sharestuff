@@ -200,7 +200,7 @@ const QueryState = props => {
 
 			if (!offer.data.msg) {
 				// search other offers by same user
-				const offersByCreator = await getOffers({ createdBy: offer.data.createdBy, limit: 4, sort: 'desc' });
+				const offersByCreator = await getOffers({ createdBy: offer.data.createdBy, limit: 6, sort: 'desc' });
 				const offersByCreatorMinusActive = offersByCreator.data.filter(item => item._id !== offerId);
 
 				// search for creator info
