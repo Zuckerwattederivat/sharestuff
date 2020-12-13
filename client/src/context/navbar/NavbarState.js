@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import NavbarContext from './navbarContext';
 import navbarReducer from './navbarReducer';
-import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_LOGIN, SET_SCROLLED } from '../types';
+import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_LOGIN, SET_SCROLLED, SET_STICKY } from '../types';
 
 const NavbarState = props => {
 	// initial state
@@ -14,7 +14,8 @@ const NavbarState = props => {
 			scrolledUp: true,
 			scrolledDown: false,
 			lastScrollTop: window.pageYOffset
-		}
+		},
+		sticky: true
 	};
 
 	// destructure reducer
@@ -45,6 +46,15 @@ const NavbarState = props => {
 		}
 	};
 
+	// set sticky
+	const setSticky = bool => {
+		if (bool) {
+			dispatch({ type: SET_STICKY, payload: true });
+		} else {
+			dispatch({ type: SET_STICKY, payload: false });
+		}
+	};
+
 	return (
 		<NavbarContext.Provider
 			value={{
@@ -53,12 +63,14 @@ const NavbarState = props => {
 				registerOpen: state.registerOpen,
 				loginOpen: state.loginOpen,
 				scrolled: state.scrolled,
+				sticky: state.sticky,
 				setMainMenuOpen,
 				handleUserMenuOpen,
 				handleUserMenuClose,
 				setRegisterOpen,
 				setLoginOpen,
-				setScrolled
+				setScrolled,
+				setSticky
 			}}
 		>
 			{props.children}

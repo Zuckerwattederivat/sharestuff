@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Backdrop, Box, Typography, Button } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';

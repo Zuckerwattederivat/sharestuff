@@ -1,4 +1,4 @@
-import { SET_MAIN_MENU, SET_ANCHOREL, SET_REGISTER, SET_LOGIN, SET_SCROLLED } from '../types';
+import { SET_MAIN_MENU, SET_ANCHOREL, SET_REGISTER, SET_LOGIN, SET_SCROLLED, SET_STICKY } from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
@@ -15,6 +15,8 @@ export default (state, action) => {
 				...state,
 				scrolled: { scrolledUp: action.payload.scrolledUp, scrolledDown: action.payload.scrolledDown }
 			};
+		case SET_STICKY:
+			return { ...state, sticky: action.payload };
 		default:
 			return state;
 	}

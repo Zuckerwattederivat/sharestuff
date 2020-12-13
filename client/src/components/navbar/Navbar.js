@@ -45,6 +45,11 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.background.default
 		}
 	},
+	notSticky: {
+		position: 'absolute',
+		width: '100%',
+		backgroundColor: theme.palette.background.default
+	},
 	logoCont: {
 		display: 'flex',
 		alignItems: 'center',
@@ -131,13 +136,15 @@ const Navbar = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { setMainMenuOpen, handleUserMenuOpen, scrolled, setScrolled } = navbarContext;
+	const { setMainMenuOpen, handleUserMenuOpen, scrolled, sticky, setScrolled, setSticky } = navbarContext;
 
 	// user menu id
 	const menuId = 'primary-user-account-menu';
 
 	// set scroll state
 	useEffect(() => {
+		setSticky(false);
+		// listen for scrolling
 		window.addEventListener('scroll', setScrolled, { passive: true });
 		return () => {
 			window.removeEventListener('scroll', setScrolled);
@@ -148,7 +155,13 @@ const Navbar = props => {
 	return (
 		<div className={classes.grow}>
 			<AppBar
-				className={`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`}
+				className={
+					sticky ? (
+						`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`
+					) : (
+						`${classes.navbar} ${classes.notSticky}`
+					)
+				}
 				color='transparent'
 				position='fixed'
 			>

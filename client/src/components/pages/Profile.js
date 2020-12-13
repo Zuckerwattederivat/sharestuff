@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
 	profile: {
 		minHeight: '100vh',
 		padding: theme.spacing(12, 0, 8)
+	},
+	breadcrumps: {
+		margin: theme.spacing(0, 0, 4)
 	}
 }));
 
