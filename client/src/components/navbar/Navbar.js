@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.background.default,
 		boxShadow: theme.shadows[12]
 	},
+	bgTrans: {
+		backgroundColor: 'transparent'
+	},
 	shadowFalse: {
 		boxShadow: 'none'
 	},
@@ -48,8 +51,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	notSticky: {
 		position: 'absolute',
-		width: '100%',
-		backgroundColor: theme.palette.background.default
+		width: '100%'
 	},
 	logoCont: {
 		display: 'flex',
@@ -245,7 +247,7 @@ const Navbar = props => {
 			<Login />
 			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} version={props.version} />
-			{!sticky && <ProfileNav tab={tab} changeTab={handleTabChange} />}
+			{!sticky && <ProfileNav tab={tab} changeTab={handleTabChange} scrolled={scrolled} />}
 		</div>
 	);
 };

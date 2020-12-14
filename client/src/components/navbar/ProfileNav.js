@@ -1,14 +1,10 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
-import {
-	MenuBook as MenuBookIcon,
-	LocalOffer as LocalOfferIcon,
-	Bookmark as BookmarkIcon,
-	Message as MessageIcon
-} from '@material-ui/icons';
+import { MenuBook as MenuBookIcon, Bookmark as BookmarkIcon, Message as MessageIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { motion } from 'framer-motion';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -70,10 +66,18 @@ const ProfileNav = props => {
 	const classes = useStyles();
 
 	// desrtcuture props
-	const { tab, changeTab } = props;
+	const { tab, changeTab, scrolled } = props;
 
 	return (
-		<div className={classes.profileNav}>
+		<motion.div
+			className={`${classes.profileNav}`}
+			transition={{
+				duration: 0.1,
+				type: 'ease'
+			}}
+			initial={{ y: 0 }}
+			animate={scrolled.scrolledDown ? { y: -60, position: 'fixed' } : { y: 0 }}
+		>
 			<nav className={classes.navContainer}>
 				<ul className={classes.linkList}>
 					<li
@@ -102,13 +106,14 @@ const ProfileNav = props => {
 					</li>
 				</ul>
 			</nav>
-		</div>
+		</motion.div>
 	);
 };
 
 ProfileNav.propTypes = {
 	tab: PropTypes.string.isRequired,
-	changeTab: PropTypes.func.isRequired
+	changeTab: PropTypes.func.isRequired,
+	scrolled: PropTypes.object.isRequired
 };
 
 // export ProfileNav Component
