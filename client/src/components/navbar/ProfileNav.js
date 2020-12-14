@@ -1,8 +1,7 @@
 // Node Modules
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
-import { Container, Box, Menu, MenuItem, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import {
 	MenuBook as MenuBookIcon,
 	LocalOffer as LocalOfferIcon,
@@ -71,24 +70,33 @@ const ProfileNav = props => {
 	const classes = useStyles();
 
 	// desrtcuture props
-	const { tab } = props;
+	const { tab, changeTab } = props;
 
 	return (
 		<div className={classes.profileNav}>
 			<nav className={classes.navContainer}>
 				<ul className={classes.linkList}>
-					<li className={tab === 'offers' ? `${classes.linkItem} ${classes.tabActive}` : classes.linkItem}>
+					<li
+						onClick={() => changeTab('offers')}
+						className={tab === 'offers' ? `${classes.linkItem} ${classes.tabActive}` : classes.linkItem}
+					>
 						<Typography className={classes.linkText} variant='body2' color={tab === 'offers' ? 'primary' : 'inherit'}>
 							<MenuBookIcon fontSize='small' /> Offers
 						</Typography>
 					</li>
-					<li className={classes.linkItem}>
-						<Typography className={classes.linkText} variant='body2'>
+					<li
+						onClick={() => changeTab('bookings')}
+						className={tab === 'bookings' ? `${classes.linkItem} ${classes.tabActive}` : classes.linkItem}
+					>
+						<Typography className={classes.linkText} variant='body2' color={tab === 'bookings' ? 'primary' : 'inherit'}>
 							<BookmarkIcon fontSize='small' /> Bookings
 						</Typography>
 					</li>
-					<li className={classes.linkItem}>
-						<Typography className={classes.linkText} variant='body2'>
+					<li
+						onClick={() => changeTab('messages')}
+						className={tab === 'messages' ? `${classes.linkItem} ${classes.tabActive}` : classes.linkItem}
+					>
+						<Typography className={classes.linkText} variant='body2' color={tab === 'messages' ? 'primary' : 'inherit'}>
 							<MessageIcon fontSize='small' /> Messages
 						</Typography>
 					</li>
@@ -99,7 +107,8 @@ const ProfileNav = props => {
 };
 
 ProfileNav.propTypes = {
-	tab: PropTypes.string.isRequired
+	tab: PropTypes.string.isRequired,
+	changeTab: PropTypes.func.isRequired
 };
 
 // export ProfileNav Component

@@ -138,7 +138,6 @@ const Navbar = props => {
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
 	const { setMainMenuOpen, handleUserMenuOpen, scrolled, sticky, setScrolled, setSticky } = navbarContext;
-
 	// profile navbar state
 	const [ profileNav, setProfileNav ] = useState({
 		tab: 'offers'
@@ -172,6 +171,12 @@ const Navbar = props => {
 		},
 		[ props.history.location.pathname ]
 	);
+
+	// handle profile tab change
+	const handleTabChange = tab => {
+		props.history.push(`/profile?tab=${tab}`);
+		setProfileNav({ ...profileNav, tab: tab });
+	};
 
 	return (
 		<div className={classes.grow}>
@@ -240,7 +245,7 @@ const Navbar = props => {
 			<Login />
 			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} version={props.version} />
-			{!sticky && <ProfileNav tab={tab} />}
+			{!sticky && <ProfileNav tab={tab} changeTab={handleTabChange} />}
 		</div>
 	);
 };
