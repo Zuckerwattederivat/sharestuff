@@ -1,7 +1,7 @@
 // Node Modules
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
 import {
 	Menu as MenuIcon,
@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // Components
 import UserMenu from './UserMenu';
 import MainMenu from './MainMenu';
+import ProfileNav from './ProfileNav';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
 // Context
@@ -138,12 +139,17 @@ const Navbar = props => {
 	// destructure context
 	const { setMainMenuOpen, handleUserMenuOpen, scrolled, sticky, setScrolled, setSticky } = navbarContext;
 
+	// profile navbar state
+	const [ profileNav, setProfileNav ] = useState({
+		tab: 'offers'
+	});
+	const { tab } = profileNav;
+
 	// user menu id
 	const menuId = 'primary-user-account-menu';
 
 	// set scroll state
 	useEffect(() => {
-		setSticky(false);
 		// listen for scrolling
 		window.addEventListener('scroll', setScrolled, { passive: true });
 		return () => {
@@ -152,6 +158,21 @@ const Navbar = props => {
 		// eslint-disable-next-line
 	}, []);
 
+	// listen for path
+	useEffect(
+		() => {
+			// get pathname
+			const pathname = props.history.location.pathname;
+			// set sticky true || false
+			if (pathname === '/profile') {
+				setSticky(false);
+			} else {
+				setSticky(true);
+			}
+		},
+		[ props.history.location.pathname ]
+	);
+
 	return (
 		<div className={classes.grow}>
 			<AppBar
@@ -159,7 +180,7 @@ const Navbar = props => {
 					sticky ? (
 						`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`
 					) : (
-						`${classes.navbar} ${classes.notSticky}`
+						`${classes.navbar} ${classes.notSticky} ${classes.shadowFalse}`
 					)
 				}
 				color='transparent'
@@ -219,6 +240,7 @@ const Navbar = props => {
 			<Login />
 			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} version={props.version} />
+			{!sticky && <ProfileNav tab={tab} />}
 		</div>
 	);
 };
@@ -231,4 +253,4 @@ Navbar.propTypes = {
 };
 
 // export Navbar Component
-export default Navbar;
+export default withRouter(Navbar);

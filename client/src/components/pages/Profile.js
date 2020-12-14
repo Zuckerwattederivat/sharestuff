@@ -37,12 +37,13 @@ const Profile = () => {
 	return (
 		<div className={classes.profile}>
 			<Container maxWidth='xl'>
-				<Breadcrumbs className={classes.breadcrumps}>
+				{/* <Breadcrumbs className={classes.breadcrumps}>
 					<Link component={RouterLink} to='/' color='inherit'>
 						Home
 					</Link>
 					<Typography color='textPrimary'>{user ? user.username + "'s Profile" : 'Profile'}</Typography>
-				</Breadcrumbs>
+				</Breadcrumbs> */}
+				hallo
 			</Container>
 		</div>
 	);
