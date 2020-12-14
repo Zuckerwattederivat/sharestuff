@@ -11,7 +11,7 @@ import AuthContext from '../../context/auth/authContext';
 // define styles
 const useStyles = makeStyles(theme => ({
 	profile: {
-		minHeight: '100vh',
+		height: '100vh',
 		padding: theme.spacing(12, 0, 8)
 	},
 	breadcrumps: {

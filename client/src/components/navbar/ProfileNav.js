@@ -72,11 +72,11 @@ const ProfileNav = props => {
 		<motion.div
 			className={`${classes.profileNav}`}
 			transition={{
-				duration: 0.1,
+				duration: scrolled.scrolledDown ? 0.7 : 0,
 				type: 'ease'
 			}}
 			initial={{ y: 0 }}
-			animate={scrolled.scrolledDown ? { y: -60, position: 'fixed' } : { y: 0 }}
+			animate={scrolled.scrolledDown ? { y: -60, position: 'fixed' } : { y: 0, position: 'relative' }}
 		>
 			<nav className={classes.navContainer}>
 				<ul className={classes.linkList}>
