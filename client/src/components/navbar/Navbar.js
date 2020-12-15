@@ -1,5 +1,5 @@
 // Node Modules
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
@@ -26,6 +26,7 @@ import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import logoPrimary from '../../assets/logo/logo-primary.svg';
+import { createRef } from 'react';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -139,7 +140,16 @@ const Navbar = props => {
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
 	// destructure context
-	const { setMainMenuOpen, handleUserMenuOpen, scrolled, sticky, setScrolled, setSticky } = navbarContext;
+	const {
+		setMainMenuOpen,
+		handleUserMenuOpen,
+		scrolled,
+		profileNavSticky,
+		sticky,
+		setScrolled,
+		setSticky,
+		setProfileNavSticky
+	} = navbarContext;
 	// profile navbar state
 	const [ profileNav, setProfileNav ] = useState({
 		tab: 'offers'
@@ -149,12 +159,25 @@ const Navbar = props => {
 	// user menu id
 	const menuId = 'primary-user-account-menu';
 
+	// create header ref
+	const headerRef = useRef(null);
+
 	// set scroll state
 	useEffect(() => {
 		// listen for scrolling
-		window.addEventListener('scroll', setScrolled, { passive: true });
+		window.addEventListener(
+			'scroll',
+			() => {
+				setScrolled();
+				setProfileNavSticky(headerRef);
+			},
+			{ passive: true }
+		);
 		return () => {
-			window.removeEventListener('scroll', setScrolled);
+			window.removeEventListener('scroll', () => {
+				setScrolled();
+				setProfileNavSticky(headerRef);
+			});
 		};
 		// eslint-disable-next-line
 	}, []);
@@ -171,6 +194,7 @@ const Navbar = props => {
 				setSticky(true);
 			}
 		},
+		// eslint-disable-next-line
 		[ props.history.location.pathname ]
 	);
 
@@ -183,11 +207,12 @@ const Navbar = props => {
 	return (
 		<div className={classes.grow}>
 			<AppBar
+				ref={headerRef}
 				className={
 					sticky ? (
 						`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`
 					) : (
-						`${classes.navbar} ${classes.notSticky} ${classes.shadowFalse}`
+						`${classes.navbar} ${classes.notSticky} ${classes.bgDark} ${classes.shadowFalse}`
 					)
 				}
 				color='transparent'
@@ -242,12 +267,12 @@ const Navbar = props => {
 						</IconButton>
 					</div>
 				</Toolbar>
+				{!sticky && <ProfileNav tab={tab} changeTab={handleTabChange} sticky={profileNavSticky} />}
 			</AppBar>
 			<UserMenu menuId={menuId} />
 			<Login />
 			<Register />
 			<MainMenu links={mainMenuLinks} title1={props.title1} title2={props.title2} version={props.version} />
-			{!sticky && <ProfileNav tab={tab} changeTab={handleTabChange} scrolled={scrolled} />}
 		</div>
 	);
 };

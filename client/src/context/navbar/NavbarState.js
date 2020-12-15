@@ -1,7 +1,15 @@
 import React, { useReducer } from 'react';
 import NavbarContext from './navbarContext';
 import navbarReducer from './navbarReducer';
-import { SET_ANCHOREL, SET_MAIN_MENU, SET_REGISTER, SET_LOGIN, SET_SCROLLED, SET_STICKY } from '../types';
+import {
+	SET_ANCHOREL,
+	SET_MAIN_MENU,
+	SET_REGISTER,
+	SET_LOGIN,
+	SET_SCROLLED,
+	SET_STICKY,
+	PROFILENAV_STICKY
+} from '../types';
 
 const NavbarState = props => {
 	// initial state
@@ -15,6 +23,7 @@ const NavbarState = props => {
 			scrolledDown: false,
 			lastScrollTop: window.pageYOffset
 		},
+		profileNavSticky: false,
 		sticky: true
 	};
 
@@ -55,6 +64,16 @@ const NavbarState = props => {
 		}
 	};
 
+	// set profile nav sticky
+	const setProfileNavSticky = el => {
+		let offset = window.pageYOffset;
+		if (offset > el.current.offsetHeight - 60) {
+			dispatch({ type: PROFILENAV_STICKY, payload: true });
+		} else {
+			dispatch({ type: PROFILENAV_STICKY, payload: false });
+		}
+	};
+
 	return (
 		<NavbarContext.Provider
 			value={{
@@ -63,6 +82,7 @@ const NavbarState = props => {
 				registerOpen: state.registerOpen,
 				loginOpen: state.loginOpen,
 				scrolled: state.scrolled,
+				profileNavSticky: state.profileNavSticky,
 				sticky: state.sticky,
 				setMainMenuOpen,
 				handleUserMenuOpen,
@@ -70,7 +90,8 @@ const NavbarState = props => {
 				setRegisterOpen,
 				setLoginOpen,
 				setScrolled,
-				setSticky
+				setSticky,
+				setProfileNavSticky
 			}}
 		>
 			{props.children}

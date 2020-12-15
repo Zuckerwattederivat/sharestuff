@@ -9,6 +9,7 @@ export const SET_REGISTER = 'SET_REGISTER';
 export const SET_LOGIN = 'SET_LOGIN';
 export const SET_SCROLLED = 'SET_SCROLLED';
 export const SET_STICKY = 'SET_STICKY';
+export const PROFILENAV_STICKY = 'PROFILENAV_STICKY';
 // authentification
 export const SET_LOADING = 'SET_LOADING';
 export const USER_LOADED = 'USER_LOADED';

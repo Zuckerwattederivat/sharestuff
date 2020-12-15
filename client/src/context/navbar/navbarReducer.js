@@ -1,4 +1,12 @@
-import { SET_MAIN_MENU, SET_ANCHOREL, SET_REGISTER, SET_LOGIN, SET_SCROLLED, SET_STICKY } from '../types';
+import {
+	SET_MAIN_MENU,
+	SET_ANCHOREL,
+	SET_REGISTER,
+	SET_LOGIN,
+	SET_SCROLLED,
+	SET_STICKY,
+	PROFILENAV_STICKY
+} from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
@@ -17,6 +25,8 @@ export default (state, action) => {
 			};
 		case SET_STICKY:
 			return { ...state, sticky: action.payload };
+		case PROFILENAV_STICKY:
+			return { ...state, profileNavSticky: action.payload };
 		default:
 			return state;
 	}

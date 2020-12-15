@@ -4,17 +4,21 @@ import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { MenuBook as MenuBookIcon, Bookmark as BookmarkIcon, Message as MessageIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { motion } from 'framer-motion';
+import moduleName from 'framer-motion';
 
 // define styles
 const useStyles = makeStyles(theme => ({
 	profileNav: {
 		[theme.breakpoints.down('xs')]: {
-			padding: theme.spacing(8, 2.4, 0)
+			padding: theme.spacing(0, 2, 0)
 		},
-		background: theme.palette.background.default,
-		padding: theme.spacing(8, 3.4, 0),
-		width: '100%'
+		padding: theme.spacing(0, 3, 0),
+		width: '100%',
+		background: theme.palette.background.default
+	},
+	shrink: {
+		position: 'fixed',
+		top: 0
 	},
 	navContainer: {
 		width: '100%',
@@ -66,18 +70,10 @@ const ProfileNav = props => {
 	const classes = useStyles();
 
 	// desrtcuture props
-	const { tab, changeTab, scrolled } = props;
+	const { tab, changeTab, sticky } = props;
 
 	return (
-		<motion.div
-			className={`${classes.profileNav}`}
-			transition={{
-				duration: scrolled.scrolledDown ? 0.7 : 0,
-				type: 'ease'
-			}}
-			initial={{ y: 0 }}
-			animate={scrolled.scrolledDown ? { y: -60, position: 'fixed' } : { y: 0, position: 'relative' }}
-		>
+		<div className={`${classes.profileNav} ${sticky && classes.shrink}`}>
 			<nav className={classes.navContainer}>
 				<ul className={classes.linkList}>
 					<li
@@ -106,14 +102,14 @@ const ProfileNav = props => {
 					</li>
 				</ul>
 			</nav>
-		</motion.div>
+		</div>
 	);
 };
 
 ProfileNav.propTypes = {
 	tab: PropTypes.string.isRequired,
 	changeTab: PropTypes.func.isRequired,
-	scrolled: PropTypes.object.isRequired
+	sticky: PropTypes.bool.isRequired
 };
 
 // export ProfileNav Component
