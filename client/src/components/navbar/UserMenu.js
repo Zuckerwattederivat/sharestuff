@@ -100,7 +100,13 @@ const UserMenu = props => {
 					// 	</MenuItem>,
 					// 	<Divider key='divider-bottom' className={classes.divider} />
 					// ],
-					<MenuItem key='messages' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>
+					<MenuItem
+						key='messages'
+						className={classes.itemsResponsivePosition}
+						component={Link}
+						to='/profile?tab=messages'
+						onClick={handleUserMenuClose}
+					>
 						<MessageIcon fontSize='small' className={classes.dropdownIcons} /> Messages
 					</MenuItem>,
 					<MenuItem key='notifications' className={classes.itemsResponsivePosition} onClick={handleUserMenuClose}>

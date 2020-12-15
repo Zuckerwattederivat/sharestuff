@@ -149,9 +149,15 @@ const Navbar = props => {
 		setSticky,
 		setProfileNavSticky
 	} = navbarContext;
+
 	// profile navbar state
 	const [ profileNav, setProfileNav ] = useState({
-		tab: 'offers'
+		tab:
+			window.location.search.split('=')[1] === 'offers' ||
+			window.location.search.split('=')[1] === 'bookings' ||
+			window.location.search.split('=')[1] === 'messages'
+				? window.location.search.split('=')[1]
+				: 'offers'
 	});
 	const { tab } = profileNav;
 
@@ -200,8 +206,18 @@ const Navbar = props => {
 	// handle profile tab change
 	const handleTabChange = tab => {
 		props.history.push(`/profile?tab=${tab}`);
-		setProfileNav({ ...profileNav, tab: tab });
 	};
+
+	// listen for profile tab change
+	useEffect(
+		() => {
+			const location = props.history.location.search.split('=')[1];
+			if (location === 'offers' || location === 'bookings' || location === 'messages')
+				setProfileNav({ ...profileNav, tab: location });
+		},
+		// eslint-disable-next-line
+		[ props.history.location.search ]
+	);
 
 	return (
 		<div className={classes.grow}>

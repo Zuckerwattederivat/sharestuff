@@ -29,6 +29,9 @@ const Profile = props => {
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
 
+	// load query context
+	const queryContext = useContext(QueryContext);
+
 	// profile state
 	const [ profileState, setprofileState ] = useState({
 		location: 'offers',
@@ -53,20 +56,13 @@ const Profile = props => {
 				setprofileState({ ...profileState, redirect: true });
 			}
 		},
+		// eslint-disable-next-line
 		[ props.history.location.search ]
 	);
 
 	return (
 		<div className={classes.profile}>
-			<Container maxWidth='xl'>
-				<Breadcrumbs className={classes.breadcrumps}>
-					<Link component={RouterLink} to='/' color='inherit'>
-						Home
-					</Link>
-					<Typography color='textPrimary'>{user ? user.username + "'s Profile" : 'Profile'}</Typography>
-				</Breadcrumbs>
-				hallo
-			</Container>
+			<Container maxWidth='xl'>hallo</Container>
 			{profileState.redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);
