@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { MenuBook as MenuBookIcon, Bookmark as BookmarkIcon, Message as MessageIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import moduleName from 'framer-motion';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -18,7 +17,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	shrink: {
 		position: 'fixed',
-		top: 0
+		top: 0,
+		boxShadow: theme.shadows[12]
 	},
 	navContainer: {
 		width: '100%',

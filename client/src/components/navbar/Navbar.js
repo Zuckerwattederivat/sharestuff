@@ -26,7 +26,6 @@ import AuthContext from '../../context/auth/authContext';
 import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import logoPrimary from '../../assets/logo/logo-primary.svg';
-import { createRef } from 'react';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -45,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	navbar: {
 		transition: '0.4s ease-in-out',
-		padding: '0.3em 0',
+		padding: '0.3em 0 0',
 		[theme.breakpoints.up('xl')]: {
 			backgroundColor: theme.palette.background.default
 		}
@@ -212,7 +211,7 @@ const Navbar = props => {
 					sticky ? (
 						`${classes.navbar} ${scrolled.scrolledDown ? classes.bgDark : classes.shadowFalse}`
 					) : (
-						`${classes.navbar} ${classes.notSticky} ${classes.bgDark} ${classes.shadowFalse}`
+						`${classes.navbar} ${classes.notSticky} ${classes.bgDark}`
 					)
 				}
 				color='transparent'
