@@ -253,12 +253,20 @@ const QueryState = props => {
 			// get offers
 			const offers = await axios.get('api/offers/get/own');
 
+			// set offers paginated
 			if (!offers.data.msg) {
 				setQueryState(SET_OFFERS, offers.data);
+				getOffersPaginated(offers.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
+				// calculate page count
+				let pageCount = Math.round(offers.data.length / 12);
+				if (pageCount < 1) pageCount = 1;
+				// set page count
+				setQueryState(SET_PAGE_COUNT, pageCount);
 			} else {
 				setQueryState(OFFER_ERROR, offers.data.msg);
 			}
 		} catch (err) {
+			console.log(err.data);
 			setQueryState(OFFER_ERROR, err.response.data.msg);
 		}
 	};
@@ -267,19 +275,6 @@ const QueryState = props => {
 	const getUserBookings = async () => {
 		// clear all
 		clearQueryState();
-
-		try {
-			// get bookigs
-			const offers = await axios.get('api/offers/get/own');
-
-			if (!offers.data.msg) {
-				setQueryState(SET_OFFERS, offers.data);
-			} else {
-				setQueryState(OFFER_ERROR, offers.data.msg);
-			}
-		} catch (err) {
-			setQueryState(OFFER_ERROR, err.response.data.msg);
-		}
 	};
 
 	return (
