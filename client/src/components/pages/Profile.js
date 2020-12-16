@@ -34,24 +34,24 @@ const Profile = props => {
 
 	// profile state
 	const [ profileState, setprofileState ] = useState({
-		location: 'offers',
+		tabLocation: 'offers',
 		redirect: false
 	});
 
 	// on page load
 	useEffect(() => {
 		// reset profile state
-		setprofileState({ location: 'offers', redirect: false });
+		setprofileState({ tabLocation: 'offers', redirect: false });
 		// scroll to top
 		window.scrollTo(0, 0);
 	}, []);
 
-	// set location
+	// set tabLocation
 	useEffect(
 		() => {
-			const location = props.history.location.search.split('=')[1];
-			if (location === 'offers' || location === 'bookings' || location === 'messages') {
-				setprofileState({ ...profileState, location: location });
+			const tabLocation = props.history.location.search.split('=')[1];
+			if (tabLocation === 'offers' || tabLocation === 'bookings' || tabLocation === 'messages') {
+				setprofileState({ ...profileState, tabLocation: tabLocation });
 			} else {
 				setprofileState({ ...profileState, redirect: true });
 			}
@@ -60,9 +60,32 @@ const Profile = props => {
 		[ props.history.location.search ]
 	);
 
+	// query content on tab change
+	useEffect(
+		() => {
+			// TODO QUERY CONTENT
+			console.log('execute query');
+		},
+		[ profileState.tabLocation ]
+	);
+
+	// tab location ellements
+	const TabLocation = () => {
+		switch (profileState.tabLocation) {
+			case 'offers':
+				return <div>Offers</div>;
+			case 'bookings':
+				return <div>Bookings</div>;
+			case 'messages':
+				return <div>Messages</div>;
+		}
+	};
+
 	return (
 		<div className={classes.profile}>
-			<Container maxWidth='xl'>hallo</Container>
+			<Container maxWidth='xl'>
+				<TabLocation />
+			</Container>
 			{profileState.redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);
