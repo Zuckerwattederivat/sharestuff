@@ -69,7 +69,7 @@ const Profile = props => {
 		[ profileState.tabLocation ]
 	);
 
-	// tab location ellements
+	// tab location elements
 	const TabLocation = () => {
 		switch (profileState.tabLocation) {
 			case 'offers':
