@@ -157,5 +157,47 @@ router.delete('/delete', [ auth, check('bookingId', 'No Booking was given ').not
 	}
 });
 
+// @route     GET api/bookings/get/offered
+// @desc      Get bookings by othter users of own offers
+// @access    Private
+router.get('/get/offered', auth, async (req, res) => {
+	try {
+		// get bookings
+		const bookings = await Booking.find({ offeredBy: req.user.id });
+
+		// send response
+		if (bookings[0]) {
+			return res.json(bookings);
+		} else {
+			return res.status(200).json({ msg: 'Nobody has booked your offers yet' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
+// @route     GET api/bookings/get/booked
+// @desc      Get bookings by othter users of own offers
+// @access    Private
+router.get('/get/booked', auth, async (req, res) => {
+	try {
+		// get bookings
+		const bookings = await Booking.find({ bookedBy: req.user.id });
+
+		// send response
+		if (bookings[0]) {
+			return res.json(bookings);
+		} else {
+			return res.status(200).json({ msg: 'You have not booked any offer yet' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
 // export router
 module.exports = router;

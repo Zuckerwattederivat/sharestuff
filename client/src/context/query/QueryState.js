@@ -244,6 +244,44 @@ const QueryState = props => {
 		}
 	};
 
+	// get user's offers
+	const getUserOffers = async () => {
+		// clear all
+		clearQueryState();
+
+		try {
+			// get offers
+			const offers = await axios.get('api/offers/get/own');
+
+			if (!offers.data.msg) {
+				setQueryState(SET_OFFERS, offers.data);
+			} else {
+				setQueryState(OFFER_ERROR, offers.data.msg);
+			}
+		} catch (err) {
+			setQueryState(OFFER_ERROR, err.response.data.msg);
+		}
+	};
+
+	// get user's bookings
+	const getUserBookings = async () => {
+		// clear all
+		clearQueryState();
+
+		try {
+			// get bookigs
+			const offers = await axios.get('api/offers/get/own');
+
+			if (!offers.data.msg) {
+				setQueryState(SET_OFFERS, offers.data);
+			} else {
+				setQueryState(OFFER_ERROR, offers.data.msg);
+			}
+		} catch (err) {
+			setQueryState(OFFER_ERROR, err.response.data.msg);
+		}
+	};
+
 	return (
 		<QueryContext.Provider
 			value={{
@@ -265,7 +303,9 @@ const QueryState = props => {
 				setOfferState,
 				setPage,
 				clearQueryState,
-				bookOffer
+				bookOffer,
+				getUserOffers,
+				getUserBookings
 			}}
 		>
 			{props.children}

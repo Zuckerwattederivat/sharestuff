@@ -31,10 +31,11 @@ const Profile = props => {
 
 	// load query context
 	const queryContext = useContext(QueryContext);
+	const { getUserOffers } = queryContext;
 
 	// profile state
 	const [ profileState, setprofileState ] = useState({
-		tabLocation: 'offers',
+		tabLocation: window.location.search.split('=')[1],
 		redirect: false
 	});
 
@@ -63,21 +64,23 @@ const Profile = props => {
 	// query content on tab change
 	useEffect(
 		() => {
-			// TODO QUERY CONTENT
-			console.log('execute query');
+			if (profileState.tabLocation === 'offers') getUserOffers();
+			if (profileState.tabLocation === 'bookings') console.log('bookings query');
+			if (profileState.tabLocation == 'messages') console.log('messages query');
 		},
+		// eslint-disable-next-line
 		[ profileState.tabLocation ]
 	);
 
 	// tab location elements
 	const TabLocation = () => {
 		switch (profileState.tabLocation) {
-			case 'offers':
-				return <div>Offers</div>;
 			case 'bookings':
 				return <div>Bookings</div>;
 			case 'messages':
 				return <div>Messages</div>;
+			default:
+				return <div>Offers</div>;
 		}
 	};
 

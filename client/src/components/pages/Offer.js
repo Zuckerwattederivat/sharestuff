@@ -234,9 +234,11 @@ const Offer = props => {
 											{creator.bio ? creator.bio : 'No Bio...'}
 										</CardMediaSm>
 									</Grid>
-									<Typography className={classes.otherOffersHeading} variant='h3'>
-										More Offers by <span className={classes.spanPrimary}>{creator.username}</span>
-									</Typography>
+									{offers[0] && (
+										<Typography className={classes.otherOffersHeading} variant='h3'>
+											More Offers by <span className={classes.spanPrimary}>{creator.username}</span>
+										</Typography>
+									)}
 									{offers.map((el, index) => {
 										return (
 											<Grid item xs={12} key={`user-offers-${index}`}>

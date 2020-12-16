@@ -263,6 +263,25 @@ router.get('/get', async (req, res) => {
 	}
 });
 
+// @route     GET api/offers/get/own
+// @desc      Get user's offers all
+// @access    Private
+router.get('/get/own', auth, async (req, res) => {
+	try {
+		const offers = await Offer.find({ createdBy: req.user.id });
+
+		if (!offers[0]) {
+			res.status(200).json({ msg: 'You do not have any offers yet' });
+		} else {
+			res.json(offers);
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
+
 // @route     POST api/offers/search
 // @desc      Search active offers by field values
 // @access    Public

@@ -15,7 +15,6 @@ const auth = require('../middleware/auth');
 const config = require('config');
 // Models
 const User = require('../models/User');
-const Offer = require('../models/Offer');
 
 // @route     POST api/users/register
 // @desc      Register a user
