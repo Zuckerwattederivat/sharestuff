@@ -1,7 +1,6 @@
 // Node Modules
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import {
 	Card,
 	CardActionArea,
@@ -67,15 +66,27 @@ const CardMediaV3 = props => {
 
 	return (
 		<Card className={classes.root}>
-			<CardActionArea className={classes.cardActionArea}>
-				<CardImage className={classes.media} image={props.image} title={props.title} />
-				<CardContent>
-					<Typography gutterBottom variant='h5' component='h2'>
-						{utils.capitalizeFirstLetter(props.title)}
-					</Typography>
-					{props.children}
-				</CardContent>
-			</CardActionArea>
+			{props.onClick ? (
+				<CardActionArea className={classes.cardActionArea} onClick={props.onClick}>
+					<CardImage className={classes.media} image={props.image} title={props.title} />
+					<CardContent>
+						<Typography gutterBottom variant='h5' component='h2'>
+							{utils.capitalizeFirstLetter(props.title)}
+						</Typography>
+						{props.children}
+					</CardContent>
+				</CardActionArea>
+			) : (
+				<div className={classes.cardActionArea}>
+					<CardImage className={classes.media} image={props.image} title={props.title} />
+					<CardContent>
+						<Typography gutterBottom variant='h5' component='h2'>
+							{utils.capitalizeFirstLetter(props.title)}
+						</Typography>
+						{props.children}
+					</CardContent>
+				</div>
+			)}
 			<CardActions className={classes.cardActions}>
 				<Typography className={classes.priceAndLocation}>
 					<span>
@@ -125,6 +136,7 @@ const CardMediaV3 = props => {
 CardMediaV3.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
+	onClick: PropTypes.func,
 	button1: PropTypes.object,
 	button2: PropTypes.object,
 	price: PropTypes.string,

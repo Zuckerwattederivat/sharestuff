@@ -157,13 +157,23 @@ const Profile = props => {
 						</Typography>
 						<Grid className={classes.offersGrid} container width='100%' spacing={3}>
 							<Grid item xs={12} sm={6} md={4}>
-								<CardPictureV2
-									image={AddOfferBackground}
-									title='Add Offer'
-									active={false}
-									onClick={() => console.log('add offer')}
-									icon={<AddIcon fontSize='large' />}
-								/>
+								<motion.div
+									className={classes.offersCard}
+									transition={{
+										duration: 1,
+										type: 'tween'
+									}}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+								>
+									<CardPictureV2
+										image={AddOfferBackground}
+										title='New'
+										active={false}
+										onClick={() => console.log('add offer')}
+										icon={<AddIcon fontSize='large' />}
+									/>
+								</motion.div>
 							</Grid>
 							{offers.map(el => {
 								return (
@@ -188,14 +198,16 @@ const Profile = props => {
 													size: 'small',
 													variant: 'contained',
 													color: 'inherit',
-													startIcon: <BuildIcon />
+													startIcon: <BuildIcon />,
+													onClick: () => console.log('edit')
 												}}
 												button2={{
 													name: 'Delete',
 													size: 'small',
 													variant: 'contained',
 													color: 'secondary',
-													startIcon: <DeleteIcon />
+													startIcon: <DeleteIcon />,
+													onClick: () => console.log('delete')
 												}}
 												location={el.location.label}
 											>
