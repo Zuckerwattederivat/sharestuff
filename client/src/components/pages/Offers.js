@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import QueryContext from '../../context/query/queryContext';
 // Components
 import OffersSearch from '../search/OffersSearch';
-import CardPicture from '../cards/CardPicture';
+import CardPictureV1 from '../cards/CardPictureV1';
 import CardMediaV2 from '../cards/CardMediaV2';
 import Pagination from '../layout/Pagination';
 // Assets
@@ -253,7 +253,7 @@ const Offers = props => {
 												initial={{ opacity: 0 }}
 												animate={{ opacity: 1 }}
 											>
-												<CardPicture
+												<CardPictureV1
 													onClick={() => handleCategoryCards(el._id)}
 													image={el.image}
 													title={el.title}
@@ -262,7 +262,7 @@ const Offers = props => {
 													active={el._id === category._id ? true : false}
 												>
 													<Typography className={classes.cardParagraph} variant='body1' />
-												</CardPicture>
+												</CardPictureV1>
 											</motion.div>
 										</Grid>
 										<Grid className={classes.categoryButtons} key={`button-${el._id}`} item xs={6} md={4}>

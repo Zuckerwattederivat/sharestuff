@@ -54,6 +54,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	icon: {
 		margin: theme.spacing(0, 1, 0, 0)
+	},
+	buttonMargin: {
+		marginBottom: theme.spacing(1)
 	}
 }));
 
@@ -89,6 +92,7 @@ const CardMediaV3 = props => {
 						flexDirection='column'
 					>
 						<Button
+							className={props.button2 && classes.buttonMargin}
 							size={props.button1.size && props.button1.size}
 							variant={props.button1.variant && props.button1.variant}
 							color={props.button1.color && props.button1.color}

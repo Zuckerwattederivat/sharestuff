@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
 import { Container, Box, Breadcrumbs, Link, Grid, Typography } from '@material-ui/core';
-import { ArrowRight as ArrowRightIcon } from '@material-ui/icons';
+import { Build as BuildIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
@@ -10,10 +10,12 @@ import AuthContext from '../../context/auth/authContext';
 import QueryContext from '../../context/query/queryContext';
 // Components
 import CardMediaV3 from '../cards/CardMediaV3';
+import CardPictureV2 from '../cards/CardPictureV2';
 import Pagination from '../layout/Pagination';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
+import AddDocumentSvg from '../../assets/undraw/add-document.svg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -154,6 +156,14 @@ const Profile = props => {
 							Your <span className={classes.textPrimary}>Offers</span>
 						</Typography>
 						<Grid className={classes.offersGrid} container width='100%' spacing={3}>
+							<Grid item xs={12} sm={6} md={4}>
+								<CardPictureV2
+									image={AddDocumentSvg}
+									title='Add'
+									active={false}
+									onClick={() => console.log('add offer')}
+								/>
+							</Grid>
 							{offers.map(el => {
 								return (
 									<Grid key={el._id} item xs={12} sm={6} md={4}>
@@ -171,8 +181,21 @@ const Profile = props => {
 												link={`/profile/offer/edit?id=${el._id}`}
 												image={`${el.imagesThumb[0]}`}
 												title={el.title}
-												btnName1='Edit'
-												btnIcon1={<ArrowRightIcon />}
+												button1={{
+													name: 'Edit',
+													colorExtra: 'edit',
+													size: 'small',
+													variant: 'contained',
+													color: 'inherit',
+													startIcon: <BuildIcon />
+												}}
+												button2={{
+													name: 'Delete',
+													size: 'small',
+													variant: 'contained',
+													color: 'secondary',
+													startIcon: <DeleteIcon />
+												}}
 												location={el.location.label}
 											>
 												<Typography className={classes.cardParagraph} variant='body1'>

@@ -19,11 +19,11 @@ const useStyles = makeStyles(theme => ({
 	active: {
 		borderBottom: `2px solid ${theme.palette.primary.main}`
 	},
+	cardActionArea: {
+		height: 700
+	},
 	media: {
-		height: 150,
-		[theme.breakpoints.up('xl')]: {
-			height: 220
-		}
+		minHeight: '100%'
 	},
 	cardContent: {
 		position: 'absolute',
@@ -37,9 +37,8 @@ const useStyles = makeStyles(theme => ({
 		background: 'rgba(0, 0, 0, 0.4)'
 	}
 }));
-
-// CardMediaV2 Component
-const CardMediaV2 = props => {
+// CardPictureV2 Component
+const CardPictureV2 = props => {
 	// define classes
 	const classes = useStyles();
 
@@ -72,7 +71,7 @@ const CardMediaV2 = props => {
 };
 
 // Proptypes
-CardMediaV2.propTypes = {
+CardPictureV2.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	active: PropTypes.bool.isRequired,
@@ -80,5 +79,5 @@ CardMediaV2.propTypes = {
 	onClick: PropTypes.func
 };
 
-// export CardMediaV2 Component
-export default CardMediaV2;
+// export CardPictureV2 Component
+export default CardPictureV2;
