@@ -3,7 +3,7 @@ import axios from 'axios';
 import ProfileContext from './profileContext';
 import profileReducer from './profileReducer';
 
-import { RESET_PROFILE_STATE, SET_TAB_LOCATION, SET_REDIRECT } from '../types';
+import { RESET_PROFILE_STATE, SET_TAB_LOCATION, SET_REDIRECT, SET_MODAL } from '../types';
 
 // ProfileState
 const ProfileState = props => {
@@ -11,7 +11,9 @@ const ProfileState = props => {
 	const initialState = {
 		tabLocation: window.location.search.split('=')[1],
 		redirect: false,
-		modalOpen: false
+		modalOpen: false,
+		offer: null,
+		action: null
 	};
 
 	// geoCodeApiKey
@@ -30,10 +32,26 @@ const ProfileState = props => {
 	const resetProfileState = () => dispatch({ type: RESET_PROFILE_STATE });
 
 	// set tab location
-	const setTabLocation = tabLocation => dispatch({ type: SET_TAB_LOCATION, payload: tabLocation });
+	const setTabLocation = tabLocation => {
+		// reset profile state
+		resetProfileState();
+		// dispatch tab change
+		dispatch({ type: SET_TAB_LOCATION, payload: tabLocation });
+	};
 
 	// set redirect
 	const setRedirect = bool => dispatch({ type: SET_REDIRECT, payload: bool });
+
+	// set modal
+	const setModal = (bool, offer, action) => {
+		if (offer) {
+			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: offer, action: action } });
+		} else if (action) {
+			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: offer, action: action } });
+		} else {
+			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: null } });
+		}
+	};
 
 	return (
 		<ProfileContext.Provider
@@ -41,9 +59,11 @@ const ProfileState = props => {
 				tabLocation: state.tabLocation,
 				redirect: state.redirect,
 				modalOpen: state.modalOpen,
+				action: state.action,
 				resetProfileState,
 				setTabLocation,
-				setRedirect
+				setRedirect,
+				setModal
 			}}
 		>
 			{props.children}

@@ -59,3 +59,4 @@ export const OFFER_BOOKED = 'OFFER_BOOKED';
 export const RESET_PROFILE_STATE = 'RESET_PROFILE_STATE';
 export const SET_TAB_LOCATION = 'SET_TAB_LOCATION';
 export const SET_REDIRECT = 'SET_REDIRECT';
+export const SET_MODAL = 'SET_MODAL';
