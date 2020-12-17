@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
 import { Container, Box, Breadcrumbs, Link, Grid, Typography } from '@material-ui/core';
-import { Build as BuildIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
@@ -15,7 +15,7 @@ import Pagination from '../layout/Pagination';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
-import AddDocumentSvg from '../../assets/undraw/add-document.svg';
+import AddOfferBackground from '../../assets/site/add-offer.jpg';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -158,10 +158,11 @@ const Profile = props => {
 						<Grid className={classes.offersGrid} container width='100%' spacing={3}>
 							<Grid item xs={12} sm={6} md={4}>
 								<CardPictureV2
-									image={AddDocumentSvg}
-									title='Add'
+									image={AddOfferBackground}
+									title='Add Offer'
 									active={false}
 									onClick={() => console.log('add offer')}
+									icon={<AddIcon fontSize='large' />}
 								/>
 							</Grid>
 							{offers.map(el => {

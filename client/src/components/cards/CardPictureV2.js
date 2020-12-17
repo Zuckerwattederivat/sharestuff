@@ -10,20 +10,29 @@ import utils from '../../utils/helpers';
 // define styles
 const useStyles = makeStyles(theme => ({
 	root: {
+		[theme.breakpoints.down('xs')]: {
+			height: 300
+		},
 		width: '100%',
-		minHeight: '100%',
-		display: 'flex',
-		justifyContent: 'space-between',
-		flexDirection: 'column'
+		height: '100%',
+		'& button': {
+			height: '100%'
+		}
 	},
 	active: {
 		borderBottom: `2px solid ${theme.palette.primary.main}`
 	},
-	cardActionArea: {
-		height: 700
-	},
 	media: {
 		minHeight: '100%'
+	},
+	titleContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		fontWeight: 500,
+		'& svg': {
+			marginRight: theme.spacing(1)
+		}
 	},
 	cardContent: {
 		position: 'absolute',
@@ -45,10 +54,11 @@ const CardPictureV2 = props => {
 	return (
 		<Card className={props.active ? classes.active : classes.root}>
 			{props.link && (
-				<CardActionArea className={classes.cardActionArea} component={Link} to={props.link}>
+				<CardActionArea minHeight='100%' className={classes.cardActionArea} component={Link} to={props.link}>
 					<CardImage className={classes.media} image={props.image} title={props.title} />
 					<CardContent className={classes.cardContent}>
 						<Typography className={classes.titleContainer} gutterBottom variant='h5' component='h2'>
+							{props.icon}
 							{utils.capitalizeFirstLetter(props.title)}
 						</Typography>
 						{props.children}
@@ -60,6 +70,7 @@ const CardPictureV2 = props => {
 					<CardImage className={classes.media} image={props.image} title={props.title} />
 					<CardContent className={classes.cardContent}>
 						<Typography className={classes.titleContainer} gutterBottom variant='h5' component='h2'>
+							{props.icon}
 							{utils.capitalizeFirstLetter(props.title)}
 						</Typography>
 						{props.children}
@@ -75,6 +86,7 @@ CardPictureV2.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	active: PropTypes.bool.isRequired,
+	icon: PropTypes.object,
 	link: PropTypes.string,
 	onClick: PropTypes.func
 };

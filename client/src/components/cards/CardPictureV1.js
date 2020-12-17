@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 			height: 220
 		}
 	},
+	titleContainer: {
+		fontWeight: 500
+	},
 	cardContent: {
 		position: 'absolute',
 		display: 'flex',
