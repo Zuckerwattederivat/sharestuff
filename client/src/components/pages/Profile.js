@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import QueryContext from '../../context/query/queryContext';
+import ProfileContext from '../../context/profile/profileContext';
 // Components
 import CardMediaV3 from '../cards/CardMediaV3';
 import CardPictureV2 from '../cards/CardPictureV2';
@@ -79,16 +80,14 @@ const Profile = props => {
 	const queryContext = useContext(QueryContext);
 	const { errors, loading, page, pageCount, offers, getUserOffers, getUserBookings, setPage } = queryContext;
 
-	// profile state
-	const [ profileState, setprofileState ] = useState({
-		tabLocation: window.location.search.split('=')[1],
-		redirect: false
-	});
+	// loaf profile context
+	const profileContext = useContext(ProfileContext);
+	const { tabLocation, redirect, editModalOpen, resetProfileState, setTabLocation, setRedirect } = profileContext;
 
 	// on page load
 	useEffect(() => {
 		// reset profile state
-		setprofileState({ tabLocation: 'offers', redirect: false });
+		resetProfileState();
 		// scroll to top
 		window.scrollTo(0, 0);
 	}, []);
@@ -98,9 +97,9 @@ const Profile = props => {
 		() => {
 			const tabLocation = props.history.location.search.split('=')[1];
 			if (tabLocation === 'offers' || tabLocation === 'bookings' || tabLocation === 'messages') {
-				setprofileState({ ...profileState, tabLocation: tabLocation });
+				setTabLocation(tabLocation);
 			} else {
-				setprofileState({ ...profileState, redirect: true });
+				setRedirect(true);
 			}
 		},
 		// eslint-disable-next-line
@@ -110,12 +109,12 @@ const Profile = props => {
 	// query content on tab change
 	useEffect(
 		() => {
-			if (profileState.tabLocation === 'offers') getUserOffers();
-			if (profileState.tabLocation === 'bookings') getUserBookings();
-			if (profileState.tabLocation === 'messages') console.log('messages query');
+			if (tabLocation === 'offers') getUserOffers();
+			if (tabLocation === 'bookings') getUserBookings();
+			if (tabLocation === 'messages') console.log('messages query');
 		},
 		// eslint-disable-next-line
-		[ profileState.tabLocation ]
+		[ tabLocation ]
 	);
 
 	// handle pagination
@@ -128,7 +127,7 @@ const Profile = props => {
 
 	// tab location elements
 	const TabLocation = () => {
-		switch (profileState.tabLocation) {
+		switch (tabLocation) {
 			case 'bookings':
 				return loading ? (
 					<Box className={classes.contentBox} width='100%' textAlign='center'>
@@ -244,9 +243,8 @@ const Profile = props => {
 						Home
 					</Link>
 					<Typography color='textPrimary'>
-						{user && profileState.tabLocation ? (
-							`${user.username}'s ${profileState.tabLocation.charAt(0).toUpperCase() +
-								profileState.tabLocation.slice(1)}`
+						{user && tabLocation ? (
+							`${user.username}'s ${tabLocation.charAt(0).toUpperCase() + tabLocation.slice(1)}`
 						) : (
 							'Profile'
 						)}
@@ -254,7 +252,7 @@ const Profile = props => {
 				</Breadcrumbs>
 				<TabLocation />
 			</Container>
-			{profileState.redirect && <Redirect to='/profile?tab=offers' />}
+			{redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);
 };

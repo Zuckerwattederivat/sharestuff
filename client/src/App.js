@@ -16,6 +16,7 @@ import AlertState from './context/alert/AlertState';
 import AuthValidationState from './context/auth/AuthValidationState';
 import NavbarState from './context/navbar/NavbarState';
 import QueryState from './context/query/QueryState';
+import ProfileState from './context/profile/ProfileState';
 // Utils
 import setAuthToken from './utils/setAuthToken';
 
@@ -47,29 +48,31 @@ const App = () => {
 					<AuthValidationState>
 						<NavbarState>
 							<QueryState>
-								<Router>
-									<Navbar version={siteDetails.version} title1={siteDetails.title1} title2={siteDetails.title2} />
-									<div className='wrapper'>
-										<Switch>
-											<Route exact path='/' component={Home} />
-											<Route exact path='/offers' component={Offers} />
-											<Route exact path='/offers/offer' component={Offer} />
-											<PrivateRoute exact path='/profile' component={Profile} />
-										</Switch>
-									</div>
-									<Footer
-										version={siteDetails.version}
-										title1={siteDetails.title1}
-										title2={siteDetails.title2}
-										year={siteDetails.year}
-										incorporation={siteDetails.incorporation}
-										street={siteDetails.street}
-										zipAndCity={siteDetails.zipAndCity}
-										country={siteDetails.country}
-										number={siteDetails.number}
-										locationLink={siteDetails.locationLink}
-									/>
-								</Router>
+								<ProfileState>
+									<Router>
+										<Navbar version={siteDetails.version} title1={siteDetails.title1} title2={siteDetails.title2} />
+										<div className='wrapper'>
+											<Switch>
+												<Route exact path='/' component={Home} />
+												<Route exact path='/offers' component={Offers} />
+												<Route exact path='/offers/offer' component={Offer} />
+												<PrivateRoute exact path='/profile' component={Profile} />
+											</Switch>
+										</div>
+										<Footer
+											version={siteDetails.version}
+											title1={siteDetails.title1}
+											title2={siteDetails.title2}
+											year={siteDetails.year}
+											incorporation={siteDetails.incorporation}
+											street={siteDetails.street}
+											zipAndCity={siteDetails.zipAndCity}
+											country={siteDetails.country}
+											number={siteDetails.number}
+											locationLink={siteDetails.locationLink}
+										/>
+									</Router>
+								</ProfileState>
 							</QueryState>
 						</NavbarState>
 					</AuthValidationState>
