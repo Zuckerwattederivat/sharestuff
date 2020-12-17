@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import AuthContext from '../../context/auth/authContext';
 import QueryContext from '../../context/query/queryContext';
 // Components
-import CardMediaV2 from '../cards/CardMediaV2';
+import CardMediaV3 from '../cards/CardMediaV3';
 import Pagination from '../layout/Pagination';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
@@ -166,13 +166,13 @@ const Profile = props => {
 											initial={{ opacity: 0 }}
 											animate={{ opacity: 1 }}
 										>
-											<CardMediaV2
+											<CardMediaV3
 												price={`${el.price} ${el.currency} daily`}
 												link={`/profile/offer/edit?id=${el._id}`}
 												image={`${el.imagesThumb[0]}`}
 												title={el.title}
-												btnName='View'
-												btnIcon={<ArrowRightIcon />}
+												btnName1='Edit'
+												btnIcon1={<ArrowRightIcon />}
 												location={el.location.label}
 											>
 												<Typography className={classes.cardParagraph} variant='body1'>
@@ -182,7 +182,7 @@ const Profile = props => {
 														el.description.join(' ')
 													)}
 												</Typography>
-											</CardMediaV2>
+											</CardMediaV3>
 										</motion.div>
 									</Grid>
 								);

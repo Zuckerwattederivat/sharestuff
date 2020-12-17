@@ -13,6 +13,11 @@ function getTheme(theme) {
 				main: '#0BD068',
 				dark: '#089349'
 			},
+			edit: {
+				light: '#48929D',
+				main: '#318F9D',
+				dark: '#00899D'
+			},
 			background: {
 				custom: '#212121'
 			},
