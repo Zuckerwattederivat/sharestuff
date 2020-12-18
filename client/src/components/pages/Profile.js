@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext, useEffect, useState, Fragment } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
 import { Container, Box, Breadcrumbs, Link, Grid, Typography } from '@material-ui/core';
 import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
@@ -82,7 +82,7 @@ const Profile = props => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { tabLocation, redirect, setModal, resetProfileState, setTabLocation, setRedirect } = profileContext;
+	const { tabLocation, redirect, setModal, setTabLocation, setRedirect } = profileContext;
 
 	// on page load
 	useEffect(() => {
