@@ -116,6 +116,7 @@ const ModalResponse = props => {
 							<Typography variant='body1'>{props.successText}</Typography>
 							<Box width='100%' display='flex' justifyContent='flex-end' marginTop={4}>
 								<Button
+									size='large'
 									variant='outlined'
 									color='inherit'
 									startIcon={<CloseIcon className={classes.buttonIcon} />}

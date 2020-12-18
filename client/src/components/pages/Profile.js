@@ -1,7 +1,7 @@
 // Node Modules
 import React, { useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
-import { Container, Box, Breadcrumbs, Link, Grid, Typography } from '@material-ui/core';
+import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button } from '@material-ui/core';
 import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -65,6 +65,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	offersCard: {
 		height: '100%'
+	},
+	btnOpenModal: {
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -83,7 +86,7 @@ const Profile = props => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { tabLocation, redirect, modalOpen, action, setModal, setTabLocation, setRedirect } = profileContext;
+	const { tabLocation, redirect, setModal, setTabLocation, setRedirect } = profileContext;
 
 	// on page load
 	useEffect(() => {
@@ -226,6 +229,16 @@ const Profile = props => {
 							<img className={classes.emptySvg} src={EmptySvg} alt='Empty' />
 							<Typography variant='h3'>{errors}</Typography>
 							<Typography variant='body1'>You can see your offers here after you created one.</Typography>
+							<Button
+								className={classes.btnOpenModal}
+								size='large'
+								variant='outlined'
+								color='primary'
+								onClick={() => setModal(true, null, 'add')}
+								startIcon={<AddIcon />}
+							>
+								Create Offer
+							</Button>
 						</Box>
 					))}
 				{tabLocation === 'bookings' &&

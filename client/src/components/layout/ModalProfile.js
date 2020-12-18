@@ -104,15 +104,17 @@ const ModalProfile = props => {
 						<Typography variant='body1'>Do you really want to delete this offer?</Typography>
 						<Box width='100%' display='flex' justifyContent='flex-end' marginTop={4}>
 							<Button
+								size='large'
 								className={classes.btn1}
 								variant='outlined'
-								color='inherit'
+								color='primary'
 								startIcon={<CancelIcon />}
 								onClick={() => setModal(false)}
 							>
 								Cancel
 							</Button>
 							<Button
+								size='large'
 								variant='contained'
 								color='secondary'
 								startIcon={<DeleteIcon />}

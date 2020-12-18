@@ -152,7 +152,9 @@ const QueryState = props => {
 					searchOffers(searchParams)
 						.then(resolve => {
 							// set offers
-							!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+							!resolve.data.msg
+								? setQueryState(SET_OFFERS, resolve.data)
+								: setQueryState(OFFER_ERROR, resolve.data.msg);
 							if (!resolve.data.msg)
 								getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 							// calculate page count
@@ -174,7 +176,7 @@ const QueryState = props => {
 			searchOffers(searchParams)
 				.then(resolve => {
 					// set offers
-					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data);
+					!resolve.data.msg ? setQueryState(SET_OFFERS, resolve.data) : setQueryState(OFFER_ERROR, resolve.data.msg);
 					if (!resolve.data.msg)
 						getOffersPaginated(resolve.data, 0, 12).then(resolve => setQueryState(SET_OFFERS_PAGINATED, resolve));
 					// calculate page count
