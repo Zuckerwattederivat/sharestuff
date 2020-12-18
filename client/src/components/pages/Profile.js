@@ -13,6 +13,7 @@ import ProfileContext from '../../context/profile/profileContext';
 import CardMediaV3 from '../cards/CardMediaV3';
 import CardPictureV2 from '../cards/CardPictureV2';
 import Pagination from '../layout/Pagination';
+import ModalProfile from '../layout/ModalProfile';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
@@ -82,7 +83,7 @@ const Profile = props => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { tabLocation, redirect, setModal, setTabLocation, setRedirect } = profileContext;
+	const { tabLocation, redirect, modalOpen, action, setModal, setTabLocation, setRedirect } = profileContext;
 
 	// on page load
 	useEffect(() => {
@@ -244,6 +245,7 @@ const Profile = props => {
 						<div>Messages</div>
 					))}
 			</Container>
+			<ModalProfile />
 			{redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);

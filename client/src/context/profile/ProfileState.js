@@ -49,7 +49,7 @@ const ProfileState = props => {
 		} else if (action) {
 			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: offer, action: action } });
 		} else {
-			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: null } });
+			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: null, action: null } });
 		}
 	};
 
