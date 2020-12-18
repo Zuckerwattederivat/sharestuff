@@ -3,7 +3,7 @@ import React from 'react';
 
 // ModalProfile Component
 const ModalProfile = () => {
-	return <div>Modal Profile</div>;
+	return <div>Hello Modal Profile</div>;
 };
 
 // export ModalProfile Component
