@@ -13,7 +13,8 @@ import ProfileContext from '../../context/profile/profileContext';
 import CardMediaV3 from '../cards/CardMediaV3';
 import CardPictureV2 from '../cards/CardPictureV2';
 import Pagination from '../layout/Pagination';
-import ModalProfile from '../layout/ModalProfile';
+import ModalDelete from '../layout/ModalDelete';
+import ModalAdd from '../layout/ModalAdd';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
@@ -86,7 +87,16 @@ const Profile = props => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { tabLocation, redirect, setModal, setTabLocation, setRedirect } = profileContext;
+	const {
+		tabLocation,
+		redirect,
+		modalAdd,
+		modalEdit,
+		modalDelete,
+		setModal,
+		setTabLocation,
+		setRedirect
+	} = profileContext;
 
 	// on page load
 	useEffect(() => {
@@ -168,7 +178,7 @@ const Profile = props => {
 											image={AddOfferBackground}
 											title='New'
 											active={false}
-											onClick={() => setModal(true, null, 'add')}
+											onClick={() => setModal('add', true)}
 											icon={<AddIcon fontSize='large' />}
 										/>
 									</motion.div>
@@ -197,7 +207,7 @@ const Profile = props => {
 														variant: 'contained',
 														color: 'inherit',
 														startIcon: <BuildIcon />,
-														onClick: () => setModal(true, el, 'edit')
+														onClick: () => setModal('edit', true, el)
 													}}
 													button2={{
 														name: 'Delete',
@@ -205,7 +215,7 @@ const Profile = props => {
 														variant: 'contained',
 														color: 'secondary',
 														startIcon: <DeleteIcon />,
-														onClick: () => setModal(true, el, 'delete')
+														onClick: () => setModal('delete', true, el)
 													}}
 													location={el.location.label}
 												>
@@ -258,7 +268,8 @@ const Profile = props => {
 						<div>Messages</div>
 					))}
 			</Container>
-			<ModalProfile />
+			<ModalDelete />
+			<ModalAdd />
 			{redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);

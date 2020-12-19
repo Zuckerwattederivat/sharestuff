@@ -3,7 +3,17 @@ import axios from 'axios';
 import ProfileContext from './profileContext';
 import profileReducer from './profileReducer';
 
-import { RESET_PROFILE_STATE, SET_TAB_LOCATION, SET_REDIRECT, SET_MODAL } from '../types';
+import {
+	RESET_PROFILE_STATE,
+	SET_TAB_LOCATION,
+	SET_REDIRECT,
+	SET_MODAL_ADD,
+	SET_MODAL_EDIT,
+	SET_MODAL_DELETE,
+	SET_SUCCESS,
+	SET_ERRORS,
+	SET_LOADING
+} from '../types';
 
 // ProfileState
 const ProfileState = props => {
@@ -11,9 +21,13 @@ const ProfileState = props => {
 	const initialState = {
 		tabLocation: window.location.search.split('=')[1],
 		redirect: false,
-		modalOpen: false,
+		modalEdit: false,
+		modalAdd: false,
+		modalDelete: false,
 		offer: null,
-		action: null
+		loading: false,
+		success: false,
+		errors: null
 	};
 
 	// geoCodeApiKey
@@ -31,6 +45,9 @@ const ProfileState = props => {
 	// reset profile state
 	const resetProfileState = () => dispatch({ type: RESET_PROFILE_STATE });
 
+	// set loading
+	const setLoading = bool => dispatch({ type: SET_LOADING, payload: bool });
+
 	// set tab location
 	const setTabLocation = tabLocation => {
 		// reset profile state
@@ -43,14 +60,38 @@ const ProfileState = props => {
 	const setRedirect = bool => dispatch({ type: SET_REDIRECT, payload: bool });
 
 	// set modal
-	const setModal = (bool, offer, action) => {
-		if (offer) {
-			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: offer, action: action } });
-		} else if (action) {
-			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: offer, action: action } });
-		} else {
-			dispatch({ type: SET_MODAL, payload: { modalOpen: bool, offer: null, action: null } });
+	const setModal = (action, bool, offer) => {
+		switch (action) {
+			case 'add':
+				if (!offer) {
+					dispatch({ type: SET_MODAL_ADD, payload: { modalOpen: bool, offer: null } });
+				} else {
+					dispatch({ type: SET_MODAL_ADD, payload: { modalOpen: bool, offer: offer } });
+				}
+				break;
+			case 'edit':
+				if (!offer) {
+					dispatch({ type: SET_MODAL_EDIT, payload: { modalOpen: bool, offer: null } });
+				} else {
+					dispatch({ type: SET_MODAL_EDIT, payload: { modalOpen: bool, offer: offer } });
+				}
+				break;
+			case 'delete':
+				if (!offer) {
+					dispatch({ type: SET_MODAL_DELETE, payload: { modalOpen: bool, offer: null } });
+				} else {
+					dispatch({ type: SET_MODAL_DELETE, payload: { modalOpen: bool, offer: offer } });
+				}
+				break;
 		}
+	};
+
+	// delete offer
+	const deleteOffer = () => {
+		setLoading(true);
+		setTimeout(() => {
+			dispatch({ type: SET_SUCCESS });
+		}, 1000);
 	};
 
 	return (
@@ -58,12 +99,16 @@ const ProfileState = props => {
 			value={{
 				tabLocation: state.tabLocation,
 				redirect: state.redirect,
-				modalOpen: state.modalOpen,
-				action: state.action,
+				modalAdd: state.modalAdd,
+				modalEdit: state.modalEdit,
+				modalDelete: state.modalDelete,
+				loading: state.loading,
+				success: state.success,
 				resetProfileState,
 				setTabLocation,
 				setRedirect,
-				setModal
+				setModal,
+				deleteOffer
 			}}
 		>
 			{props.children}

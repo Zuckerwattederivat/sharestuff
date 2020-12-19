@@ -1,17 +1,23 @@
 // Node Modules
 import React, { useContext } from 'react';
 import { Modal, Backdrop, Box, Typography, Button } from '@material-ui/core';
-import { Delete as DeleteIcon, Cancel as CancelIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, Cancel as CancelIcon, Close as CloseIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
 // Assets
 import WarningSvg from '../../assets/undraw/warning.svg';
+import DeletedGif from '../../assets/deleted-transparent.gif';
+import LoadingGif from '../../assets/loading-transparent.gif';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	profileModal: {
+	textDeleted: {
+		color: '#FE211F'
+	},
+
+	deleteModal: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -23,9 +29,11 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
+		height: '425px',
 		padding: theme.spacing(2, 3),
 		[theme.breakpoints.up('sm')]: {
-			width: '540px'
+			width: '540px',
+			height: '455px'
 		}
 	},
 	title: {
@@ -40,15 +48,19 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'column',
-		'& h3': {
-			textAlign: 'center',
-			fontSize: '1.5rem',
-			fontWeight: 700,
-			margin: theme.spacing(4, 0, 1.5)
-		},
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 		'& p': {
 			textAlign: 'center'
 		}
+	},
+	h3: {
+		textAlign: 'center',
+		fontSize: '1.5rem',
+		fontWeight: 700,
+		margin: theme.spacing(4, 0, 1.5)
 	},
 	messageSvg: {
 		maxHeight: '450px',
@@ -57,27 +69,33 @@ const useStyles = makeStyles(theme => ({
 			maxHeight: '250px'
 		}
 	},
+	btnContainer: {
+		width: '100%',
+		display: 'flex',
+		marginTop: theme.spacing(4),
+		justifyContent: 'flex-end'
+	},
 	btn1: {
 		marginRight: theme.spacing(1)
 	}
 }));
 
-// ModalProfile Component
-const ModalProfile = props => {
+// ModalDelete Component
+const ModalDelete = () => {
 	// styling classes
 	const classes = useStyles();
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { modalOpen, action, offer, setModal } = profileContext;
+	const { modalDelete, success, loading, setModal, deleteOffer } = profileContext;
 
 	return (
 		<Modal
-			className={classes.profileModal}
-			aria-labelledby='login-modal-title'
-			aria-describedby='login-modal-description'
-			open={modalOpen}
-			onClose={() => setModal(false)}
+			className={classes.deleteModal}
+			aria-labelledby='delete-modal'
+			aria-describedby='delete-modal-description'
+			open={modalDelete}
+			onClose={() => setModal('delete', false)}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -93,23 +111,21 @@ const ModalProfile = props => {
 				initial={{ y: '100vh' }}
 				animate={{ y: 0 }}
 			>
-				{action === 'add' && <div>{action}</div>}
-				{action === 'edit' && <div>{action}</div>}
-				{action === 'delete' && (
+				{!loading && !success ? (
 					<Box width='100%' className={classes.responseContainer}>
 						<img className={classes.messageSvg} src={WarningSvg} alt='warning' />
-						<Typography variant='h3' color='secondary'>
-							Please Confirm
+						<Typography variant='h3' color='secondary' className={classes.h3}>
+							Warning
 						</Typography>
 						<Typography variant='body1'>Do you really want to delete this offer?</Typography>
-						<Box width='100%' display='flex' justifyContent='flex-end' marginTop={4}>
+						<Box className={classes.btnContainer}>
 							<Button
 								size='large'
 								className={classes.btn1}
 								variant='outlined'
 								color='primary'
 								startIcon={<CancelIcon />}
-								onClick={() => setModal(false)}
+								onClick={() => setModal('delete', false)}
 							>
 								Cancel
 							</Button>
@@ -118,9 +134,33 @@ const ModalProfile = props => {
 								variant='contained'
 								color='secondary'
 								startIcon={<DeleteIcon />}
-								// onClick={() => handleModalClose()}
+								onClick={() => deleteOffer()}
 							>
 								Delete
+							</Button>
+						</Box>
+					</Box>
+				) : !success ? (
+					<Box width='100%' className={classes.responseContainer}>
+						<img className={classes.messageSvg} src={DeletedGif} alt='deleted' />
+					</Box>
+				) : (
+					<Box width='100%' className={classes.responseContainer}>
+						<img className={classes.messageSvg} src={DeletedGif} alt='deleted' />
+						<Typography variant='h3' className={`${classes.h3} ${classes.textDeleted} `}>
+							Offer deleted
+						</Typography>
+						<Typography variant='body1'>You successfully deleted this offer.</Typography>
+						<Box width='100%' className={classes.btnContainer}>
+							<Button
+								size='large'
+								className={classes.btn1}
+								variant='outlined'
+								color='inherit'
+								startIcon={<CloseIcon />}
+								onClick={() => setModal('delete', false)}
+							>
+								Close
 							</Button>
 						</Box>
 					</Box>
@@ -130,5 +170,5 @@ const ModalProfile = props => {
 	);
 };
 
-// export ModalProfile Component
-export default ModalProfile;
+// export ModalDelete Component
+export default ModalDelete;
