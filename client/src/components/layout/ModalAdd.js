@@ -1,7 +1,7 @@
 // Node Modules
 import React, { useContext } from 'react';
-import { Modal, Backdrop, Box, Typography, Button, Divider } from '@material-ui/core';
-import { Close as CloseIcon } from '@material-ui/icons';
+import { Modal, Backdrop, Box, Typography, Divider, Grid, TextField, Button } from '@material-ui/core';
+import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
@@ -37,6 +37,40 @@ const useStyles = makeStyles(theme => ({
 	},
 	titleSpan2: {
 		color: theme.palette.primary.main
+	},
+	addContainer: {
+		padding: theme.spacing(3, 4)
+	},
+	description: {
+		textAlign: 'center',
+		margin: theme.spacing(0, 0, 3)
+	},
+	grid: {
+		marginBottom: theme.spacing(3)
+	},
+	textfield: {
+		width: '100%'
+	},
+	buttonContainer: {
+		[theme.breakpoints.down('xs')]: {
+			justifyContent: 'space-between'
+		}
+	},
+	cancelButton: {
+		[theme.breakpoints.down('xs')]: {
+			width: '47%'
+		},
+		marginRight: theme.spacing(1)
+	},
+	addButton: {
+		[theme.breakpoints.down('xs')]: {
+			width: '47%'
+		}
+	},
+	buttonIcon: {
+		[theme.breakpoints.down('xs')]: {
+			display: 'none'
+		}
 	}
 }));
 
@@ -48,6 +82,11 @@ const ModalDelete = () => {
 	// load profile context
 	const profileContext = useContext(ProfileContext);
 	const { modalAdd, success, loading, setModal } = profileContext;
+
+	// submit offer
+	const submitOffer = () => {
+		console.log('add offer');
+	};
 
 	return (
 		<Modal
@@ -78,6 +117,41 @@ const ModalDelete = () => {
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
 						<Divider className={classes.topDivider} />
+						<Box width='100%' className={classes.addContainer}>
+							<Typography className={classes.description} variant='subtitle1'>
+								Add a new offer.
+							</Typography>
+							<form onSubmit={submitOffer}>
+								<Grid className={classes.grid} width='100%' container spacing={2}>
+									<Grid item xs={6}>
+										hello
+									</Grid>
+								</Grid>
+								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
+									<Button
+										className={classes.cancelButton}
+										width='100%'
+										variant='outlined'
+										startIcon={<CancelIcon className={classes.buttonIcon} />}
+										size='large'
+									>
+										Cancel
+									</Button>
+									<Button
+										className={classes.addButton}
+										name='submit'
+										type='submit'
+										width='100%'
+										variant='outlined'
+										color='primary'
+										startIcon={<AddCircleIcon className={classes.buttonIcon} />}
+										size='large'
+									>
+										Add
+									</Button>
+								</Box>
+							</form>
+						</Box>
 					</Box>
 				)}
 			</div>

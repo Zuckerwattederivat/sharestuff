@@ -49,9 +49,6 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		flexDirection: 'column',
 		height: '100%',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
 		'& p': {
 			textAlign: 'center'
 		}
