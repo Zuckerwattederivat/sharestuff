@@ -112,7 +112,7 @@ const ModalAdd = () => {
 	};
 
 	// handle input change
-	const handleInputChange = input => e => setInput({ ...input, [input]: e.target.value });
+	const handleInputChange = state => e => setInput({ ...input, [state]: e.target.value });
 
 	// submit offer
 	const submitOffer = () => {
@@ -150,11 +150,11 @@ const ModalAdd = () => {
 						<Divider className={classes.topDivider} />
 						<Box width='100%' className={classes.addContainer}>
 							<Typography className={classes.description} variant='subtitle1'>
-								Add a new offer.
+								Add new offer.
 							</Typography>
 							<form onSubmit={submitOffer}>
 								<Grid className={classes.grid} width='100%' container spacing={2}>
-									<Grid item xs={12} sm={6}>
+									<Grid item xs={12}>
 										<TextField
 											id='title'
 											name='title'
@@ -168,7 +168,7 @@ const ModalAdd = () => {
 											defaultValue={input.title}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={6}>
+									<Grid item xs={12}>
 										<TextField
 											id='product'
 											name='product'
