@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Modal, Backdrop, Box, Typography, Divider, Grid, TextField, Button } from '@material-ui/core';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,13 +8,16 @@ import { motion } from 'framer-motion';
 import ProfileContext from '../../context/profile/profileContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
+// util
+import currencies from '../../utils/currencies';
 
 // define styles
 const useStyles = makeStyles(theme => ({
 	addModal: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		overflow: 'scroll'
 	},
 	paper: {
 		backgroundColor: theme.palette.background.custom,
@@ -83,6 +86,17 @@ const ModalDelete = () => {
 	const profileContext = useContext(ProfileContext);
 	const { modalAdd, success, loading, setModal } = profileContext;
 
+	// input
+	const [ input, setInput ] = useState({
+		title: '',
+		product: '',
+		price: '',
+		currency: ''
+	});
+
+	// handle input change
+	const handleInputChange = input => e => setInput({ ...input, [input]: e.target.value });
+
 	// submit offer
 	const submitOffer = () => {
 		console.log('add offer');
@@ -123,8 +137,61 @@ const ModalDelete = () => {
 							</Typography>
 							<form onSubmit={submitOffer}>
 								<Grid className={classes.grid} width='100%' container spacing={2}>
-									<Grid item xs={6}>
-										hello
+									<Grid item xs={12} sm={6}>
+										<TextField
+											id='title'
+											name='title'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Title'}
+											placeholder='Rent my Macbook Pro 2015 weekly'
+											type='text'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('title')}
+											defaultValue={input.title}
+										/>
+									</Grid>
+									<Grid item xs={12} sm={6}>
+										<TextField
+											id='product'
+											name='product'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Product'}
+											placeholder='Macbook Pro 2015'
+											type='text'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('product')}
+											defaultValue={input.product}
+										/>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<TextField
+											id='price'
+											name='price'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Price'}
+											placeholder='40'
+											type='number'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('price')}
+											defaultValue={input.price}
+										/>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<TextField
+											id='currency'
+											name='currency'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Currency'}
+											placeholder='€'
+											type='text'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('currency')}
+											defaultValue={input.currency}
+										/>
 									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
