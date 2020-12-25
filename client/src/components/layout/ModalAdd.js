@@ -230,6 +230,9 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
+									<Grid item xs={12} md={6}>
+										// TODO: tags texfield multi input mit result = array of strings
+									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button
