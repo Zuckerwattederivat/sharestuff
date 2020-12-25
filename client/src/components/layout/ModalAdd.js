@@ -1,6 +1,7 @@
 // Node Modules
 import React, { useContext, useState } from 'react';
 import { Modal, Backdrop, Box, Typography, Divider, Grid, TextField, Button } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -74,11 +75,15 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'
 		}
+	},
+	btcIcon: {
+		color: '#F79414',
+		marginRight: '3px'
 	}
 }));
 
-// ModalDelete Component
-const ModalDelete = () => {
+// ModalAdd Component
+const ModalAdd = () => {
 	// styling classes
 	const classes = useStyles();
 
@@ -91,8 +96,20 @@ const ModalDelete = () => {
 		title: '',
 		product: '',
 		price: '',
-		currency: ''
+		currencyAuto: '',
+		currencyInput: ''
 	});
+
+	// country to flag
+	const countryToFlag = isoCode => {
+		if (isoCode === 'BTC') {
+			return <i className={`fab fa-bitcoin ${classes.btcIcon}`} />;
+		} else {
+			return typeof String.fromCodePoint !== 'undefined'
+				? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
+				: isoCode;
+		}
+	};
 
 	// handle input change
 	const handleInputChange = input => e => setInput({ ...input, [input]: e.target.value });
@@ -180,17 +197,37 @@ const ModalDelete = () => {
 										/>
 									</Grid>
 									<Grid item xs={6} md={3}>
-										<TextField
+										<Autocomplete
 											id='currency'
 											name='currency'
+											onChange={(e, newCurrencyAuto) =>
+												newCurrencyAuto
+													? setInput({ ...input, currencyAuto: newCurrencyAuto.label })
+													: setInput({ ...input, currencyAuto: '' })}
+											onInput={handleInputChange('currencyInput')}
 											className={classes.textfield}
-											variant='outlined'
-											label={'Currency'}
-											placeholder='€'
-											type='text'
-											// error={firstnameErr ? true : false}
-											onChange={handleInputChange('currency')}
-											defaultValue={input.currency}
+											options={currencies}
+											classes={{
+												option: classes.option
+											}}
+											autoHighlight
+											getOptionLabel={option => option.label}
+											renderOption={option => (
+												<React.Fragment>
+													<span>{countryToFlag(option.code)}</span>
+													{option.label} ({option.symbol})
+												</React.Fragment>
+											)}
+											renderInput={params => (
+												<TextField
+													{...params}
+													required={false}
+													// error={countryErr ? true : false}
+													label='Currency'
+													variant='outlined'
+													placeholder='EUR'
+												/>
+											)}
 										/>
 									</Grid>
 								</Grid>
@@ -226,5 +263,5 @@ const ModalDelete = () => {
 	);
 };
 
-// export ModalDelete Component
-export default ModalDelete;
+// export ModalAdd Component
+export default ModalAdd;
