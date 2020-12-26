@@ -87,16 +87,7 @@ const Profile = props => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const {
-		tabLocation,
-		redirect,
-		modalAdd,
-		modalEdit,
-		modalDelete,
-		setModal,
-		setTabLocation,
-		setRedirect
-	} = profileContext;
+	const { tabLocation, redirect, setModal, setTabLocation, setRedirect } = profileContext;
 
 	// on page load
 	useEffect(() => {

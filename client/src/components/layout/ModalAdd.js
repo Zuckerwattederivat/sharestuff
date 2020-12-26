@@ -1,6 +1,16 @@
 // Node Modules
-import React, { useContext, useState, useEffect } from 'react';
-import { Modal, Backdrop, Box, Typography, Divider, Grid, TextField, Button } from '@material-ui/core';
+import React, { useContext, useState, useEffect, Fragment } from 'react';
+import {
+	Modal,
+	Backdrop,
+	Box,
+	Typography,
+	Divider,
+	Grid,
+	TextField,
+	Button,
+	CircularProgress
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 	addModal: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center',
-		overflow: 'scroll'
+		justifyContent: 'center'
+		// overflow: 'scroll'
 	},
 	paper: {
 		backgroundColor: theme.palette.background.custom,
@@ -82,6 +92,15 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+// geoCodeApiKey
+let geoCodeApiKey;
+// set geoCodeApiKey
+if (process.env.NODE_ENV !== 'production') {
+	geoCodeApiKey = process.env.REACT_APP_GEOCODE_API_KEY;
+} else {
+	geoCodeApiKey = process.env.GEOCODE_API_KEY;
+}
+
 // ModalAdd Component
 const ModalAdd = () => {
 	// styling classes
@@ -91,6 +110,11 @@ const ModalAdd = () => {
 	const profileContext = useContext(ProfileContext);
 	const { modalAdd, success, loading, setModal } = profileContext;
 
+	// open & options state
+	const [ open, setOpen ] = useState(false);
+	const [ options, setOptions ] = useState([]);
+	const autoCompleteLoading = open && options.length === 0;
+
 	// input
 	const [ input, setInput ] = useState({
 		title: '',
@@ -99,7 +123,9 @@ const ModalAdd = () => {
 		currencyAuto: '',
 		currencyInput: '',
 		tagsArray: [],
-		tagsInput: ''
+		tagsInput: '',
+		locationAuto: null,
+		location: ''
 	});
 
 	// set tag array
@@ -127,6 +153,34 @@ const ModalAdd = () => {
 		[ input.tagsInput ]
 	);
 
+	// fetch location
+	useEffect(
+		() => {
+			let active = true;
+
+			if (input.location !== '') {
+				fetch(`https://app.geocodeapi.io/api/v1/autocomplete?text=${input.location}&apikey=${geoCodeApiKey}`)
+					.then(resolve => {
+						return resolve.json();
+					})
+					.then(resolve => {
+						if (active) {
+							const locations = resolve.features;
+							setOptions(Object.keys(locations).map(key => locations[key].properties));
+						}
+					})
+					.catch(err => {
+						console.error(err);
+					});
+			}
+
+			return () => {
+				active = false;
+			};
+		},
+		[ autoCompleteLoading, input.location ]
+	);
+
 	// country to flag
 	const countryToFlag = isoCode => {
 		if (isoCode === 'BTC') {
@@ -151,13 +205,13 @@ const ModalAdd = () => {
 			className={classes.addModal}
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
-			open={true}
+			open={modalAdd}
 			onClose={() => setModal('add', false)}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
 		>
-			<div
+			<motion.div
 				className={classes.paper}
 				transition={{
 					duration: 0.6,
@@ -177,7 +231,7 @@ const ModalAdd = () => {
 						<Divider className={classes.topDivider} />
 						<Box width='100%' className={classes.addContainer}>
 							<Typography className={classes.description} variant='subtitle1'>
-								Add new offer.
+								Add a new offer for other people to rent.
 							</Typography>
 							<form onSubmit={submitOffer}>
 								<Grid className={classes.grid} width='100%' container spacing={2}>
@@ -257,7 +311,7 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={8}>
+									<Grid item xs={12} sm={6}>
 										<TextField
 											id='tags'
 											name='tags'
@@ -271,8 +325,42 @@ const ModalAdd = () => {
 											defaultValue={input.tagsInput}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={4}>
-										TODO: Location
+									<Grid item xs={12} sm={6}>
+										<Autocomplete
+											id='location'
+											name='location'
+											open={open}
+											onOpen={() => {
+												setOpen(true);
+											}}
+											onClose={() => {
+												setOpen(false);
+											}}
+											onChange={(e, option) => setInput({ ...input, locationAuto: option })}
+											getOptionSelected={(option, value) => option.label === value.label}
+											getOptionLabel={option => option.label}
+											options={options}
+											loading={autoCompleteLoading}
+											renderInput={params => (
+												<TextField
+													{...params}
+													onChange={handleInputChange('location')}
+													className={classes.textfield}
+													label='Location'
+													variant='outlined'
+													placeholder='Fifth Ave, New York'
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<Fragment>
+																{autoCompleteLoading ? <CircularProgress color='inherit' size={20} /> : null}
+																{params.InputProps.endAdornment}
+															</Fragment>
+														)
+													}}
+												/>
+											)}
+										/>
 									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
@@ -282,6 +370,7 @@ const ModalAdd = () => {
 										variant='outlined'
 										startIcon={<CancelIcon className={classes.buttonIcon} />}
 										size='large'
+										onClick={() => setModal('add', false)}
 									>
 										Cancel
 									</Button>
@@ -302,7 +391,7 @@ const ModalAdd = () => {
 						</Box>
 					</Box>
 				)}
-			</div>
+			</motion.div>
 		</Modal>
 	);
 };
