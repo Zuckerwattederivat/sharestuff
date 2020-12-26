@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Modal, Backdrop, Box, Typography, Divider, Grid, TextField, Button } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
@@ -97,8 +97,35 @@ const ModalAdd = () => {
 		product: '',
 		price: '',
 		currencyAuto: '',
-		currencyInput: ''
+		currencyInput: '',
+		tagsArray: [],
+		tagsInput: ''
 	});
+
+	// set tag array
+	useEffect(
+		() => {
+			if (!input.tagsInput) {
+				setInput({ ...input, tagsArray: [] });
+			} else if (input.tagsInput.includes(',')) {
+				let tags = input.tagsInput.split(', ');
+				let i = tags.length;
+				while (i--) !/\S/.test(tags[i]) && tags.splice(i, 1);
+				setInput({ ...input, tagsArray: tags });
+			} else if (input.tagsInput.includes(';')) {
+				let tags = input.tagsInput.split('; ');
+				let i = tags.length;
+				while (i--) !/\S/.test(tags[i]) && tags.splice(i, 1);
+				setInput({ ...input, tagsArray: tags });
+			} else {
+				let tags = input.tagsInput.split(' ');
+				let i = tags.length;
+				while (i--) !/\S/.test(tags[i]) && tags.splice(i, 1);
+				setInput({ ...input, tagsArray: tags });
+			}
+		},
+		[ input.tagsInput ]
+	);
 
 	// country to flag
 	const countryToFlag = isoCode => {
@@ -168,7 +195,7 @@ const ModalAdd = () => {
 											defaultValue={input.title}
 										/>
 									</Grid>
-									<Grid item xs={12}>
+									<Grid item xs={12} md={6}>
 										<TextField
 											id='product'
 											name='product'
@@ -182,7 +209,7 @@ const ModalAdd = () => {
 											defaultValue={input.product}
 										/>
 									</Grid>
-									<Grid item xs={6} md={3}>
+									<Grid item xs={6} sm={8} md={3}>
 										<TextField
 											id='price'
 											name='price'
@@ -196,7 +223,7 @@ const ModalAdd = () => {
 											defaultValue={input.price}
 										/>
 									</Grid>
-									<Grid item xs={6} md={3}>
+									<Grid item xs={6} sm={4} md={3}>
 										<Autocomplete
 											id='currency'
 											name='currency'
@@ -230,8 +257,22 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
-									<Grid item xs={12} md={6}>
-										// TODO: tags texfield multi input mit result = array of strings
+									<Grid item xs={12} sm={8}>
+										<TextField
+											id='tags'
+											name='tags'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Tags'}
+											placeholder='#apple #macbook #productivity'
+											type='text'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('tagsInput')}
+											defaultValue={input.tagsInput}
+										/>
+									</Grid>
+									<Grid item xs={12} sm={4}>
+										TODO: Location
 									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
