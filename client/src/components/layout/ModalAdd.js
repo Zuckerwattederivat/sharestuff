@@ -15,6 +15,7 @@ import { Autocomplete } from '@material-ui/lab';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
+import MultiImageInput from 'react-multiple-image-input';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
 // Assets
@@ -37,12 +38,13 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
-		margin: theme.spacing(32, 0, 4),
+		margin: theme.spacing(55, 0, 4),
 		[theme.breakpoints.up('sm')]: {
-			margin: theme.spacing(4, 0),
+			margin: theme.spacing(26, 0, 4),
 			width: '540px'
 		},
 		[theme.breakpoints.up('md')]: {
+			margin: theme.spacing(15, 0, 4),
 			width: '800px'
 		}
 	},
@@ -131,6 +133,21 @@ const ModalAdd = () => {
 		description: ''
 	});
 
+	// images upload
+	const [ images, setImages ] = useState({});
+
+	// errors
+	const [ errors, setErrors ] = useState({
+		title: '',
+		product: '',
+		price: '',
+		currency: '',
+		tags: '',
+		location: '',
+		description: '',
+		images: ''
+	});
+
 	// set tag array
 	useEffect(
 		() => {
@@ -193,6 +210,13 @@ const ModalAdd = () => {
 				? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
 				: isoCode;
 		}
+	};
+
+	// crop for image upload
+	const crop = {
+		unit: '%',
+		aspect: 4 / 3,
+		width: '100'
 	};
 
 	// handle input change
@@ -380,6 +404,9 @@ const ModalAdd = () => {
 											onChange={handleInputChange('description')}
 											defaultValue={input.description}
 										/>
+									</Grid>
+									<Grid item xs={12}>
+										<MultiImageInput images={images} setImages={setImages} cropConfig={{ crop, ruleOfThirds: true }} />
 									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
