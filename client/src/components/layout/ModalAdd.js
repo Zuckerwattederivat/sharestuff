@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 	addModal: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center'
-		// overflow: 'scroll'
+		justifyContent: 'center',
+		overflow: 'scroll'
 	},
 	paper: {
 		backgroundColor: theme.palette.background.custom,
@@ -37,7 +37,9 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
+		margin: theme.spacing(32, 0, 4),
 		[theme.breakpoints.up('sm')]: {
+			margin: theme.spacing(4, 0),
 			width: '540px'
 		},
 		[theme.breakpoints.up('md')]: {
@@ -125,7 +127,8 @@ const ModalAdd = () => {
 		tagsArray: [],
 		tagsInput: '',
 		locationAuto: null,
-		location: ''
+		location: '',
+		description: ''
 	});
 
 	// set tag array
@@ -205,13 +208,13 @@ const ModalAdd = () => {
 			className={classes.addModal}
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
-			open={modalAdd}
+			open={true}
 			onClose={() => setModal('add', false)}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
 		>
-			<motion.div
+			<div
 				className={classes.paper}
 				transition={{
 					duration: 0.6,
@@ -219,8 +222,8 @@ const ModalAdd = () => {
 					damping: 10,
 					stiffness: 70
 				}}
-				initial={{ y: '100vh' }}
-				animate={{ y: 0 }}
+				initial={{ x: '-100vw' }}
+				animate={{ x: 0 }}
 			>
 				{!success &&
 				!loading && (
@@ -231,7 +234,7 @@ const ModalAdd = () => {
 						<Divider className={classes.topDivider} />
 						<Box width='100%' className={classes.addContainer}>
 							<Typography className={classes.description} variant='subtitle1'>
-								Add a new offer for other people to rent.
+								Add a new offer for other people to rent from you.
 							</Typography>
 							<form onSubmit={submitOffer}>
 								<Grid className={classes.grid} width='100%' container spacing={2}>
@@ -362,6 +365,22 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
+									<Grid item xs={12}>
+										<TextField
+											id='description'
+											name='description'
+											className={classes.textfield}
+											variant='outlined'
+											label={'Description'}
+											placeholder='You can rent my Macbook Pro 2015 on a weekly or daily basis...'
+											multiline
+											rows={7}
+											type='text'
+											// error={firstnameErr ? true : false}
+											onChange={handleInputChange('description')}
+											defaultValue={input.description}
+										/>
+									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button
@@ -391,7 +410,7 @@ const ModalAdd = () => {
 						</Box>
 					</Box>
 				)}
-			</motion.div>
+			</div>
 		</Modal>
 	);
 };
