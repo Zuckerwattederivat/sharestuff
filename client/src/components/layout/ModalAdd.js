@@ -9,7 +9,11 @@ import {
 	Grid,
 	TextField,
 	Button,
-	CircularProgress
+	CircularProgress,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
@@ -21,6 +25,7 @@ import ProfileContext from '../../context/profile/profileContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 // util
+import utils from '../../utils/helpers';
 import currencies from '../../utils/currencies';
 
 // define styles
@@ -38,13 +43,12 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
-		margin: theme.spacing(55, 0, 4),
+		margin: theme.spacing(60, 0, 4),
 		[theme.breakpoints.up('sm')]: {
-			margin: theme.spacing(26, 0, 4),
+			margin: theme.spacing(34, 0, 4),
 			width: '540px'
 		},
 		[theme.breakpoints.up('md')]: {
-			margin: theme.spacing(15, 0, 4),
 			width: '800px'
 		}
 	},
@@ -68,6 +72,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	textfield: {
 		width: '100%'
+	},
+	formControl: {
+		width: '100%',
+		background: theme.palette.background.custom
+	},
+	inputLabel: {
+		padding: theme.spacing(0, 1, 0, 0.5),
+		background: theme.palette.background.custom
 	},
 	btcIcon: {
 		color: '#F79414',
@@ -121,7 +133,7 @@ const ModalAdd = () => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { modalAdd, success, loading, setModal, addOffer } = profileContext;
+	const { categories, modalAdd, success, loading, setModal, setCategories, addOffer } = profileContext;
 
 	// open & options state
 	const [ open, setOpen ] = useState(false);
@@ -132,6 +144,7 @@ const ModalAdd = () => {
 	const [ input, setInput ] = useState({
 		title: '',
 		product: '',
+		category: '',
 		price: '',
 		currencyAuto: '',
 		currencyInput: '',
@@ -149,6 +162,7 @@ const ModalAdd = () => {
 	const [ errors, setErrors ] = useState({
 		title: null,
 		product: null,
+		category: null,
 		price: null,
 		currency: null,
 		tags: null,
@@ -179,8 +193,15 @@ const ModalAdd = () => {
 				setInput({ ...input, tagsArray: tags });
 			}
 		},
+		// eslint-disable-next-line
 		[ input.tagsInput ]
 	);
+
+	// fetch categories on render
+	useEffect(() => {
+		setCategories();
+		// eslint-disable-next-line
+	}, []);
 
 	// fetch location
 	useEffect(
@@ -240,20 +261,34 @@ const ModalAdd = () => {
 		if (
 			input.title &&
 			input.product &&
+			input.category &&
 			input.currencyAuto &&
 			input.tagsArray &&
 			input.locationAuto &&
 			input.description &&
 			images[0]
 		) {
+			// create offer data
+			const offerData = {
+				title: input.title,
+				product: input.product,
+				categoryId: input.category,
+				price: input.price,
+				currency: input.currencyAuto,
+				tags: input.tagsArray,
+				location: input.locationAuto,
+				description: input.description,
+				images: images
+			};
 			// add offer
-			console.log('add offer');
+			addOffer(offerData);
 		} else {
-			// add errors
+			// set errors
 			setErrors({
 				...errors,
 				title: !input.title ? 'Enter a title' : null,
 				product: !input.product ? 'Enter a product name' : null,
+				category: !input.category ? 'Choose a category' : null,
 				price: !input.price ? 'Enter a price' : null,
 				currency: !input.currencyAuto ? 'Choose a currency' : null,
 				tags: !input.tagsArray ? 'Enter tags so people can find your offer' : null,
@@ -313,7 +348,7 @@ const ModalAdd = () => {
 											defaultValue={input.title}
 										/>
 									</Grid>
-									<Grid item xs={12} md={6}>
+									<Grid item xs={12} md={8}>
 										<TextField
 											id='product'
 											name='product'
@@ -326,6 +361,37 @@ const ModalAdd = () => {
 											onChange={handleInputChange('product')}
 											defaultValue={input.product}
 										/>
+									</Grid>
+									<Grid item xs={12} md={4}>
+										<FormControl
+											variant='outlined'
+											className={classes.formControl}
+											error={errors.category ? true : false}
+										>
+											<InputLabel id='category-label' className={classes.inputLabel}>
+												{errors.category ? errors.category : 'Category'}
+											</InputLabel>
+											<Select
+												labelId='category-label'
+												label='Category'
+												id='category'
+												name='category'
+												value={input.category}
+												onChange={handleInputChange('category')}
+											>
+												{categories[0] ? (
+													categories.map(el => {
+														return (
+															<MenuItem key={el._id} value={el._id}>
+																{utils.capitalizeFirstLetter(el.title)}
+															</MenuItem>
+														);
+													})
+												) : (
+													<MenuItem value=''>{categories}</MenuItem>
+												)}
+											</Select>
+										</FormControl>
 									</Grid>
 									<Grid item xs={6} sm={8} md={3}>
 										<TextField
@@ -367,7 +433,6 @@ const ModalAdd = () => {
 												<TextField
 													{...params}
 													required={false}
-													// error={countryErr ? true : false}
 													label={errors.currency ? errors.currency : 'Currency'}
 													variant='outlined'
 													error={errors.currency ? true : false}
@@ -376,20 +441,7 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={6}>
-										<TextField
-											id='tags'
-											name='tags'
-											className={classes.textfield}
-											variant='outlined'
-											label={errors.tags ? errors.tags : 'Tags'}
-											placeholder='#apple #macbook #productivity'
-											type='text'
-											error={errors.tags ? true : false}
-											onChange={handleInputChange('tagsInput')}
-											defaultValue={input.tagsInput}
-										/>
-									</Grid>
+
 									<Grid item xs={12} sm={6}>
 										<Autocomplete
 											id='location'
@@ -426,6 +478,20 @@ const ModalAdd = () => {
 													}}
 												/>
 											)}
+										/>
+									</Grid>
+									<Grid item xs={12} sm={6} md={12}>
+										<TextField
+											id='tags'
+											name='tags'
+											className={classes.textfield}
+											variant='outlined'
+											label={errors.tags ? errors.tags : 'Tags'}
+											placeholder='#apple #macbook #productivity'
+											type='text'
+											error={errors.tags ? true : false}
+											onChange={handleInputChange('tagsInput')}
+											defaultValue={input.tagsInput}
 										/>
 									</Grid>
 									<Grid item xs={12}>

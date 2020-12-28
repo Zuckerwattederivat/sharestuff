@@ -1,6 +1,7 @@
 import {
 	RESET_PROFILE_STATE,
 	SET_TAB_LOCATION,
+	SET_CATEGORIES,
 	SET_REDIRECT,
 	SET_MODAL_ADD,
 	SET_MODAL_EDIT,
@@ -16,6 +17,11 @@ export default (state, action) => {
 			return {
 				...state,
 				tabLocation: action.payload
+			};
+		case SET_CATEGORIES:
+			return {
+				...state,
+				categories: action.payload
 			};
 		case SET_REDIRECT:
 			return {

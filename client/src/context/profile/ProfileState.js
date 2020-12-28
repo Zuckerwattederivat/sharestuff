@@ -12,7 +12,8 @@ import {
 	SET_MODAL_DELETE,
 	SET_SUCCESS,
 	SET_ERRORS,
-	SET_LOADING
+	SET_LOADING,
+	SET_CATEGORIES
 } from '../types';
 
 // ProfileState
@@ -20,6 +21,7 @@ const ProfileState = props => {
 	// initial state
 	const initialState = {
 		tabLocation: window.location.search.split('=')[1],
+		categories: [],
 		redirect: false,
 		modalEdit: false,
 		modalAdd: false,
@@ -58,6 +60,20 @@ const ProfileState = props => {
 
 	// set redirect
 	const setRedirect = bool => dispatch({ type: SET_REDIRECT, payload: bool });
+
+	// set categories
+	const setCategories = async () => {
+		try {
+			const categories = await axios.get('/api/categories/get');
+			if (categories) {
+				dispatch({ type: SET_CATEGORIES, payload: categories.data });
+			} else {
+				dispatch({ type: SET_CATEGORIES, payload: categories.data.msg });
+			}
+		} catch (error) {
+			dispatch({ type: SET_CATEGORIES, payload: error.data.msg });
+		}
+	};
 
 	// set modal
 	const setModal = (action, bool, offer) => {
@@ -103,6 +119,7 @@ const ProfileState = props => {
 		<ProfileContext.Provider
 			value={{
 				tabLocation: state.tabLocation,
+				categories: state.categories,
 				redirect: state.redirect,
 				modalAdd: state.modalAdd,
 				modalEdit: state.modalEdit,
@@ -112,6 +129,7 @@ const ProfileState = props => {
 				resetProfileState,
 				setTabLocation,
 				setRedirect,
+				setCategories,
 				setModal,
 				addOffer,
 				deleteOffer
