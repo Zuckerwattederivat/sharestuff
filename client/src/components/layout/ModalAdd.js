@@ -244,7 +244,7 @@ const ModalAdd = () => {
 			input.tagsArray &&
 			input.locationAuto &&
 			input.description &&
-			images
+			images[0]
 		) {
 			// add offer
 			console.log('add offer');
