@@ -69,6 +69,19 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: '100%'
 	},
+	btcIcon: {
+		color: '#F79414',
+		marginRight: '3px'
+	},
+	imagesErr: {
+		display: 'none'
+	},
+	imagesErr: {
+		paddingLeft: theme.spacing(1),
+		fontSize: '1.025rem',
+		display: 'block',
+		color: '#F34436'
+	},
 	buttonContainer: {
 		[theme.breakpoints.down('xs')]: {
 			justifyContent: 'space-between'
@@ -89,10 +102,6 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'
 		}
-	},
-	btcIcon: {
-		color: '#F79414',
-		marginRight: '3px'
 	}
 }));
 
@@ -112,7 +121,7 @@ const ModalAdd = () => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { modalAdd, success, loading, setModal } = profileContext;
+	const { modalAdd, success, loading, setModal, addOffer } = profileContext;
 
 	// open & options state
 	const [ open, setOpen ] = useState(false);
@@ -126,7 +135,7 @@ const ModalAdd = () => {
 		price: '',
 		currencyAuto: '',
 		currencyInput: '',
-		tagsArray: [],
+		tagsArray: null,
 		tagsInput: '',
 		locationAuto: null,
 		location: '',
@@ -138,21 +147,21 @@ const ModalAdd = () => {
 
 	// errors
 	const [ errors, setErrors ] = useState({
-		title: '',
-		product: '',
-		price: '',
-		currency: '',
-		tags: '',
-		location: '',
-		description: '',
-		images: ''
+		title: null,
+		product: null,
+		price: null,
+		currency: null,
+		tags: null,
+		location: null,
+		description: null,
+		images: null
 	});
 
 	// set tag array
 	useEffect(
 		() => {
 			if (!input.tagsInput) {
-				setInput({ ...input, tagsArray: [] });
+				setInput({ ...input, tagsArray: null });
 			} else if (input.tagsInput.includes(',')) {
 				let tags = input.tagsInput.split(', ');
 				let i = tags.length;
@@ -223,8 +232,36 @@ const ModalAdd = () => {
 	const handleInputChange = state => e => setInput({ ...input, [state]: e.target.value });
 
 	// submit offer
-	const submitOffer = () => {
-		console.log('add offer');
+	const submitOffer = e => {
+		// prevent default
+		e.preventDefault();
+
+		// check if input is not empty
+		if (
+			input.title &&
+			input.product &&
+			input.currencyAuto &&
+			input.tagsArray &&
+			input.locationAuto &&
+			input.description &&
+			images
+		) {
+			// add offer
+			console.log('add offer');
+		} else {
+			// add errors
+			setErrors({
+				...errors,
+				title: !input.title ? 'Enter a title' : null,
+				product: !input.product ? 'Enter a product name' : null,
+				price: !input.price ? 'Enter a price' : null,
+				currency: !input.currencyAuto ? 'Choose a currency' : null,
+				tags: !input.tagsArray ? 'Enter tags so people can find your offer' : null,
+				location: !input.locationAuto ? 'Enter the location of your offer' : null,
+				description: !input.description ? 'Enter the details of your offer' : null,
+				images: !images[0] ? 'Add at least 1 image' : null
+			});
+		}
 	};
 
 	return (
@@ -268,10 +305,10 @@ const ModalAdd = () => {
 											name='title'
 											className={classes.textfield}
 											variant='outlined'
-											label={'Title'}
+											label={errors.title ? errors.title : 'Title'}
 											placeholder='Rent my Macbook Pro 2015 weekly'
 											type='text'
-											// error={firstnameErr ? true : false}
+											error={errors.title ? true : false}
 											onChange={handleInputChange('title')}
 											defaultValue={input.title}
 										/>
@@ -282,10 +319,10 @@ const ModalAdd = () => {
 											name='product'
 											className={classes.textfield}
 											variant='outlined'
-											label={'Product'}
+											label={errors.product ? errors.product : 'Product'}
 											placeholder='Macbook Pro 2015'
 											type='text'
-											// error={firstnameErr ? true : false}
+											error={errors.product ? true : false}
 											onChange={handleInputChange('product')}
 											defaultValue={input.product}
 										/>
@@ -296,10 +333,10 @@ const ModalAdd = () => {
 											name='price'
 											className={classes.textfield}
 											variant='outlined'
-											label={'Price'}
+											label={errors.price ? errors.price : 'Price'}
 											placeholder='40'
 											type='number'
-											// error={firstnameErr ? true : false}
+											error={errors.price ? true : false}
 											onChange={handleInputChange('price')}
 											defaultValue={input.price}
 										/>
@@ -331,8 +368,9 @@ const ModalAdd = () => {
 													{...params}
 													required={false}
 													// error={countryErr ? true : false}
-													label='Currency'
+													label={errors.currency ? errors.currency : 'Currency'}
 													variant='outlined'
+													error={errors.currency ? true : false}
 													placeholder='EUR'
 												/>
 											)}
@@ -344,10 +382,10 @@ const ModalAdd = () => {
 											name='tags'
 											className={classes.textfield}
 											variant='outlined'
-											label={'Tags'}
+											label={errors.tags ? errors.tags : 'Tags'}
 											placeholder='#apple #macbook #productivity'
 											type='text'
-											// error={firstnameErr ? true : false}
+											error={errors.tags ? true : false}
 											onChange={handleInputChange('tagsInput')}
 											defaultValue={input.tagsInput}
 										/>
@@ -373,7 +411,8 @@ const ModalAdd = () => {
 													{...params}
 													onChange={handleInputChange('location')}
 													className={classes.textfield}
-													label='Location'
+													label={errors.location ? errors.location : 'Location'}
+													error={errors.location ? true : false}
 													variant='outlined'
 													placeholder='Fifth Ave, New York'
 													InputProps={{
@@ -395,7 +434,8 @@ const ModalAdd = () => {
 											name='description'
 											className={classes.textfield}
 											variant='outlined'
-											label={'Description'}
+											label={errors.description ? errors.description : 'Description'}
+											error={errors.description ? true : false}
 											placeholder='You can rent my Macbook Pro 2015 on a weekly or daily basis...'
 											multiline
 											rows={7}
@@ -407,6 +447,7 @@ const ModalAdd = () => {
 									</Grid>
 									<Grid item xs={12}>
 										<MultiImageInput images={images} setImages={setImages} cropConfig={{ crop, ruleOfThirds: true }} />
+										<div className={errors.images ? classes.imagesErr : classes.imagesNoErr}>{errors.images}</div>
 									</Grid>
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>

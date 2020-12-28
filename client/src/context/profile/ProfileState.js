@@ -86,6 +86,11 @@ const ProfileState = props => {
 		}
 	};
 
+	// add offer
+	const addOffer = dataObj => {
+		console.log('add: ', dataObj);
+	};
+
 	// delete offer
 	const deleteOffer = () => {
 		setLoading(true);
@@ -108,6 +113,7 @@ const ProfileState = props => {
 				setTabLocation,
 				setRedirect,
 				setModal,
+				addOffer,
 				deleteOffer
 			}}
 		>

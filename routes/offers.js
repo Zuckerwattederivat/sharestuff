@@ -53,7 +53,7 @@ router.post(
 		upload.array('images', 4),
 		check('title', 'Enter a title for your offer').notEmpty(),
 		check('price', 'Enter the daily price of your offer').isNumeric(),
-		check('currency', 'Choose the denomination of your offer').isString(),
+		check('currency', 'Choose the denomination of your offer').notEmpty(),
 		check('description', 'Describe what you are offering').notEmpty(),
 		check('product', 'What product are you offering?').notEmpty(),
 		check('tags', 'Add some tags for finding your offer').notEmpty(),
