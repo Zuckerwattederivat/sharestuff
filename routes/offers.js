@@ -61,7 +61,7 @@ router.post(
 		check('location', 'Enter the location of your offer').notEmpty()
 	],
 	async (req, res) => {
-		console.log(req.body);
+		console.log(req);
 		// check if validation errors exist and response with 400 if true
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -121,7 +121,6 @@ router.post(
 				return imageThumb;
 			});
 		} else {
-			console.error('no image');
 			return res.status(400).json({ msg: 'Upload an image file' });
 		}
 

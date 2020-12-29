@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import ProfileContext from './profileContext';
 import profileReducer from './profileReducer';
+import utils from '../../utils/helpers';
 
 import {
 	RESET_PROFILE_STATE,
@@ -105,32 +106,32 @@ const ProfileState = props => {
 
 	// add offer
 	const addOffer = async dataObj => {
-		console.log(dataObj.images[0]);
-		// append form data
-		const appendFormData = async () => {
-			// create formData
-			let formData = new FormData();
-			// append data
-			for (let i = 0; i < Object.keys(dataObj.images).length; i++) {
-				const base64 = dataObj.images[i];
-				await fetch(base64).then(res => res.blob()).then(blob => {
-					const file = new File([ blob ], `image-${i}.jpg`);
-					console.log(file);
-					formData.append('images', file);
-				});
-			}
-			formData.append('title', dataObj.title);
-			formData.append('product', dataObj.product);
-			formData.append('categoryId', dataObj.categoryId);
-			formData.append('price', dataObj.price);
-			formData.append('currency', dataObj.currency);
-			formData.append('location', JSON.stringify(dataObj.location));
-			formData.append('tags', JSON.stringify(dataObj.tags));
-			formData.append('description', dataObj.description);
-
-			// return formData
-			return Promise.resolve(formData);
-		};
+		// create formData
+		let formData = new FormData();
+		// append data
+		for (let i = 0; i < Object.keys(dataObj.images).length; i++) {
+			console.log('convert...');
+			const imageUrl = dataObj.images[i];
+			// Split the base64 string in data and contentType
+			const block = imageUrl.split(';');
+			// Get the content type of the image
+			const contentType = block[0].split(':')[1];
+			// get the real base64 content of the file
+			const realData = block[1].split(',')[1];
+			// Convert it to a blob to upload
+			const blob = utils.b64ToBlob(realData, contentType);
+			// convert blob to file
+			const file = new File([ blob ], `image-${1}`, { type: contentType, lastModified: Date.now() });
+			formData.append('images', file);
+		}
+		formData.append('title', dataObj.title);
+		formData.append('product', dataObj.product);
+		formData.append('categoryId', dataObj.categoryId);
+		formData.append('price', dataObj.price);
+		formData.append('currency', dataObj.currency);
+		formData.append('location', JSON.stringify(dataObj.location));
+		formData.append('tags', JSON.stringify(dataObj.tags));
+		formData.append('description', dataObj.description);
 
 		// set loading
 		setLoading(true);
@@ -143,12 +144,10 @@ const ProfileState = props => {
 				}
 			};
 
-			// create formData
-			const formData = await appendFormData();
 			// send data
 			const res = await axios.post('/api/offers/create', formData, config);
 		} catch (error) {
-			console.log(error.response.data);
+			console.log(error.response);
 		}
 	};
 
