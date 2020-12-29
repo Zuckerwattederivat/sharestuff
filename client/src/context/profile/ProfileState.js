@@ -15,6 +15,7 @@ import {
 	SET_LOADING,
 	SET_CATEGORIES
 } from '../types';
+import { forEach } from 'lodash';
 
 // ProfileState
 const ProfileState = props => {
@@ -103,8 +104,52 @@ const ProfileState = props => {
 	};
 
 	// add offer
-	const addOffer = dataObj => {
-		console.log('add: ', dataObj);
+	const addOffer = async dataObj => {
+		console.log(dataObj.images[0]);
+		// append form data
+		const appendFormData = async () => {
+			// create formData
+			let formData = new FormData();
+			// append data
+			for (let i = 0; i < Object.keys(dataObj.images).length; i++) {
+				const base64 = dataObj.images[i];
+				await fetch(base64).then(res => res.blob()).then(blob => {
+					const file = new File([ blob ], `image-${i}.jpg`);
+					console.log(file);
+					formData.append('images', file);
+				});
+			}
+			formData.append('title', dataObj.title);
+			formData.append('product', dataObj.product);
+			formData.append('categoryId', dataObj.categoryId);
+			formData.append('price', dataObj.price);
+			formData.append('currency', dataObj.currency);
+			formData.append('location', JSON.stringify(dataObj.location));
+			formData.append('tags', JSON.stringify(dataObj.tags));
+			formData.append('description', dataObj.description);
+
+			// return formData
+			return Promise.resolve(formData);
+		};
+
+		// set loading
+		setLoading(true);
+
+		try {
+			// config
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			};
+
+			// create formData
+			const formData = await appendFormData();
+			// send data
+			const res = await axios.post('/api/offers/create', formData, config);
+		} catch (error) {
+			console.log(error.response.data);
+		}
 	};
 
 	// delete offer
