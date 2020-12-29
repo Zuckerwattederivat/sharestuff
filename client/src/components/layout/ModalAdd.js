@@ -512,7 +512,17 @@ const ModalAdd = () => {
 										/>
 									</Grid>
 									<Grid item xs={12}>
-										<MultiImageInput images={images} setImages={setImages} cropConfig={{ crop, ruleOfThirds: true }} />
+										<MultiImageInput
+											theme={{
+												background: '#111111',
+												outlineColor: errors.images ? '#F34436' : '#545454'
+											}}
+											max={4}
+											images={images}
+											setImages={setImages}
+											cropConfig={{ crop, ruleOfThirds: true }}
+											allowCrop={false}
+										/>
 										<div className={errors.images ? classes.imagesErr : classes.imagesNoErr}>{errors.images}</div>
 									</Grid>
 								</Grid>
