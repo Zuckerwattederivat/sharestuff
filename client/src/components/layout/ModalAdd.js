@@ -33,6 +33,7 @@ import AlertContext from '../../context/alert/alertContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import WarningSvg from '../../assets/undraw/warning.svg';
+import SuccessGif from '../../assets/check-mark-transparent.gif';
 // util
 import utils from '../../utils/helpers';
 import currencies from '../../utils/currencies';
@@ -384,7 +385,7 @@ const ModalAdd = () => {
 
 	return (
 		<Modal
-			className={`${classes.addModal} ${!loading && !serverErrors && classes.scrollable}`}
+			className={`${classes.addModal} ${!loading && !serverErrors && !success && classes.scrollable}`}
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
 			open={modalAdd}
@@ -394,7 +395,7 @@ const ModalAdd = () => {
 			BackdropProps={{ timeout: 500 }}
 		>
 			<motion.div
-				className={`${classes.paper} ${!loading && !serverErrors && classes.bigMargins}`}
+				className={`${classes.paper} ${!loading && !serverErrors && !success && classes.bigMargins}`}
 				transition={{
 					duration: 0.6,
 					type: 'spring',
@@ -404,7 +405,9 @@ const ModalAdd = () => {
 				initial={{ x: '-100vw' }}
 				animate={{ x: 0 }}
 			>
-				{!success && !loading && !serverErrors ? (
+				{!success &&
+				!loading &&
+				!serverErrors && (
 					<Box width='100%' height='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
@@ -634,11 +637,21 @@ const ModalAdd = () => {
 							</form>
 						</Box>
 					</Box>
-				) : !serverErrors ? (
-					<Box width='100%' className={classes.loadingContainer}>
-						<img className={classes.messageSvg} src={LoadingGif} alt='deleted' />
+				)}
+				{!serverErrors &&
+				loading && (
+					<Box width='100%' height='100%'>
+						<Typography id='register-modal-title' className={classes.title} variant='h5'>
+							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+						</Typography>
+						<Divider className={classes.topDivider} />
+						<Box width='100%' className={classes.loadingContainer}>
+							<img className={classes.messageSvg} src={LoadingGif} alt='loading' />
+						</Box>
 					</Box>
-				) : (
+				)}
+				{serverErrors &&
+				!loading && (
 					<Box width='100%' height='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
@@ -668,6 +681,35 @@ const ModalAdd = () => {
 									className={classes.button2}
 									variant='outlined'
 									color='secondary'
+									startIcon={<CloseIcon className={classes.buttonIcon} />}
+									onClick={closeModal}
+								>
+									Close
+								</Button>
+							</Box>
+						</Box>
+					</Box>
+				)}
+				{success &&
+				!loading && (
+					<Box width='100%' height='100%'>
+						<Typography id='register-modal-title' className={classes.title} variant='h5'>
+							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+						</Typography>
+						<Divider className={classes.topDivider} />
+						<Box width='100%' className={classes.loadingContainer}>
+							<img className={classes.messageSvg} src={SuccessGif} alt='success' />
+						</Box>
+						<Box width='100%' display='flex' flexDirection='column' justifyContent='space-between' padding={4}>
+							<Typography variant='h3' color='primary' className={classes.h3}>
+								{success}
+							</Typography>
+							<Box width='100%' className={classes.btnContainer}>
+								<Button
+									size='large'
+									className={classes.button2}
+									variant='outlined'
+									color='inherit'
 									startIcon={<CloseIcon className={classes.buttonIcon} />}
 									onClick={closeModal}
 								>

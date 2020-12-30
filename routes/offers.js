@@ -270,7 +270,7 @@ router.get('/get', async (req, res) => {
 // @access    Private
 router.get('/get/own', auth, async (req, res) => {
 	try {
-		const offers = await Offer.find({ createdBy: req.user.id });
+		const offers = await Offer.find({ createdBy: req.user.id }).sort({ date: 'desc' });
 
 		if (!offers[0]) {
 			res.status(200).json({ msg: 'You do not have any offers yet' });
