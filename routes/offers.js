@@ -61,7 +61,6 @@ router.post(
 		check('location', 'Enter the location of your offer').notEmpty()
 	],
 	async (req, res) => {
-		console.log(req);
 		// check if validation errors exist and response with 400 if true
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -92,21 +91,6 @@ router.post(
 		const description = paragraphsToArray(req.body.description);
 		// save user
 		const createdBy = req.user.id;
-
-		// console.log(
-		// 	`title: ${title}`,
-		// 	`product: ${product}`,
-		// 	`description:`,
-		// 	description,
-		// 	`categoryId: ${categoryId}`,
-		// 	`price: ${price}`,
-		// 	`currency: ${currency}`,
-		// 	`location:`,
-		// 	location,
-		// 	`tags:`,
-		// 	tags,
-		// 	`createdBy: ${createdBy}`
-		// );
 
 		// save image paths
 		let images = [];
@@ -160,7 +144,7 @@ router.post(
 			await offer.save();
 
 			// response
-			res.json({ msg: 'Offer created successfully' });
+			res.status(200).json({ msg: 'Offer created successfully' });
 
 			// catch error & send response
 		} catch (err) {

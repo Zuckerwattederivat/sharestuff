@@ -57,9 +57,15 @@ export default (state, action) => {
 		case SET_SUCCESS:
 			return {
 				...state,
-				success: true,
+				success: action.payload,
 				loading: false,
-				errors: null
+				serverErrors: null
+			};
+		case SET_ERRORS:
+			return {
+				...state,
+				loading: false,
+				serverErrors: action.payload
 			};
 		case RESET_PROFILE_STATE:
 			return {
@@ -71,7 +77,8 @@ export default (state, action) => {
 				modalDelete: false,
 				offer: null,
 				loading: false,
-				success: false
+				success: false,
+				serverErrors: null
 			};
 		default:
 			return state;

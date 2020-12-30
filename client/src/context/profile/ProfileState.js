@@ -16,7 +16,6 @@ import {
 	SET_LOADING,
 	SET_CATEGORIES
 } from '../types';
-import { forEach } from 'lodash';
 
 // ProfileState
 const ProfileState = props => {
@@ -31,17 +30,8 @@ const ProfileState = props => {
 		offer: null,
 		loading: false,
 		success: false,
-		errors: null
+		serverErrors: null
 	};
-
-	// geoCodeApiKey
-	let geoCodeApiKey;
-	// set geoCodeApiKey
-	if (process.env.NODE_ENV !== 'production') {
-		geoCodeApiKey = process.env.REACT_APP_GEOCODE_API_KEY;
-	} else {
-		geoCodeApiKey = process.env.GEOCODE_API_KEY;
-	}
 
 	// destructure reducer
 	const [ state, dispatch ] = useReducer(profileReducer, initialState);
@@ -51,6 +41,11 @@ const ProfileState = props => {
 
 	// set loading
 	const setLoading = bool => dispatch({ type: SET_LOADING, payload: bool });
+
+	// reset errors
+	const resetErrors = () => {
+		dispatch({ type: SET_ERRORS, payload: false });
+	};
 
 	// set tab location
 	const setTabLocation = tabLocation => {
@@ -80,7 +75,7 @@ const ProfileState = props => {
 	// set modal
 	const setModal = (action, bool, offer) => {
 		switch (action) {
-			case 'add':
+			default:
 				if (!offer) {
 					dispatch({ type: SET_MODAL_ADD, payload: { modalOpen: bool, offer: null } });
 				} else {
@@ -106,6 +101,16 @@ const ProfileState = props => {
 
 	// add offer
 	const addOffer = async dataObj => {
+		// set loading
+		setLoading(true);
+
+		// config
+		const config = {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		};
+
 		// create formData
 		let formData = new FormData();
 		// append data
@@ -133,21 +138,18 @@ const ProfileState = props => {
 		formData.append('tags', JSON.stringify(dataObj.tags));
 		formData.append('description', dataObj.description);
 
-		// set loading
-		setLoading(true);
-
 		try {
-			// config
-			const config = {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			};
-
 			// send data
 			const res = await axios.post('/api/offers/create', formData, config);
-		} catch (error) {
-			console.log(error.response);
+			// set state success
+			dispatch({ type: SET_SUCCESS, payload: res.data.msg });
+			// set state errors
+		} catch (err) {
+			if (err.response.data.msg) {
+				dispatch({ type: SET_ERRORS, payload: [ { msg: err.response.data.msg } ] });
+			} else {
+				dispatch({ type: SET_ERRORS, payload: err.response.data.errors });
+			}
 		}
 	};
 
@@ -170,12 +172,14 @@ const ProfileState = props => {
 				modalDelete: state.modalDelete,
 				loading: state.loading,
 				success: state.success,
+				serverErrors: state.serverErrors,
 				resetProfileState,
 				setTabLocation,
 				setRedirect,
 				setCategories,
 				setModal,
 				addOffer,
+				resetErrors,
 				deleteOffer
 			}}
 		>

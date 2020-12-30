@@ -16,14 +16,23 @@ import {
 	MenuItem
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import { Cancel as CancelIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
+import {
+	Cancel as CancelIcon,
+	AddCircle as AddCircleIcon,
+	ArrowBack as ArrowBackIcon,
+	Close as CloseIcon
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 import MultiImageInput from 'react-multiple-image-input';
+// Components
+import Alerts from '../layout/Alerts';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
+import AlertContext from '../../context/alert/alertContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
+import WarningSvg from '../../assets/undraw/warning.svg';
 // util
 import utils from '../../utils/helpers';
 import currencies from '../../utils/currencies';
@@ -33,7 +42,9 @@ const useStyles = makeStyles(theme => ({
 	addModal: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
+	},
+	scrollable: {
 		overflow: 'scroll'
 	},
 	paper: {
@@ -43,13 +54,18 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
-		margin: theme.spacing(60, 0, 4),
+
 		[theme.breakpoints.up('sm')]: {
-			margin: theme.spacing(34, 0, 4),
 			width: '540px'
 		},
 		[theme.breakpoints.up('md')]: {
 			width: '800px'
+		}
+	},
+	bigMargins: {
+		padding: theme.spacing(60, 0, 4),
+		[theme.breakpoints.up('sm')]: {
+			padding: theme.spacing(38, 0, 4)
 		}
 	},
 	title: {
@@ -99,13 +115,13 @@ const useStyles = makeStyles(theme => ({
 			justifyContent: 'space-between'
 		}
 	},
-	cancelButton: {
+	button1: {
 		[theme.breakpoints.down('xs')]: {
 			width: '47%'
 		},
 		marginRight: theme.spacing(1)
 	},
-	addButton: {
+	button2: {
 		[theme.breakpoints.down('xs')]: {
 			width: '47%'
 		}
@@ -113,6 +129,34 @@ const useStyles = makeStyles(theme => ({
 	buttonIcon: {
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'
+		}
+	},
+	loadingContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column'
+	},
+	messageSvg: {
+		maxHeight: '450px',
+		maxWidth: '100%',
+		[theme.breakpoints.up('sm')]: {
+			maxHeight: '250px'
+		}
+	},
+	h3: {
+		textAlign: 'center',
+		fontSize: '1.5rem',
+		fontWeight: 700,
+		margin: theme.spacing(4, 0, 3)
+	},
+	btnContainer: {
+		width: '100%',
+		display: 'flex',
+		marginTop: theme.spacing(4),
+		justifyContent: 'flex-end',
+		[theme.breakpoints.down('xs')]: {
+			justifyContent: 'space-between'
 		}
 	}
 }));
@@ -133,7 +177,21 @@ const ModalAdd = () => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { categories, modalAdd, success, loading, setModal, setCategories, addOffer } = profileContext;
+	const {
+		categories,
+		modalAdd,
+		success,
+		loading,
+		serverErrors,
+		setModal,
+		setCategories,
+		addOffer,
+		resetErrors
+	} = profileContext;
+
+	// load alert context
+	const alertContext = useContext(AlertContext);
+	const { setAlert, removeAllAlerts } = alertContext;
 
 	// open & options state
 	const [ open, setOpen ] = useState(false);
@@ -170,6 +228,18 @@ const ModalAdd = () => {
 		description: null,
 		images: null
 	});
+
+	// set alerts if errors occure
+	useEffect(
+		() => {
+			serverErrors &&
+				serverErrors.map(error => {
+					return setAlert(error.msg, 'error', 'unlimited');
+				});
+		},
+		// eslint-disable-next-line
+		[ serverErrors ]
+	);
 
 	// set tag array
 	useEffect(
@@ -299,19 +369,32 @@ const ModalAdd = () => {
 		}
 	};
 
+	// go back
+	const goBack = () => {
+		resetErrors();
+		removeAllAlerts();
+	};
+
+	// close modal
+	const closeModal = () => {
+		resetErrors();
+		removeAllAlerts();
+		setModal('add', false);
+	};
+
 	return (
 		<Modal
-			className={classes.addModal}
+			className={`${classes.addModal} ${!loading && !serverErrors && classes.scrollable}`}
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
-			open={true}
+			open={modalAdd}
 			onClose={() => setModal('add', false)}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
 		>
-			<div
-				className={classes.paper}
+			<motion.div
+				className={`${classes.paper} ${!loading && !serverErrors && classes.bigMargins}`}
 				transition={{
 					duration: 0.6,
 					type: 'spring',
@@ -321,8 +404,7 @@ const ModalAdd = () => {
 				initial={{ x: '-100vw' }}
 				animate={{ x: 0 }}
 			>
-				{!success &&
-				!loading && (
+				{!success && !loading && !serverErrors ? (
 					<Box width='100%' height='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
@@ -441,7 +523,6 @@ const ModalAdd = () => {
 											)}
 										/>
 									</Grid>
-
 									<Grid item xs={12} sm={6}>
 										<Autocomplete
 											id='location'
@@ -528,7 +609,7 @@ const ModalAdd = () => {
 								</Grid>
 								<Box className={classes.buttonContainer} width='100%' display='flex' justifyContent='flex-end'>
 									<Button
-										className={classes.cancelButton}
+										className={classes.button1}
 										width='100%'
 										variant='outlined'
 										startIcon={<CancelIcon className={classes.buttonIcon} />}
@@ -538,7 +619,7 @@ const ModalAdd = () => {
 										Cancel
 									</Button>
 									<Button
-										className={classes.addButton}
+										className={classes.button2}
 										name='submit'
 										type='submit'
 										width='100%'
@@ -553,8 +634,50 @@ const ModalAdd = () => {
 							</form>
 						</Box>
 					</Box>
+				) : !serverErrors ? (
+					<Box width='100%' className={classes.loadingContainer}>
+						<img className={classes.messageSvg} src={LoadingGif} alt='deleted' />
+					</Box>
+				) : (
+					<Box width='100%' height='100%'>
+						<Typography id='register-modal-title' className={classes.title} variant='h5'>
+							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+						</Typography>
+						<Divider className={classes.topDivider} />
+						<Box width='100%' display='flex' justifyContent='center' alignItems='center' padding={4}>
+							<img src={WarningSvg} alt='warning' className={classes.messageSvg} />
+						</Box>
+						<Box width='100%' display='flex' flexDirection='column' justifyContent='space-between' padding={4}>
+							<Typography variant='h3' color='secondary' className={classes.h3}>
+								Something went wrong...
+							</Typography>
+							<Alerts />
+							<Box width='100%' className={classes.btnContainer}>
+								<Button
+									className={classes.button1}
+									size='large'
+									variant='outlined'
+									color='inherit'
+									startIcon={<ArrowBackIcon className={classes.buttonIcon} />}
+									onClick={goBack}
+								>
+									Back
+								</Button>
+								<Button
+									size='large'
+									className={classes.button2}
+									variant='outlined'
+									color='secondary'
+									startIcon={<CloseIcon className={classes.buttonIcon} />}
+									onClick={closeModal}
+								>
+									Close
+								</Button>
+							</Box>
+						</Box>
+					</Box>
 				)}
-			</div>
+			</motion.div>
 		</Modal>
 	);
 };
