@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
+import QueryContext from '../../context/query/queryContext';
 // Assets
 import WarningSvg from '../../assets/undraw/warning.svg';
 import DeletedGif from '../../assets/deleted-transparent.gif';
@@ -86,13 +87,20 @@ const ModalDelete = () => {
 	const profileContext = useContext(ProfileContext);
 	const { modalDelete, success, loading, setModal, deleteOffer } = profileContext;
 
+	// load query context
+	const queryContext = useContext(QueryContext);
+	const { getUserOffers } = queryContext;
+
 	return (
 		<Modal
 			className={classes.deleteModal}
 			aria-labelledby='delete-modal'
 			aria-describedby='delete-modal-description'
 			open={modalDelete}
-			onClose={() => setModal('delete', false)}
+			onClose={() => {
+				setModal('delete', false);
+				if (success) getUserOffers();
+			}}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -145,9 +153,8 @@ const ModalDelete = () => {
 					<Box width='100%' className={classes.responseContainer}>
 						<img className={classes.messageSvg} src={DeletedGif} alt='deleted' />
 						<Typography variant='h3' className={`${classes.h3} ${classes.textDeleted} `}>
-							Offer deleted
+							Offer deleted successfully
 						</Typography>
-						<Typography variant='body1'>You successfully deleted this offer.</Typography>
 						<Box width='100%' className={classes.btnContainer}>
 							<Button
 								size='large'
@@ -155,7 +162,10 @@ const ModalDelete = () => {
 								variant='outlined'
 								color='inherit'
 								startIcon={<CloseIcon />}
-								onClick={() => setModal('delete', false)}
+								onClick={() => {
+									setModal('delete', false);
+									getUserOffers();
+								}}
 							>
 								Close
 							</Button>
