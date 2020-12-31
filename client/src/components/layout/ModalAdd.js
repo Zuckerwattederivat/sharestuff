@@ -30,6 +30,7 @@ import Alerts from '../layout/Alerts';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
 import AlertContext from '../../context/alert/alertContext';
+import QueryContext from '../../context/query/queryContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import WarningSvg from '../../assets/undraw/warning.svg';
@@ -55,7 +56,6 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
-
 		[theme.breakpoints.up('sm')]: {
 			width: '540px'
 		},
@@ -102,7 +102,7 @@ const useStyles = makeStyles(theme => ({
 		color: '#F79414',
 		marginRight: '3px'
 	},
-	imagesErr: {
+	imagesNoErr: {
 		display: 'none'
 	},
 	imagesErr: {
@@ -189,6 +189,10 @@ const ModalAdd = () => {
 		addOffer,
 		resetErrors
 	} = profileContext;
+
+	// load query context
+	const queryContext = useContext(QueryContext);
+	const { getUserOffers } = queryContext;
 
 	// load alert context
 	const alertContext = useContext(AlertContext);
@@ -378,8 +382,23 @@ const ModalAdd = () => {
 
 	// close modal
 	const closeModal = () => {
+		// reset validation errors
+		setErrors({
+			title: null,
+			product: null,
+			category: null,
+			price: null,
+			currency: null,
+			tags: null,
+			location: null,
+			description: null,
+			images: null
+		});
+		// reset server errrors
 		resetErrors();
+		// remove alerts
 		removeAllAlerts();
+		// close modal
 		setModal('add', false);
 	};
 
@@ -389,7 +408,10 @@ const ModalAdd = () => {
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
 			open={modalAdd}
-			onClose={() => setModal('add', false)}
+			onClose={() => {
+				setModal('add', false);
+				if (success) getUserOffers();
+			}}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -640,7 +662,7 @@ const ModalAdd = () => {
 				)}
 				{!serverErrors &&
 				loading && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' height='70vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -692,7 +714,7 @@ const ModalAdd = () => {
 				)}
 				{success &&
 				!loading && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' height='70vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -711,7 +733,10 @@ const ModalAdd = () => {
 									variant='outlined'
 									color='inherit'
 									startIcon={<CloseIcon className={classes.buttonIcon} />}
-									onClick={closeModal}
+									onClick={() => {
+										closeModal();
+										getUserOffers();
+									}}
 								>
 									Close
 								</Button>

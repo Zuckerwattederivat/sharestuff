@@ -53,7 +53,18 @@ const CardText = props => {
 				<Typography gutterBottom variant='h5' component='h2'>
 					{utils.capitalizeFirstLetter(props.title)}
 				</Typography>
-				<Typography variant='body1'>{props.children}</Typography>
+				<br />
+				{props.children.map((string, index) => {
+					if (string) {
+						return (
+							<Typography variant='body1' key={index}>
+								{string}
+							</Typography>
+						);
+					} else {
+						return <br key={index} />;
+					}
+				})}
 			</CardContent>
 			<CardActions className={classes.cardActions}>
 				<Box display='flex' flexDirection='column'>

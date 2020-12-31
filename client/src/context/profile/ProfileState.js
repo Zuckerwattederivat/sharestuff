@@ -157,7 +157,7 @@ const ProfileState = props => {
 	const deleteOffer = () => {
 		setLoading(true);
 		setTimeout(() => {
-			dispatch({ type: SET_SUCCESS });
+			dispatch({ type: SET_SUCCESS, payload: true });
 		}, 1000);
 	};
 
