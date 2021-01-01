@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Modal, Backdrop, Box, Typography, Button } from '@material-ui/core';
 import { Delete as DeleteIcon, Cancel as CancelIcon, Close as CloseIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,8 +7,12 @@ import { motion } from 'framer-motion';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
 import QueryContext from '../../context/query/queryContext';
+import AlertContext from '../../context/alert/alertContext';
+// Components
+import Alerts from '../layout/Alerts';
 // Assets
 import WarningSvg from '../../assets/undraw/warning.svg';
+import CancelSvg from '../../assets/undraw/cancel.svg';
 import DeletedGif from '../../assets/deleted-transparent.gif';
 import LoadingGif from '../../assets/loading-transparent.gif';
 
@@ -17,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 	textDeleted: {
 		color: '#FE211F'
 	},
-
 	deleteModal: {
 		display: 'flex',
 		alignItems: 'center',
@@ -30,11 +33,9 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 		color: '#fff',
 		width: '90%',
-		height: '425px',
 		padding: theme.spacing(2, 3),
 		[theme.breakpoints.up('sm')]: {
-			width: '540px',
-			height: '455px'
+			width: '540px'
 		}
 	},
 	title: {
@@ -85,11 +86,25 @@ const ModalDelete = () => {
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
-	const { modalDelete, success, loading, setModal, deleteOffer } = profileContext;
+	const { modalDelete, success, loading, serverErrors, setModal, deleteOffer, resetErrors } = profileContext;
 
 	// load query context
 	const queryContext = useContext(QueryContext);
 	const { getUserOffers } = queryContext;
+
+	// load alert context
+	const alertContext = useContext(AlertContext);
+	const { alerts, setAlert, removeAllAlerts } = alertContext;
+
+	// set alerts if errors occur
+	useEffect(
+		() => {
+			removeAllAlerts();
+			serverErrors && !alerts && setAlert(serverErrors[0].msg, 'error', 'unlimited');
+		},
+		// eslint-disable-next-line
+		[ serverErrors ]
+	);
 
 	return (
 		<Modal
@@ -98,6 +113,10 @@ const ModalDelete = () => {
 			aria-describedby='delete-modal-description'
 			open={modalDelete}
 			onClose={() => {
+				// reset server errrors
+				resetErrors();
+				// remove alerts
+				removeAllAlerts();
 				setModal('delete', false);
 				if (success) getUserOffers();
 			}}
@@ -116,7 +135,9 @@ const ModalDelete = () => {
 				initial={{ y: '100vh' }}
 				animate={{ y: 0 }}
 			>
-				{!loading && !success ? (
+				{!loading &&
+				!serverErrors &&
+				!success && (
 					<Box width='100%' className={classes.responseContainer}>
 						<img className={classes.messageSvg} src={WarningSvg} alt='warning' />
 						<Typography variant='h3' color='secondary' className={classes.h3}>
@@ -145,11 +166,55 @@ const ModalDelete = () => {
 							</Button>
 						</Box>
 					</Box>
-				) : !success ? (
+				)}
+				{loading &&
+				!success &&
+				!serverErrors && (
 					<Box width='100%' className={classes.responseContainer}>
-						<img className={classes.messageSvg} src={DeletedGif} alt='deleted' />
+						<img className={classes.messageSvg} src={LoadingGif} alt='loading' />
 					</Box>
-				) : (
+				)}
+				{!loading &&
+				!success &&
+				serverErrors && (
+					<Box width='100%' className={classes.responseContainer}>
+						<img className={classes.messageSvg} src={CancelSvg} alt='error' />
+						<Typography variant='h3' color='secondary' className={`${classes.h3}`}>
+							Something went wrong
+						</Typography>
+						<Alerts />
+						<Box className={classes.btnContainer}>
+							<Button
+								size='large'
+								className={classes.btn1}
+								variant='outlined'
+								color='primary'
+								startIcon={<CancelIcon />}
+								onClick={() => {
+									// reset server errrors
+									resetErrors();
+									// remove alerts
+									removeAllAlerts();
+									setModal('delete', false);
+								}}
+							>
+								Cancel
+							</Button>
+							<Button
+								size='large'
+								variant='contained'
+								color='secondary'
+								startIcon={<DeleteIcon />}
+								onClick={() => deleteOffer()}
+							>
+								Delete
+							</Button>
+						</Box>
+					</Box>
+				)}
+				{!loading &&
+				!serverErrors &&
+				success && (
 					<Box width='100%' className={classes.responseContainer}>
 						<img className={classes.messageSvg} src={DeletedGif} alt='deleted' />
 						<Typography variant='h3' className={`${classes.h3} ${classes.textDeleted} `}>
@@ -163,6 +228,10 @@ const ModalDelete = () => {
 								color='inherit'
 								startIcon={<CloseIcon />}
 								onClick={() => {
+									// reset server errrors
+									resetErrors();
+									// remove alerts
+									removeAllAlerts();
 									setModal('delete', false);
 									getUserOffers();
 								}}

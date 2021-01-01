@@ -154,12 +154,17 @@ const ProfileState = props => {
 
 	// delete offer
 	const deleteOffer = async () => {
+		// set loading
 		setLoading(true);
+
 		try {
-			await axios.delete('/api/offers/delete', { params: { id: state.offer._id } });
-			dispatch({ type: SET_SUCCESS, payload: true });
+			// delete offer
+			const res = await axios.delete('/api/offers/delete', { params: { id: state.offer._id } });
+			// set state success
+			dispatch({ type: SET_SUCCESS, payload: res.data.msg });
+			// set sate errors
 		} catch (err) {
-			console.log(err.response.data.msg);
+			dispatch({ type: SET_ERRORS, payload: [ { msg: err.response.data.msg } ] });
 		}
 	};
 
