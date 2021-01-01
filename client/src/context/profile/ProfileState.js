@@ -115,7 +115,6 @@ const ProfileState = props => {
 		let formData = new FormData();
 		// append data
 		for (let i = 0; i < Object.keys(dataObj.images).length; i++) {
-			console.log('convert...');
 			const imageUrl = dataObj.images[i];
 			// Split the base64 string in data and contentType
 			const block = imageUrl.split(';');
@@ -154,11 +153,14 @@ const ProfileState = props => {
 	};
 
 	// delete offer
-	const deleteOffer = () => {
+	const deleteOffer = async () => {
 		setLoading(true);
-		setTimeout(() => {
+		try {
+			await axios.delete('/api/offers/delete', { params: { id: state.offer._id } });
 			dispatch({ type: SET_SUCCESS, payload: true });
-		}, 1000);
+		} catch (err) {
+			console.log(err.response.data.msg);
+		}
 	};
 
 	return (

@@ -14,6 +14,7 @@ const fs = require('fs');
 const auth = require('../middleware/auth');
 // Models
 const Offer = require('../models/Offer');
+const Booking = require('../models/Booking');
 // Multer
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -42,6 +43,8 @@ const upload = multer({
 });
 // utils
 const paragraphsToArray = require('../util/paragraphsToArray');
+const { rawListeners } = require('../models/Offer');
+const { forEach } = require('lodash');
 
 // @route     POST api/offers/create
 // @desc      Create offer
@@ -176,6 +179,60 @@ router.post(
 		}
 	}
 );
+
+// @route     POST api/offers/delete
+// @desc      Delete offer
+// @access    Private
+router.delete('/delete', auth, async (req, res) => {
+	// save request
+	const { id } = req.query;
+
+	try {
+		// get offer
+		const offer = await Offer.findById(id);
+
+		if (offer) {
+			// check if offer is booked
+			const booking = await Booking.findOne({ offerId: id });
+			if (booking) return res.status(401).json({ msg: 'You can not delete an offer which has been booked' });
+
+			// check if offer is owned by user
+			if (req.user.id === offer.createdBy) {
+				// delete images
+				for (let index = 0; index < offer.images.length; index++) {
+					await fs.unlink(offer.images[index], err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(offer.images[index] + ' was deleted');
+						}
+					});
+					await fs.unlink(offer.imagesThumb[index], err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(offer.imagesThumb[index] + ' was deleted');
+						}
+					});
+				}
+
+				// delete offfer
+				await Offer.findByIdAndDelete(id);
+				// send response
+				return res.status(200).json({ msg: 'Offer was deleted successfully' });
+			} else {
+				// send response
+				return res.status(401).json({ msg: 'You are unauthorized to delete this offer' });
+			}
+		} else {
+			return res.status(400).json({ msg: 'Offer not found' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json({ msg: 'Server Error' });
+		res.status(500).send('Server error');
+	}
+});
 
 // @route     GET api/offers/get
 // @desc      Get active offers all; rand; limit; by id
