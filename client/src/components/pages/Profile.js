@@ -15,6 +15,7 @@ import CardPictureV2 from '../cards/CardPictureV2';
 import Pagination from '../layout/Pagination';
 import ModalDelete from '../layout/ModalDelete';
 import ModalAdd from '../layout/ModalAdd';
+import ModalEdit from '../layout/ModalEdit';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
@@ -261,6 +262,7 @@ const Profile = props => {
 			</Container>
 			<ModalDelete />
 			<ModalAdd />
+			<ModalEdit />
 			{redirect && <Redirect to='/profile?tab=offers' />}
 		</div>
 	);

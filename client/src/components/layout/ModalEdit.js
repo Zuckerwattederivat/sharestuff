@@ -41,7 +41,7 @@ import currencies from '../../utils/currencies';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	addModal: {
+	editModal: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(60, 0, 4),
 		[theme.breakpoints.up('sm')]: {
 			padding: theme.spacing(38, 0, 4)
+		},
+		[theme.breakpoints.up('xl')]: {
+			padding: theme.spacing(4, 0, 4)
 		}
 	},
 	title: {
@@ -77,7 +80,7 @@ const useStyles = makeStyles(theme => ({
 	titleSpan2: {
 		color: theme.palette.primary.main
 	},
-	addContainer: {
+	editContainer: {
 		padding: theme.spacing(3, 4)
 	},
 	description: {
@@ -171,8 +174,8 @@ if (process.env.NODE_ENV !== 'production') {
 	geoCodeApiKey = process.env.GEOCODE_API_KEY;
 }
 
-// ModalAdd Component
-const ModalAdd = () => {
+// ModalEdit Component
+const ModalEdit = () => {
 	// styling classes
 	const classes = useStyles();
 
@@ -180,13 +183,13 @@ const ModalAdd = () => {
 	const profileContext = useContext(ProfileContext);
 	const {
 		categories,
-		modalAdd,
+		offer,
+		modalEdit,
 		success,
 		loading,
 		serverErrors,
 		setModal,
 		setCategories,
-		addOffer,
 		resetErrors
 	} = profileContext;
 
@@ -217,6 +220,34 @@ const ModalAdd = () => {
 		location: '',
 		description: ''
 	});
+
+	// fill inputs with offer data
+	useEffect(
+		() => {
+			if (offer) {
+				// format description
+				let descriptionFormatted = [];
+				offer.description.forEach(el => {
+					if (el === '') {
+						descriptionFormatted.push('\n');
+					} else {
+						descriptionFormatted.push(el);
+					}
+				});
+				// fill input with offer data
+				setInput({
+					...input,
+					title: offer.title,
+					product: offer.product,
+					category: offer.categoryId,
+					price: offer.price,
+					tagsInput: offer.tags.join(' '),
+					description: descriptionFormatted.join('\n')
+				});
+			}
+		},
+		[ offer ]
+	);
 
 	// images upload
 	const [ images, setImages ] = useState({});
@@ -355,8 +386,9 @@ const ModalAdd = () => {
 				description: input.description,
 				images: images
 			};
-			// add offer
-			addOffer(offerData);
+			// edit offer
+			console.log('edit offer');
+			//addOffer(offerData);
 		} else {
 			// set errors
 			setErrors({
@@ -399,19 +431,18 @@ const ModalAdd = () => {
 		// remove alerts
 		removeAllAlerts();
 		// close modal
-		setModal('add', false);
+		setModal('edit', false);
+		// get offers new
+		if (success) getUserOffers();
 	};
 
 	return (
 		<Modal
-			className={`${classes.addModal} ${!loading && !serverErrors && !success && classes.scrollable}`}
-			aria-labelledby='add-modal'
-			aria-describedby='add-modal-description'
-			open={modalAdd}
-			onClose={() => {
-				setModal('add', false);
-				if (success) getUserOffers();
-			}}
+			className={`${classes.editModal} ${!loading && !serverErrors && !success && classes.scrollable}`}
+			aria-labelledby='edit-modal'
+			aria-describedby='edit-modal-description'
+			open={modalEdit}
+			onClose={closeModal}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -432,12 +463,12 @@ const ModalAdd = () => {
 				!serverErrors && (
 					<Box width='100%' height='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
-							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+							<span className={classes.titleSpan2}>Edit</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
 						<Divider className={classes.topDivider} />
-						<Box width='100%' className={classes.addContainer}>
+						<Box width='100%' className={classes.editContainer}>
 							<Typography className={classes.description} variant='subtitle1'>
-								Add a new offer for other people to rent from you.
+								Edit the selected offer.
 							</Typography>
 							<form onSubmit={submitOffer}>
 								<Grid className={classes.grid} width='100%' container spacing={2}>
@@ -639,7 +670,7 @@ const ModalAdd = () => {
 										variant='outlined'
 										startIcon={<CancelIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => setModal('add', false)}
+										onClick={closeModal}
 									>
 										Cancel
 									</Button>
@@ -733,10 +764,7 @@ const ModalAdd = () => {
 									variant='outlined'
 									color='inherit'
 									startIcon={<CloseIcon className={classes.buttonIcon} />}
-									onClick={() => {
-										closeModal();
-										getUserOffers();
-									}}
+									onClick={closeModal}
 								>
 									Close
 								</Button>
@@ -749,5 +777,5 @@ const ModalAdd = () => {
 	);
 };
 
-// export ModalAdd Component
-export default ModalAdd;
+// export ModalEdit Component
+export default ModalEdit;

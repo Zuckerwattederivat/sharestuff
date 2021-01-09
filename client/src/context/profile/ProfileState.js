@@ -173,6 +173,7 @@ const ProfileState = props => {
 			value={{
 				tabLocation: state.tabLocation,
 				categories: state.categories,
+				offer: state.offer,
 				redirect: state.redirect,
 				modalAdd: state.modalAdd,
 				modalEdit: state.modalEdit,
