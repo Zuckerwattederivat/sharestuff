@@ -168,6 +168,62 @@ const ProfileState = props => {
 		}
 	};
 
+	// edit offer
+	const editOffer = async dataObj => {
+		// set loading
+		setLoading(true);
+
+		// config
+		const config = {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		};
+
+		// create formData
+		let formData = new FormData();
+		// append data
+		for (let i = 0; i < Object.keys(dataObj.images).length; i++) {
+			const imageUrl = dataObj.images[i];
+			// Split the base64 string in data and contentType
+			const block = imageUrl.split(';');
+			// Get the content type of the image
+			const contentType = block[0].split(':')[1];
+			// get the real base64 content of the file
+			const realData = block[1].split(',')[1];
+			// Convert it to a blob to upload
+			const blob = utils.b64ToBlob(realData, contentType);
+			// convert blob to file
+			const file = new File([ blob ], `image-${1}`, { type: contentType, lastModified: Date.now() });
+			formData.append('images', file);
+		}
+		formData.append('id', dataObj.id);
+		formData.append('title', dataObj.title);
+		formData.append('product', dataObj.product);
+		formData.append('categoryId', dataObj.categoryId);
+		formData.append('price', dataObj.price);
+		formData.append('currency', dataObj.currency);
+		formData.append('location', JSON.stringify(dataObj.location));
+		formData.append('tags', JSON.stringify(dataObj.tags));
+		formData.append('imagesOld', JSON.stringify(dataObj.imagesOld));
+		formData.append('imagesThumbOld', JSON.stringify(dataObj.imagesThumbOld));
+		formData.append('description', dataObj.description);
+
+		try {
+			// send data
+			const res = await axios.put('/api/offers/edit', formData, config);
+			// set state success
+			dispatch({ type: SET_SUCCESS, payload: res.data.msg });
+			// set state errors
+		} catch (err) {
+			if (err.response.data.msg) {
+				dispatch({ type: SET_ERRORS, payload: [ { msg: err.response.data.msg } ] });
+			} else {
+				dispatch({ type: SET_ERRORS, payload: err.response.data.errors });
+			}
+		}
+	};
+
 	return (
 		<ProfileContext.Provider
 			value={{
@@ -188,7 +244,8 @@ const ProfileState = props => {
 				setModal,
 				addOffer,
 				resetErrors,
-				deleteOffer
+				deleteOffer,
+				editOffer
 			}}
 		>
 			{props.children}

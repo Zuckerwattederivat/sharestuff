@@ -180,6 +180,161 @@ router.post(
 	}
 );
 
+// @route     PUT api/offers/edit
+// @desc      Edit offer
+// @access    Private
+router.put(
+	'/edit',
+	[
+		auth,
+		upload.array('images', 4),
+		check('title', 'Enter a title for your offer').notEmpty(),
+		check('price', 'Enter the daily price of your offer').isNumeric(),
+		check('currency', 'Choose the denomination of your offer').notEmpty(),
+		check('description', 'Describe what you are offering').notEmpty(),
+		check('product', 'What product are you offering?').notEmpty(),
+		check('tags', 'Add some tags for finding your offer').notEmpty(),
+		check('categoryId', 'Choose a category for your offer').notEmpty(),
+		check('location', 'Enter the location of your offer').notEmpty()
+	],
+	async (req, res) => {
+		// check if validation errors exist and response with 400 if true
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			console.error(errors);
+			req.files.map(file => {
+				fs.unlink(file.path, err => {
+					if (err) {
+						console.error(err);
+					} else {
+						console.log(file.path + ' was deleted');
+					}
+				});
+			});
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		// save request body
+		const { id, categoryId, price, currency, title } = req.body;
+		// save content to lower case
+		const product = req.body.product.toLowerCase();
+		const tagsRecieved = JSON.parse(req.body.tags);
+		const tags = tagsRecieved.map(e => {
+			return e.toLowerCase();
+		});
+		// save location
+		const location = JSON.parse(req.body.location);
+		// save desctiption paragraphs to array
+		const description = paragraphsToArray(req.body.description);
+		// save user
+		const createdBy = req.user.id;
+		// save image paths
+		const imagesOld = JSON.parse(req.body.imagesOld);
+		const imagesThumbOld = JSON.parse(req.body.imagesThumbOld);
+		let images = [];
+		let imagesThumb = [];
+		if (req.files[0]) {
+			images = req.files.map(file => {
+				return file.path;
+			});
+			imagesThumb = req.files.map(file => {
+				const pathSplit = file.path.split('.');
+				const imageThumb = `${pathSplit[0]}-thumb.${pathSplit[1]}`;
+				return imageThumb;
+			});
+		}
+
+		try {
+			// image handler
+			if (images !== []) {
+				await images.map((image, i) => {
+					return jimp
+						.read(image)
+						.then(offerImage => {
+							return offerImage
+								.cover(600, 400) // resize cover
+								.quality(90) // set JPEG quality
+								.write(imagesThumb[i]); // save
+						})
+						.catch(err => {
+							console.error(err.message);
+							return res.status(500).json({ msg: 'Server error' });
+						});
+				});
+			}
+
+			// update offer
+			const update = await Offer.findByIdAndUpdate(id, {
+				title: title,
+				description: description,
+				product: product,
+				price: price,
+				currency: currency,
+				tags: tags,
+				categoryId: categoryId,
+				createdBy: createdBy,
+				location: location,
+				images: images,
+				imagesThumb: imagesThumb
+			});
+
+			// if update successful
+			if (update) {
+				// unlink old images
+				imagesOld.forEach(img => {
+					fs.unlink(img, err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(img + ' was deleted');
+						}
+					});
+				});
+				imagesThumbOld.forEach(img => {
+					fs.unlink(img, err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(img + ' was deleted');
+						}
+					});
+				});
+				// send response
+				res.status(200).json({ msg: 'Offer edited successfully' });
+				// if update not successful throw error
+			} else {
+				throw 'The offer could not be updated';
+			}
+		} catch (err) {
+			req.files.map(file => {
+				// delete image
+				fs.unlink(file.path, err => {
+					if (err) {
+						console.error(err);
+					} else {
+						console.log(file.path + ' was deleted');
+					}
+				});
+				// delete thumb
+				const filePath = file.path.split('.');
+				const filePathThumb = filePath[0] + '-thumb.' + filePath[1];
+				setTimeout(() => {
+					fs.unlink(filePathThumb, err => {
+						if (err) {
+							console.error(err);
+						} else {
+							console.log(file.path + ' was deleted');
+						}
+					});
+				}, 2000);
+			});
+			console.error(err.message);
+			res.status(500).json({ msg: 'Server Error' });
+			res.status(500).send('Server error');
+		}
+	}
+);
+
 // @route     POST api/offers/delete
 // @desc      Delete offer
 // @access    Private

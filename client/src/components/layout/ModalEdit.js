@@ -190,6 +190,7 @@ const ModalEdit = () => {
 		serverErrors,
 		setModal,
 		setCategories,
+		editOffer,
 		resetErrors
 	} = profileContext;
 
@@ -376,6 +377,7 @@ const ModalEdit = () => {
 		) {
 			// create offer data
 			const offerData = {
+				id: offer._id,
 				title: input.title,
 				product: input.product,
 				categoryId: input.category,
@@ -384,11 +386,12 @@ const ModalEdit = () => {
 				tags: input.tagsArray,
 				location: input.locationAuto,
 				description: input.description,
-				images: images
+				images: images,
+				imagesOld: offer.images,
+				imagesThumbOld: offer.imagesThumb
 			};
 			// edit offer
-			console.log('edit offer');
-			//addOffer(offerData);
+			editOffer(offerData);
 		} else {
 			// set errors
 			setErrors({
