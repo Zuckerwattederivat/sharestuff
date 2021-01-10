@@ -92,14 +92,18 @@ const Login = () => {
 
 	// close login
 	const closeLogin = () => {
+		// reset state
+		setUser({
+			step: 1,
+			email: '',
+			password: ''
+		});
 		// remove all alerts
 		alertContext.removeAllAlerts();
 		// clear input errors
 		clearInputErrors();
 		// clear auth errors
 		authContext.clearErrors();
-		// set step to 1
-		setParentState('step', 1);
 		// close modal
 		setLoginOpen(false);
 	};
@@ -139,6 +143,7 @@ const Login = () => {
 					nextStep={nextStep}
 					handleInputChange={handleInputChange}
 					setParentState={setParentState}
+					closeLogin={closeLogin}
 				/>
 			</motion.div>
 		</Modal>

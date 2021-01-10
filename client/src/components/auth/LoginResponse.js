@@ -9,7 +9,6 @@ import Alerts from '../layout/Alerts';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
-import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import WelcomeSvg from '../../assets/undraw/welcome.svg';
@@ -80,13 +79,8 @@ const LoginResponse = props => {
 	// destructure alert context
 	const { setAlert, removeAllAlerts } = alertContext;
 
-	// load navbar context
-	const navbarContext = useContext(NavbarContext);
-	// destructure context
-	const { setLoginOpen } = navbarContext;
-
 	// destructure props
-	const { setParentState, prevStep } = props;
+	const { setParentState, prevStep, closeLogin } = props;
 
 	// set alerts if errors occure
 	useEffect(
@@ -116,15 +110,13 @@ const LoginResponse = props => {
 		};
 
 		// close login
-		const closeLogin = () => {
+		const close = () => {
 			// clear auth errors
 			clearErrors();
 			// remove alerts
 			removeAllAlerts();
-			// reset step
-			setParentState('step', 1);
-			// close register
-			setLoginOpen(false);
+			// close login
+			closeLogin();
 		};
 
 		switch (loading) {
@@ -156,7 +148,7 @@ const LoginResponse = props => {
 										variant='outlined'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => closeLogin()}
+										onClick={() => close()}
 									>
 										Close
 									</Button>
@@ -189,7 +181,7 @@ const LoginResponse = props => {
 										color='secondary'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => closeLogin()}
+										onClick={() => close()}
 									>
 										Close
 									</Button>
@@ -214,6 +206,7 @@ const LoginResponse = props => {
 LoginResponse.propTypes = {
 	values: PropTypes.object.isRequired,
 	setParentState: PropTypes.func.isRequired,
+	closeLogin: PropTypes.func.isRequired,
 	prevStep: PropTypes.func.isRequired
 };
 

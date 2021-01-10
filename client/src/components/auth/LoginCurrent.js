@@ -13,7 +13,14 @@ const LoginCurrent = props => {
 				<LoginUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
 			);
 		case 2:
-			return <LoginResponse values={props.values} setParentState={props.setParentState} prevStep={props.prevStep} />;
+			return (
+				<LoginResponse
+					values={props.values}
+					setParentState={props.setParentState}
+					prevStep={props.prevStep}
+					closeLogin={props.closeLogin}
+				/>
+			);
 		default:
 			return (
 				<LoginUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
@@ -28,6 +35,7 @@ LoginCurrent.propTypes = {
 	nextStep: PropTypes.func.isRequired,
 	handleInputChange: PropTypes.func.isRequired,
 	setParentState: PropTypes.func.isRequired,
+	closeLogin: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired
 };
 

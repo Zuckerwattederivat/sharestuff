@@ -22,12 +22,20 @@ const RegisterCurrent = props => {
 					handleInputChange={props.handleInputChange}
 					setInputValue={props.setInputValue}
 					values={props.values}
+					closeRegister={props.closeRegister}
 				/>
 			);
 		case 3:
 			return <RegisterConfirm prevStep={props.prevStep} nextStep={props.nextStep} values={props.values} />;
 		case 4:
-			return <RegisterResponse values={props.values} setParentState={props.setParentState} prevStep={props.prevStep} />;
+			return (
+				<RegisterResponse
+					values={props.values}
+					setParentState={props.setParentState}
+					prevStep={props.prevStep}
+					closeRegister={props.closeRegister}
+				/>
+			);
 		default:
 			return (
 				<RegisterUserData nextStep={props.nextStep} handleInputChange={props.handleInputChange} values={props.values} />
@@ -42,6 +50,7 @@ RegisterCurrent.propTypes = {
 	nextStep: PropTypes.func.isRequired,
 	handleInputChange: PropTypes.func.isRequired,
 	setParentState: PropTypes.func.isRequired,
+	closeRegister: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired
 };
 

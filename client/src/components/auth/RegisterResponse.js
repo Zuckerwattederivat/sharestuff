@@ -9,7 +9,6 @@ import Alerts from '../layout/Alerts';
 // Context
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
-import NavbarContext from '../../context/navbar/navbarContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
 import CheckMarkGif from '../../assets/check-mark-transparent.gif';
@@ -80,13 +79,8 @@ const RegisterResponse = props => {
 	// destructure alert context
 	const { setAlert, removeAllAlerts } = alertContext;
 
-	// load navbar context
-	const navbarContext = useContext(NavbarContext);
-	// destructure context
-	const { setRegisterOpen } = navbarContext;
-
 	// destructure props
-	const { setParentState, prevStep } = props;
+	const { setParentState, prevStep, closeRegister } = props;
 
 	// set alerts if errors occure
 	useEffect(
@@ -116,15 +110,13 @@ const RegisterResponse = props => {
 		};
 
 		// close register
-		const closeRegister = () => {
+		const close = () => {
 			// clear auth errors
 			clearErrors();
 			// remove alerts
 			removeAllAlerts();
-			// reset step
-			setParentState('step', 1);
 			// close register
-			setRegisterOpen(false);
+			closeRegister();
 		};
 
 		switch (loading) {
@@ -156,7 +148,7 @@ const RegisterResponse = props => {
 										variant='outlined'
 										startIcon={<CloseIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => closeRegister()}
+										onClick={() => close()}
 									>
 										Close
 									</Button>
@@ -214,7 +206,8 @@ const RegisterResponse = props => {
 RegisterResponse.propTypes = {
 	values: PropTypes.object.isRequired,
 	setParentState: PropTypes.func.isRequired,
-	prevStep: PropTypes.func.isRequired
+	prevStep: PropTypes.func.isRequired,
+	closeRegister: PropTypes.func.isRequired
 };
 
 // export RegisterResponse Component

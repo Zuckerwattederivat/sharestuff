@@ -126,14 +126,28 @@ const Register = () => {
 
 	// close register
 	const closeRegister = () => {
+		// reset state
+		setUser({
+			step: 1,
+			firstname: '',
+			lastname: '',
+			address: '',
+			zipCode: '',
+			city: '',
+			country: '',
+			countryAuto: '',
+			phone: '',
+			email: '',
+			username: '',
+			password: '',
+			passwordConfirm: ''
+		});
 		// remove all alerts
 		alertContext.removeAllAlerts();
 		// clear input errors
 		clearInputErrors();
 		// clear auth errors
 		authContext.clearErrors();
-		// set step to 1
-		setParentState('step', 1);
 		// close modal
 		setRegisterOpen(false);
 	};
@@ -173,6 +187,7 @@ const Register = () => {
 					nextStep={nextStep}
 					handleInputChange={handleInputChange}
 					setParentState={setParentState}
+					closeRegister={closeRegister}
 				/>
 			</motion.div>
 		</Modal>
