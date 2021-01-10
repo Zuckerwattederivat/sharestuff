@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(60, 0, 4),
 		[theme.breakpoints.up('sm')]: {
 			padding: theme.spacing(38, 0, 4)
+		},
+		[theme.breakpoints.up('xl')]: {
+			padding: theme.spacing(4, 0, 4)
 		}
 	},
 	title: {
@@ -400,6 +403,8 @@ const ModalAdd = () => {
 		removeAllAlerts();
 		// close modal
 		setModal('add', false);
+		// get offers new
+		if (success) getUserOffers();
 	};
 
 	return (
@@ -408,10 +413,7 @@ const ModalAdd = () => {
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
 			open={modalAdd}
-			onClose={() => {
-				setModal('add', false);
-				if (success) getUserOffers();
-			}}
+			onClose={closeModal}
 			closeAfterTransition
 			BackdropComponent={Backdrop}
 			BackdropProps={{ timeout: 500 }}
@@ -639,7 +641,7 @@ const ModalAdd = () => {
 										variant='outlined'
 										startIcon={<CancelIcon className={classes.buttonIcon} />}
 										size='large'
-										onClick={() => setModal('add', false)}
+										onClick={closeModal}
 									>
 										Cancel
 									</Button>
@@ -733,10 +735,7 @@ const ModalAdd = () => {
 									variant='outlined'
 									color='inherit'
 									startIcon={<CloseIcon className={classes.buttonIcon} />}
-									onClick={() => {
-										closeModal();
-										getUserOffers();
-									}}
+									onClick={closeModal}
 								>
 									Close
 								</Button>

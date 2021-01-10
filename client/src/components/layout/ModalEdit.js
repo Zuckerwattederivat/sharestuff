@@ -247,6 +247,7 @@ const ModalEdit = () => {
 				});
 			}
 		},
+		// eslint-disable-next-line
 		[ offer ]
 	);
 
