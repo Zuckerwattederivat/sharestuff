@@ -72,6 +72,12 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		display: 'flex',
 		marginTop: theme.spacing(4),
+		justifyContent: 'flex-end',
+		[theme.breakpoints.down('xs')]: {
+			justifyContent: 'space-between'
+		}
+	},
+	btnEnd: {
 		justifyContent: 'flex-end'
 	},
 	btn1: {
@@ -220,7 +226,7 @@ const ModalDelete = () => {
 						<Typography variant='h3' className={`${classes.h3} ${classes.textDeleted} `}>
 							Offer deleted successfully
 						</Typography>
-						<Box width='100%' className={classes.btnContainer}>
+						<Box width='100%' className={`${classes.btnContainer} ${classes.btnEnd}`}>
 							<Button
 								size='large'
 								className={classes.btn1}

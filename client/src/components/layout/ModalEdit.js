@@ -150,6 +150,9 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down('xs')]: {
 			justifyContent: 'space-between'
 		}
+	},
+	btnEnd: {
+		justifyContent: 'flex-end'
 	}
 }));
 
@@ -454,7 +457,7 @@ const ModalEdit = () => {
 				{!success &&
 				!loading &&
 				!serverErrors && (
-					<Box width='100%' overflow='scroll' height='90vh'>
+					<Box width='100%' overflow='scroll' height='600px'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>Edit</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -686,9 +689,9 @@ const ModalEdit = () => {
 				)}
 				{!serverErrors &&
 				loading && (
-					<Box width='100%' height='90vh'>
+					<Box width='100%' height='600px'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
-							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+							<span className={classes.titleSpan2}>Edit</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
 						<Divider className={classes.topDivider} />
 						<Box width='100%' className={classes.loadingContainer}>
@@ -698,9 +701,9 @@ const ModalEdit = () => {
 				)}
 				{serverErrors &&
 				!loading && (
-					<Box width='100%' overflow='scroll' height='90vh'>
+					<Box width='100%' overflow='scroll' height='600px'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
-							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
+							<span className={classes.titleSpan2}>Edit</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
 						<Divider className={classes.topDivider} />
 						<Box width='100%' display='flex' justifyContent='center' alignItems='center' padding={4}>
@@ -750,7 +753,7 @@ const ModalEdit = () => {
 							<Typography variant='h3' color='primary' className={classes.h3}>
 								{success}
 							</Typography>
-							<Box width='100%' className={classes.btnContainer}>
+							<Box width='100%' className={`${classes.btnContainer} ${classes.btnEnd}`}>
 								<Button
 									size='large'
 									className={classes.button2}
