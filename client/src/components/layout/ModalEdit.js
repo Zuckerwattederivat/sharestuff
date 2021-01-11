@@ -46,9 +46,6 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	scrollable: {
-		overflow: 'scroll'
-	},
 	paper: {
 		backgroundColor: theme.palette.background.custom,
 		boxShadow: theme.shadows[5],
@@ -61,15 +58,6 @@ const useStyles = makeStyles(theme => ({
 		},
 		[theme.breakpoints.up('md')]: {
 			width: '800px'
-		}
-	},
-	bigMargins: {
-		padding: theme.spacing(60, 0, 4),
-		[theme.breakpoints.up('sm')]: {
-			padding: theme.spacing(38, 0, 4)
-		},
-		[theme.breakpoints.up('xl')]: {
-			padding: theme.spacing(4, 0, 4)
 		}
 	},
 	title: {
@@ -267,6 +255,7 @@ const ModalEdit = () => {
 		images: null
 	});
 
+	// DONT USE IF OTHER MODALS WITH ALERTS ARE MOUNTED
 	// set alerts if errors occure
 	useEffect(
 		() => {
@@ -442,7 +431,7 @@ const ModalEdit = () => {
 
 	return (
 		<Modal
-			className={`${classes.editModal} ${!loading && !serverErrors && !success && classes.scrollable}`}
+			className={classes.editModal}
 			aria-labelledby='edit-modal'
 			aria-describedby='edit-modal-description'
 			open={modalEdit}
@@ -452,20 +441,20 @@ const ModalEdit = () => {
 			BackdropProps={{ timeout: 500 }}
 		>
 			<motion.div
-				className={`${classes.paper} ${!loading && !serverErrors && !success && classes.bigMargins}`}
+				className={classes.paper}
 				transition={{
 					duration: 0.6,
 					type: 'spring',
 					damping: 10,
 					stiffness: 70
 				}}
-				initial={{ x: '-100vw' }}
-				animate={{ x: 0 }}
+				initial={{ y: '100vh' }}
+				animate={{ y: 0 }}
 			>
 				{!success &&
 				!loading &&
 				!serverErrors && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' overflow='scroll' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>Edit</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -697,7 +686,7 @@ const ModalEdit = () => {
 				)}
 				{!serverErrors &&
 				loading && (
-					<Box width='100%' height='70vh'>
+					<Box width='100%' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -709,7 +698,7 @@ const ModalEdit = () => {
 				)}
 				{serverErrors &&
 				!loading && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' overflow='scroll' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -749,7 +738,7 @@ const ModalEdit = () => {
 				)}
 				{success &&
 				!loading && (
-					<Box width='100%' height='70vh'>
+					<Box width='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>

@@ -132,8 +132,8 @@ const ModalDelete = () => {
 					damping: 10,
 					stiffness: 70
 				}}
-				initial={{ x: '-100vw' }}
-				animate={{ x: 0 }}
+				initial={{ y: '100vh' }}
+				animate={{ y: 0 }}
 			>
 				{!loading &&
 				!serverErrors &&

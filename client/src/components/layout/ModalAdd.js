@@ -29,7 +29,8 @@ import MultiImageInput from 'react-multiple-image-input';
 import Alerts from '../layout/Alerts';
 // Context
 import ProfileContext from '../../context/profile/profileContext';
-import AlertContext from '../../context/alert/alertContext';
+// DONT USE IF OTHER COMPONENT WITH ERROR HANDLING IS MOUNTED
+// import AlertContext from '../../context/alert/alertContext';
 import QueryContext from '../../context/query/queryContext';
 // Assets
 import LoadingGif from '../../assets/loading-transparent.gif';
@@ -46,9 +47,6 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	scrollable: {
-		overflow: 'scroll'
-	},
 	paper: {
 		backgroundColor: theme.palette.background.custom,
 		boxShadow: theme.shadows[5],
@@ -61,15 +59,6 @@ const useStyles = makeStyles(theme => ({
 		},
 		[theme.breakpoints.up('md')]: {
 			width: '800px'
-		}
-	},
-	bigMargins: {
-		padding: theme.spacing(60, 0, 4),
-		[theme.breakpoints.up('sm')]: {
-			padding: theme.spacing(38, 0, 4)
-		},
-		[theme.breakpoints.up('xl')]: {
-			padding: theme.spacing(4, 0, 4)
 		}
 	},
 	title: {
@@ -197,9 +186,10 @@ const ModalAdd = () => {
 	const queryContext = useContext(QueryContext);
 	const { getUserOffers } = queryContext;
 
-	// load alert context
-	const alertContext = useContext(AlertContext);
-	const { setAlert, removeAllAlerts } = alertContext;
+	// DONT USE IF OTHER COMPONENT WITH ERROR HANDLING IS MOUNTED
+	// // load alert context
+	// const alertContext = useContext(AlertContext);
+	// const { setAlert, removeAllAlerts } = alertContext;
 
 	// open & options state
 	const [ open, setOpen ] = useState(false);
@@ -237,17 +227,18 @@ const ModalAdd = () => {
 		images: null
 	});
 
-	// set alerts if errors occure
-	useEffect(
-		() => {
-			serverErrors &&
-				serverErrors.map(error => {
-					return setAlert(error.msg, 'error', 'unlimited');
-				});
-		},
-		// eslint-disable-next-line
-		[ serverErrors ]
-	);
+	// DONT USE IF OTHER COMPONENT WITH ERROR HANDLING IS MOUNTED
+	// // set alerts if errors occure
+	// useEffect(
+	// 	() => {
+	// 		serverErrors &&
+	// 			serverErrors.map(error => {
+	// 				return setAlert(error.msg, 'error', 'unlimited');
+	// 			});
+	// 	},
+	// 	// eslint-disable-next-line
+	// 	[ serverErrors ]
+	// );
 
 	// set tag array
 	useEffect(
@@ -380,7 +371,8 @@ const ModalAdd = () => {
 	// go back
 	const goBack = () => {
 		resetErrors();
-		removeAllAlerts();
+		// DONT USE IF OTHER COMPONENT WITH ERROR HANDLING IS MOUNTED
+		// removeAllAlerts();
 	};
 
 	// close modal
@@ -399,8 +391,9 @@ const ModalAdd = () => {
 		});
 		// reset server errrors
 		resetErrors();
-		// remove alerts
-		removeAllAlerts();
+		// DONT USE IF OTHER COMPONENT WITH ERROR HANDLING IS MOUNTED
+		// // remove alerts
+		// removeAllAlerts();
 		// close modal
 		setModal('add', false);
 		// get offers new
@@ -409,7 +402,7 @@ const ModalAdd = () => {
 
 	return (
 		<Modal
-			className={`${classes.addModal} ${!loading && !serverErrors && !success && classes.scrollable}`}
+			className={classes.addModal}
 			aria-labelledby='add-modal'
 			aria-describedby='add-modal-description'
 			open={modalAdd}
@@ -419,20 +412,20 @@ const ModalAdd = () => {
 			BackdropProps={{ timeout: 500 }}
 		>
 			<motion.div
-				className={`${classes.paper} ${!loading && !serverErrors && !success && classes.bigMargins}`}
+				className={classes.paper}
 				transition={{
 					duration: 0.6,
 					type: 'spring',
 					damping: 10,
 					stiffness: 70
 				}}
-				initial={{ x: '-100vw' }}
-				animate={{ x: 0 }}
+				initial={{ y: '100vh' }}
+				animate={{ y: 0 }}
 			>
 				{!success &&
 				!loading &&
 				!serverErrors && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' overflow='scroll' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -664,7 +657,7 @@ const ModalAdd = () => {
 				)}
 				{!serverErrors &&
 				loading && (
-					<Box width='100%' height='70vh'>
+					<Box width='100%' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -676,7 +669,7 @@ const ModalAdd = () => {
 				)}
 				{serverErrors &&
 				!loading && (
-					<Box width='100%' height='100%'>
+					<Box width='100%' overflow='scroll' height='90vh'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
@@ -716,7 +709,7 @@ const ModalAdd = () => {
 				)}
 				{success &&
 				!loading && (
-					<Box width='100%' height='70vh'>
+					<Box width='100%'>
 						<Typography id='register-modal-title' className={classes.title} variant='h5'>
 							<span className={classes.titleSpan2}>New</span> <span className={classes.titleSpan1}>Offer</span>
 						</Typography>
