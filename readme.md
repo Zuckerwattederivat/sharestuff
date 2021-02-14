@@ -8,9 +8,13 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 
 ![Homescreen](https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif)
 
-___
 
 ## Contents
 
-1. Features
-2. Set Up
+1. [Features]https://github.com/Zuckerwattederivat/sharestuff#features
+2. [Setup]https://github.com/Zuckerwattederivat/sharestuff#setup
+
+## Features
+
+
+## Setup
