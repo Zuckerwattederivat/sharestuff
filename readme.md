@@ -54,7 +54,7 @@ $ npm run dev
 
 ## Support
 
-Use the issue ticker to submit bugs or requests. :simple_smile: <br>
+Use the issue ticker to submit bugs or requests. :blush: <br>
 If you want to contribute to this project you are very welcome to do so. :octocat: :metal:
 
 ## License
