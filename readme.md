@@ -9,14 +9,14 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 ![Homescreen](https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif)
 
 
-## Contents
+## Contents :file_folder:
 
 * [Features](https://github.com/Zuckerwattederivat/sharestuff#features)
 * [Setup](https://github.com/Zuckerwattederivat/sharestuff#setup)
 * [Support](https://github.com/Zuckerwattederivat/sharestuff#support)
 * [License](https://github.com/Zuckerwattederivat/sharestuff#license)
 
-## Features
+## Features :gem: :gem:
 
 * Working and customizable rent and let platform
 * Users can rent retail products from other users
@@ -26,7 +26,7 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 * Backend was setup to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cloud storage
 * Database queries are facilitated with [Mongoose](https://github.com/Automattic/mongoose)
 
-## Setup
+## Setup :wrench: :hammer:
 
 ```
 # clone the repositiory with git or github CLI
@@ -52,11 +52,11 @@ $ cd sharestuff
 $ npm run dev
 ```
 
-## Support
+## Support :ambulance:
 
 Use the issue ticker to submit bugs or requests. :blush: <br>
 If you want to contribute to this project you are very welcome to do so. :octocat: :metal:
 
-## License
+## License :scroll:
 
 This project is licensed under the [MIT license](https://github.com/Zuckerwattederivat/sharestuff/blob/master/LICENSE.md).
