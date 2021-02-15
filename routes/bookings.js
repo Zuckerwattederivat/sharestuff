@@ -165,9 +165,19 @@ router.get('/get/offered', auth, async (req, res) => {
 		// get bookings
 		const bookings = await Booking.find({ offeredBy: req.user.id });
 
-		// send response
+		// get corresponding offers and send response
 		if (bookings[0]) {
-			return res.json(bookings);
+			let bookedOffers = [];
+
+			for (let i = 0; i < bookings.length; i++) {
+				let offer = await Offer.findById(bookings[i].offerId);
+				bookedOffers.push({
+					bookingData: bookings[i],
+					offerData: offer
+				});
+			}
+
+			return res.json(bookedOffers);
 		} else {
 			return res.status(200).json({ msg: 'Nobody has booked your offers yet' });
 		}
@@ -179,16 +189,26 @@ router.get('/get/offered', auth, async (req, res) => {
 });
 
 // @route     GET api/bookings/get/booked
-// @desc      Get bookings by othter users of own offers
+// @desc      Get bookings by other users of own offers
 // @access    Private
 router.get('/get/booked', auth, async (req, res) => {
 	try {
 		// get bookings
 		const bookings = await Booking.find({ bookedBy: req.user.id });
 
-		// send response
+		// get corresponding offers and send response
 		if (bookings[0]) {
-			return res.json(bookings);
+			let bookedOffers = [];
+
+			for (let i = 0; i < bookings.length; i++) {
+				let offer = await Offer.findById(bookings[i].offerId);
+				bookedOffers.push({
+					bookingData: bookings[i],
+					offerData: offer
+				});
+			}
+
+			return res.json(bookedOffers);
 		} else {
 			return res.status(200).json({ msg: 'You have not booked any offer yet' });
 		}

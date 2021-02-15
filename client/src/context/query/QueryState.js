@@ -24,7 +24,8 @@ const QueryState = props => {
 	// initial state
 	const initialState = {
 		errors: null,
-		bookingError: null,
+		bookedFromUserError: null,
+		bookedByUserError: null,
 		bookingLoading: true,
 		offerBooked: false,
 		loading: true,
@@ -277,13 +278,25 @@ const QueryState = props => {
 	const getUserBookings = async () => {
 		// clear all
 		clearQueryState();
+
+		try {
+			// user's offers booked by others
+			const bookedFromUser = await axios.get('api/bookings/get/offered');
+			// offers booked by user
+			const bookedByUser = await axios.get('api/bookings/get/booked');
+
+			console.log(bookedFromUser.data, bookedByUser.data);
+		} catch (err) {
+			console.log(err.response.data.msg);
+		}
 	};
 
 	return (
 		<QueryContext.Provider
 			value={{
 				errors: state.errors,
-				bookingError: state.bookingError,
+				bookedFromUserError: state.bookedFromUserError,
+				bookedByUserError: state.bookedByUserError,
 				bookingLoading: state.bookingLoading,
 				offerBooked: state.offerBooked,
 				loading: state.loading,

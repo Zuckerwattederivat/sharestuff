@@ -73,7 +73,12 @@ export default (state, action) => {
 		case BOOKING_LOADING:
 			return { ...state, bookingLoading: action.payload };
 		case BOOKING_ERROR:
-			return { ...state, bookingError: action.payload, bookingLoading: false };
+			return {
+				...state,
+				bookedFromUserError: action.payload.bookedFromUser,
+				bookedByUserError: action.payload.bookedByUser,
+				bookingLoading: false
+			};
 		case OFFER_BOOKED:
 			return { ...state, offerBooked: true, bookingLoading: false };
 		case CLEAR_ALL:
@@ -81,7 +86,8 @@ export default (state, action) => {
 				...state,
 				loading: true,
 				bookingLoading: true,
-				bookingError: null,
+				bookedFromUserError: null,
+				bookedByUserError: null,
 				offerBooked: false,
 				errors: null,
 				category: [],

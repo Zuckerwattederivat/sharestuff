@@ -236,7 +236,7 @@ const Profile = props => {
 								size='large'
 								variant='outlined'
 								color='primary'
-								onClick={() => setModal(true, null, 'add')}
+								onClick={() => setModal('add', true)}
 								startIcon={<AddIcon />}
 							>
 								Create Offer
