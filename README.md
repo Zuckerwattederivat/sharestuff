@@ -16,7 +16,7 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 * [Support](https://github.com/Zuckerwattederivat/sharestuff#support)
 * [License](https://github.com/Zuckerwattederivat/sharestuff#license)
 
-## Features :gem: :gem:
+## Features :gem:
 
 * Working and customizable rent and let platform
 * Users can rent retail products from other users
@@ -26,7 +26,7 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 * Backend was setup to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cloud storage
 * Database queries are facilitated with [Mongoose](https://github.com/Automattic/mongoose)
 
-## Setup :wrench: :hammer:
+## Setup :wrench:
 
 ```
 # clone the repositiory with git or github CLI

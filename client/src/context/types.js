@@ -51,6 +51,7 @@ export const CLEAR_ALL = 'CLEAR_ALL';
 export const OFFER_ERROR = 'OFFER_ERROR';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_PAGE_COUNT = 'SET_PAGE_COUNT';
+export const SET_BOOKINGS = 'SET_BOOKINGS';
 export const SEARCH_CACHED = 'SEARCH_CACHED';
 export const BOOKING_LOADING = 'BOOKING_LOADING';
 export const BOOKING_ERROR = 'BOOKING_ERROR';

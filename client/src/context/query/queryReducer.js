@@ -11,6 +11,7 @@ import {
 	SET_PAGE,
 	SET_PAGE_COUNT,
 	SET_OFFERS_PAGINATED,
+	SET_BOOKINGS,
 	SEARCH_CACHED,
 	BOOKING_LOADING,
 	BOOKING_ERROR,
@@ -52,6 +53,14 @@ export default (state, action) => {
 				offersPaginated: action.payload,
 				loading: false
 			};
+		case SET_BOOKINGS:
+			return {
+				...state,
+				bookings: {
+					bookedFromUser: action.payload.bookedFromUser.msg ? null : action.payload.bookedFromUser,
+					boookedByUser: action.payload.bookedByUser.msg ? null : action.payload.bookedByUser
+				}
+			};
 		case SET_ALL:
 			return {
 				...state,
@@ -75,8 +84,8 @@ export default (state, action) => {
 		case BOOKING_ERROR:
 			return {
 				...state,
-				bookedFromUserError: action.payload.bookedFromUser,
-				bookedByUserError: action.payload.bookedByUser,
+				bookedFromUserError: action.payload.bookedFromUserError,
+				bookedByUserError: action.payload.bookedByUserError,
 				bookingLoading: false
 			};
 		case OFFER_BOOKED:
@@ -88,6 +97,10 @@ export default (state, action) => {
 				bookingLoading: true,
 				bookedFromUserError: null,
 				bookedByUserError: null,
+				bookings: {
+					bookedFromUser: null,
+					bookedByUser: null
+				},
 				offerBooked: false,
 				errors: null,
 				category: [],

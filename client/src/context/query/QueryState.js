@@ -12,6 +12,7 @@ import {
 	OFFER_ERROR,
 	SET_PAGE,
 	SET_PAGE_COUNT,
+	SET_BOOKINGS,
 	SEARCH_CACHED,
 	SET_ALL,
 	BOOKING_LOADING,
@@ -27,6 +28,10 @@ const QueryState = props => {
 		bookedFromUserError: null,
 		bookedByUserError: null,
 		bookingLoading: true,
+		bookings: {
+			bookedFromUser: null,
+			bookedByUser: null
+		},
 		offerBooked: false,
 		loading: true,
 		categories: [],
@@ -285,7 +290,21 @@ const QueryState = props => {
 			// offers booked by user
 			const bookedByUser = await axios.get('api/bookings/get/booked');
 
-			console.log(bookedFromUser.data, bookedByUser.data);
+			// set bookings
+			if (!bookedFromUser.data.msg || !bookedByUser.data.msg) {
+				setQueryState(SET_BOOKINGS, {
+					bookedFromUser: bookedFromUser.data,
+					bookedByUser: bookedByUser.data
+				});
+			}
+
+			// if no bookings were found
+			if (bookedFromUser.data.msg || bookedByUser.data.msg) {
+				setQueryState(BOOKING_ERROR, {
+					bookedFromUserError: bookedFromUser.data.msg,
+					bookedByUserError: bookedByUser.data.msg
+				});
+			}
 		} catch (err) {
 			console.log(err.response.data.msg);
 		}
@@ -298,6 +317,7 @@ const QueryState = props => {
 				bookedFromUserError: state.bookedFromUserError,
 				bookedByUserError: state.bookedByUserError,
 				bookingLoading: state.bookingLoading,
+				bookings: state.bookings,
 				offerBooked: state.offerBooked,
 				loading: state.loading,
 				categories: state.categories,
