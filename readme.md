@@ -19,10 +19,34 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 * Working and customizable rent and let platform
 * Users can rent retail products from other users
 * Users can rent retail products to other users
-* Frontend was built with [React](https://github.com/facebook/react)
+* Frontend was built with [React](https://github.com/facebook/react) and [Material-UI](https://github.com/mui-org/material-ui)
 * Backend was built with [Express](https://github.com/expressjs/express)
 * Backend was setup to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cloud storage
 * Database queries are facilitated with [Mongoose](https://github.com/Automattic/mongoose)
 
 ## Setup
+
+```
+# clone the repositiory with git or github CLI
+$ git clone https://github.com/Zuckerwattederivat/sharestuff.git
+$ gh repo clone Zuckerwattederivat/sharestuff
+
+# install dependencies server
+$ cd sharestuff
+$ npm install
+
+# connect your db and add jwt secret
+$ cd sharestuff/config
+$ open default.json
+-> add your MongoDB Atlas database cluster link to "mongoURI"
+-> add your random JSON Webtoken secret
+
+# install dependencies client
+$ cd sharestuff/client
+$ npm install
+
+# launch client and server in dev mode
+$ cd sharestuff
+$ npm run dev
+```
 
