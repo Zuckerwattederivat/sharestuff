@@ -13,7 +13,7 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 
 * [Features](https://github.com/Zuckerwattederivat/sharestuff#features)
 * [Setup](https://github.com/Zuckerwattederivat/sharestuff#setup)
-* [Contribution & Support](https://github.com/Zuckerwattederivat/sharestuff#contribution%&%support)
+* [Support](https://github.com/Zuckerwattederivat/sharestuff#support)
 * [License]
 
 ## Features
@@ -52,7 +52,7 @@ $ cd sharestuff
 $ npm run dev
 ```
 
-## Contribution & Support
+## Support
 
 Use the issue ticker to submit bugs or requests. If you want to contribute to this project you are very welcome to do so. :octocat: :metal:
 
