@@ -16,5 +16,13 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 
 ## Features
 
+* Working and customizable rent and let platform
+* Users can rent retail products from other users
+* Users can rent retail products to other users
+* Frontend was built with [React](https://github.com/facebook/react)
+* Backend was built with [Express](https://github.com/expressjs/express)
+* Backend was setup to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cloud storage
+* Database queries are facilitated with [Mongoose](https://github.com/Automattic/mongoose)
 
 ## Setup
+
