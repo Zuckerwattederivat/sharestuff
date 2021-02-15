@@ -59,4 +59,4 @@ If you want to contribute to this project you are very welcome to do so. :octoca
 
 ## License
 
-This project is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+This project is licensed under the [MIT license](https://github.com/Zuckerwattederivat/sharestuff/blob/master/LICENSE.md).
