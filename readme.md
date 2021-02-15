@@ -14,7 +14,7 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 * [Features](https://github.com/Zuckerwattederivat/sharestuff#features)
 * [Setup](https://github.com/Zuckerwattederivat/sharestuff#setup)
 * [Support](https://github.com/Zuckerwattederivat/sharestuff#support)
-* [License]
+* [License](https://github.com/Zuckerwattederivat/sharestuff#license)
 
 ## Features
 
@@ -54,5 +54,9 @@ $ npm run dev
 
 ## Support
 
-Use the issue ticker to submit bugs or requests. If you want to contribute to this project you are very welcome to do so. :octocat: :metal:
+Use the issue ticker to submit bugs or requests. :simple_smile: <br>
+If you want to contribute to this project you are very welcome to do so. :octocat: :metal:
 
+## License
+
+This project is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
