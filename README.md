@@ -11,10 +11,10 @@ This SPA is build with the MERN Stack. If any of you guys want to fork this proj
 
 ## Contents :file_folder:
 
-* [Features](https://github.com/Zuckerwattederivat/sharestuff#features)
-* [Setup](https://github.com/Zuckerwattederivat/sharestuff#setup)
-* [Support](https://github.com/Zuckerwattederivat/sharestuff#support)
-* [License](https://github.com/Zuckerwattederivat/sharestuff#license)
+* [Features](https://github.com/Zuckerwattederivat/sharestuff#features-gem)
+* [Setup](https://github.com/Zuckerwattederivat/sharestuff#setup-wrench)
+* [Support](https://github.com/Zuckerwattederivat/sharestuff#support-ambulance)
+* [License](https://github.com/Zuckerwattederivat/sharestuff#license-scroll)
 
 ## Features :gem:
 
