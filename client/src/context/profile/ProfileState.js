@@ -68,7 +68,7 @@ const ProfileState = props => {
 				dispatch({ type: SET_CATEGORIES, payload: categories.data.msg });
 			}
 		} catch (error) {
-			dispatch({ type: SET_CATEGORIES, payload: error.data.msg });
+			dispatch({ type: SET_CATEGORIES, payload: error.response.data.msg });
 		}
 	};
 

@@ -13,6 +13,7 @@ import {
 	SET_PAGE,
 	SET_PAGE_COUNT,
 	SET_BOOKINGS,
+	GET_BOOKINGS_ERROR,
 	SEARCH_CACHED,
 	SET_ALL,
 	BOOKING_LOADING,
@@ -25,8 +26,6 @@ const QueryState = props => {
 	// initial state
 	const initialState = {
 		errors: null,
-		bookedFromUserError: null,
-		bookedByUserError: null,
 		bookingLoading: true,
 		bookings: {
 			bookedFromUser: null,
@@ -274,7 +273,7 @@ const QueryState = props => {
 				setQueryState(OFFER_ERROR, offers.data.msg);
 			}
 		} catch (err) {
-			console.log(err.data);
+			// console.log(err.data);
 			setQueryState(OFFER_ERROR, err.response.data.msg);
 		}
 	};
@@ -291,22 +290,12 @@ const QueryState = props => {
 			const bookedByUser = await axios.get('api/bookings/get/booked');
 
 			// set bookings
-			if (!bookedFromUser.data.msg || !bookedByUser.data.msg) {
-				setQueryState(SET_BOOKINGS, {
-					bookedFromUser: bookedFromUser.data,
-					bookedByUser: bookedByUser.data
-				});
-			}
-
-			// if no bookings were found
-			if (bookedFromUser.data.msg || bookedByUser.data.msg) {
-				setQueryState(BOOKING_ERROR, {
-					bookedFromUserError: bookedFromUser.data.msg,
-					bookedByUserError: bookedByUser.data.msg
-				});
-			}
+			setQueryState(SET_BOOKINGS, {
+				bookedFromUser: bookedFromUser.data,
+				bookedByUser: bookedByUser.data
+			});
 		} catch (err) {
-			console.log(err.response.data.msg);
+			setQueryState(GET_BOOKINGS_ERROR, err.response.data.msg);
 		}
 	};
 
@@ -314,8 +303,6 @@ const QueryState = props => {
 		<QueryContext.Provider
 			value={{
 				errors: state.errors,
-				bookedFromUserError: state.bookedFromUserError,
-				bookedByUserError: state.bookedByUserError,
 				bookingLoading: state.bookingLoading,
 				bookings: state.bookings,
 				offerBooked: state.offerBooked,

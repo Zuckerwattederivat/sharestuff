@@ -52,11 +52,12 @@ export const OFFER_ERROR = 'OFFER_ERROR';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_PAGE_COUNT = 'SET_PAGE_COUNT';
 export const SET_BOOKINGS = 'SET_BOOKINGS';
+export const GET_BOOKINGS_ERROR = 'GET_BOOKINGS_ERROR';
 export const SEARCH_CACHED = 'SEARCH_CACHED';
 export const BOOKING_LOADING = 'BOOKING_LOADING';
 export const BOOKING_ERROR = 'BOOKING_ERROR';
 export const OFFER_BOOKED = 'OFFER_BOOKED';
-// query
+// profile
 export const RESET_PROFILE_STATE = 'RESET_PROFILE_STATE';
 export const SET_TAB_LOCATION = 'SET_TAB_LOCATION';
 export const SET_REDIRECT = 'SET_REDIRECT';

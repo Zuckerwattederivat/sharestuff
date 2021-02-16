@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
 import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button } from '@material-ui/core';
-import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
+import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon, Search as SearchIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
@@ -84,7 +84,7 @@ const Profile = props => {
 
 	// load query context
 	const queryContext = useContext(QueryContext);
-	const { errors, loading, page, pageCount, offers, getUserOffers, getUserBookings, setPage } = queryContext;
+	const { errors, loading, page, pageCount, offers, bookings, getUserOffers, getUserBookings, setPage } = queryContext;
 
 	// load profile context
 	const profileContext = useContext(ProfileContext);
@@ -248,8 +248,27 @@ const Profile = props => {
 						<Box className={classes.contentBox} width='100%' textAlign='center'>
 							<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
 						</Box>
-					) : (
+					) : !errors ? (
 						<div>Bookings</div>
+					) : (
+						<Box className={classes.noOffersContainer} width='100%' height='100%'>
+							<img className={classes.emptySvg} src={EmptySvg} alt='Empty' />
+							<Typography variant='h3'>{errors}</Typography>
+							<Typography variant='body1'>
+								You can see your bookings here after you booked an item or someone booked your items.
+							</Typography>
+							<Button
+								className={classes.btnOpenModal}
+								size='large'
+								variant='outlined'
+								color='primary'
+								component={Link}
+								to='/offers'
+								startIcon={<SearchIcon />}
+							>
+								Search Offers
+							</Button>
+						</Box>
 					))}
 				{tabLocation === 'messages' &&
 					(loading ? (
