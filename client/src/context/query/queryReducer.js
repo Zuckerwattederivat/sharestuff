@@ -61,7 +61,7 @@ export default (state, action) => {
 					bookedFromUser: action.payload.bookedFromUser.msg
 						? action.payload.bookedFromUser.msg
 						: action.payload.bookedFromUser,
-					boookedByUser: action.payload.bookedByUser.msg ? action.payload.bookedByUser.msg : action.payload.bookedByUser
+					bookedByUser: action.payload.bookedByUser.msg ? action.payload.bookedByUser.msg : action.payload.bookedByUser
 				},
 				loading: false
 			};

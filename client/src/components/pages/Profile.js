@@ -1,7 +1,7 @@
 // Node Modules
 import React, { useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
-import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button } from '@material-ui/core';
+import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button, Divider } from '@material-ui/core';
 import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon, Search as SearchIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -249,7 +249,62 @@ const Profile = props => {
 							<img className={classes.loadingGif} src={LoadingGif} alt='loading...' />
 						</Box>
 					) : !errors ? (
-						<div>Bookings</div>
+						<Fragment>
+							<Typography className={classes.title} width='100%' variant='h2'>
+								Your <span className={classes.textPrimary}>Booked Offers</span>
+							</Typography>
+							<Divider />
+							{typeof bookings.bookedFromUser === 'string' && (
+								<Box margin='2em 0 4em' width='100%' height='100%' textAlign='center'>
+									<Typography variant='h6' color='inherit'>
+										{bookings.bookedFromUser}
+									</Typography>
+									<Typography variant='body1'>If other users book your offers they will be displayed here.</Typography>
+								</Box>
+							)}
+							<Typography className={classes.title} width='100%' variant='h2'>
+								Your <span className={classes.textPrimary}>Personal Bookings</span>
+							</Typography>
+							<Divider />
+							{typeof bookings.bookedByUser === 'string' ? (
+								<Box margin='2em 0 4em' width='100%' height='100%' textAlign='center'>
+									<Typography variant='h6' color='inherit'>
+										{bookings.bookedByUser}
+									</Typography>
+									<Typography variant='body1'>You can see your bookings here after you booked an item.</Typography>
+									<Button
+										className={classes.btnOpenModal}
+										size='medium'
+										variant='outlined'
+										color='primary'
+										component={RouterLink}
+										to='/offers'
+										startIcon={<SearchIcon />}
+									>
+										Search Offers
+									</Button>
+								</Box>
+							) : (
+								<Grid className={classes.offersGrid} container width='100%' spacing={3}>
+									{bookings.bookedByUser.map((el, i) => {
+										return (
+											<Grid key={i} item xs={12} sm={6} md={4}>
+												<motion.div
+													className={classes.offersCard}
+													transition={{
+														duration: 1,
+														type: 'tween'
+													}}
+													initial={{ opacity: 0 }}
+													animate={{ opacity: 1 }}
+												/>
+												Hello
+											</Grid>
+										);
+									})}
+								</Grid>
+							)}
+						</Fragment>
 					) : (
 						<Box className={classes.noOffersContainer} width='100%' height='100%'>
 							<img className={classes.emptySvg} src={EmptySvg} alt='Empty' />
@@ -262,7 +317,7 @@ const Profile = props => {
 								size='large'
 								variant='outlined'
 								color='primary'
-								component={Link}
+								component={RouterLink}
 								to='/offers'
 								startIcon={<SearchIcon />}
 							>
