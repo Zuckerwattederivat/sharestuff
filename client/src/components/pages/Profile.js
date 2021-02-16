@@ -1,8 +1,14 @@
 // Node Modules
 import React, { useContext, useEffect, Fragment } from 'react';
 import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
-import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button, Divider } from '@material-ui/core';
-import { Build as BuildIcon, Delete as DeleteIcon, Add as AddIcon, Search as SearchIcon } from '@material-ui/icons';
+import { Container, Box, Breadcrumbs, Link, Grid, Typography, Button } from '@material-ui/core';
+import {
+	Build as BuildIcon,
+	Delete as DeleteIcon,
+	Add as AddIcon,
+	Search as SearchIcon,
+	WatchLater as WatchLaterIcon
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 // Context
@@ -12,6 +18,7 @@ import ProfileContext from '../../context/profile/profileContext';
 // Components
 import CardMediaV3 from '../cards/CardMediaV3';
 import CardPictureV2 from '../cards/CardPictureV2';
+import CardBookings from '../cards/CardBookings';
 import Pagination from '../layout/Pagination';
 import ModalDelete from '../layout/ModalDelete';
 import ModalAdd from '../layout/ModalAdd';
@@ -20,6 +27,8 @@ import ModalEdit from '../layout/ModalEdit';
 import LoadingGif from '../../assets/loading-transparent.gif';
 import EmptySvg from '../../assets/undraw/empty.svg';
 import AddOfferBackground from '../../assets/site/add-offer.jpg';
+// utils
+import utils from '../../utils/helpers';
 
 // define styles
 const useStyles = makeStyles(theme => ({
@@ -70,6 +79,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	btnOpenModal: {
 		marginTop: theme.spacing(2)
+	},
+	bookingsGrid: {
+		marginTop: theme.spacing(0)
 	}
 }));
 
@@ -253,7 +265,6 @@ const Profile = props => {
 							<Typography className={classes.title} width='100%' variant='h2'>
 								Your <span className={classes.textPrimary}>Booked Offers</span>
 							</Typography>
-							<Divider />
 							{typeof bookings.bookedFromUser === 'string' && (
 								<Box margin='2em 0 4em' width='100%' height='100%' textAlign='center'>
 									<Typography variant='h6' color='inherit'>
@@ -265,7 +276,6 @@ const Profile = props => {
 							<Typography className={classes.title} width='100%' variant='h2'>
 								Your <span className={classes.textPrimary}>Personal Bookings</span>
 							</Typography>
-							<Divider />
 							{typeof bookings.bookedByUser === 'string' ? (
 								<Box margin='2em 0 4em' width='100%' height='100%' textAlign='center'>
 									<Typography variant='h6' color='inherit'>
@@ -285,23 +295,28 @@ const Profile = props => {
 									</Button>
 								</Box>
 							) : (
-								<Grid className={classes.offersGrid} container width='100%' spacing={3}>
-									{bookings.bookedByUser.map((el, i) => {
-										return (
-											<Grid key={i} item xs={12} sm={6} md={4}>
-												<motion.div
-													className={classes.offersCard}
-													transition={{
-														duration: 1,
-														type: 'tween'
-													}}
-													initial={{ opacity: 0 }}
-													animate={{ opacity: 1 }}
-												/>
-												Hello
-											</Grid>
-										);
-									})}
+								<Grid className={classes.bookingsGrid} container width='100%' spacing={1}>
+									{bookings.bookedByUser !== null &&
+										bookings.bookedByUser.map((el, i) => {
+											return (
+												<Grid key={i} item xs={12} sm={6} md={4}>
+													<motion.div
+														transition={{
+															duration: 1,
+															type: 'tween'
+														}}
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+													>
+														<CardBookings
+															image={el.offerData.imagesThumb[0]}
+															title={el.offerData.title}
+															iconText0={[ <WatchLaterIcon />, utils.convertDate(el.bookingData.date), 'primary' ]}
+														/>
+													</motion.div>
+												</Grid>
+											);
+										})}
 								</Grid>
 							)}
 						</Fragment>

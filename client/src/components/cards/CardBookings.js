@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-// CardMediaSm Component
-const CardMediaSm = props => {
+// CardBookings Component
+const CardBookings = props => {
 	const classes = useStyles();
 
 	const returnContent = () => {
@@ -62,44 +62,38 @@ const CardMediaSm = props => {
 							<Typography gutterBottom variant='subtitle1'>
 								{props.title}
 							</Typography>
-							<Typography variant='body2' gutterBottom>
-								{props.subtitle}
-							</Typography>
-							<Typography variant='body2' color='textSecondary'>
-								{props.children}
-							</Typography>
-						</Grid>
-						<Grid item>
-							{props.iconText0 && (
-								<Box display='flex' alignItems='center' className={classes.iconTextContainer}>
-									<Typography color={props.iconText0[2]} className={classes.icon}>
-										{props.iconText0[0]}
-									</Typography>
-									<Typography color={props.iconText0[2]} className={classes.text}>
-										{props.iconText0[1]}
-									</Typography>
-								</Box>
-							)}
-							{props.iconText1 && (
-								<Box display='flex' alignItems='center' className={classes.iconTextContainer}>
-									<Typography color={props.iconText1[2]} className={classes.icon}>
-										{props.iconText1[0]}
-									</Typography>
-									<Typography color={props.iconText1[2]} className={classes.text}>
-										{props.iconText1[1]}
-									</Typography>
-								</Box>
-							)}
-							{props.iconText2 && (
-								<Box display='flex' alignItems='center' spacing={1} className={classes.iconTextContainer}>
-									<Typography color={props.iconText2[2]} className={classes.icon}>
-										{props.iconText2[0]}
-									</Typography>
-									<Typography color={props.iconText2[2]} className={classes.text}>
-										{props.iconText2[1]}
-									</Typography>
-								</Box>
-							)}
+							<Grid item>
+								{props.iconText0 && (
+									<Box display='flex' alignItems='center' className={classes.iconTextContainer}>
+										<Typography color={props.iconText0[2]} className={classes.icon}>
+											{props.iconText0[0]}
+										</Typography>
+										<Typography color={props.iconText0[2]} className={classes.text}>
+											{props.iconText0[1]}
+										</Typography>
+									</Box>
+								)}
+								{props.iconText1 && (
+									<Box display='flex' alignItems='center' className={classes.iconTextContainer}>
+										<Typography color={props.iconText1[2]} className={classes.icon}>
+											{props.iconText1[0]}
+										</Typography>
+										<Typography color={props.iconText1[2]} className={classes.text}>
+											{props.iconText1[1]}
+										</Typography>
+									</Box>
+								)}
+								{props.iconText2 && (
+									<Box display='flex' alignItems='center' spacing={1} className={classes.iconTextContainer}>
+										<Typography color={props.iconText2[2]} className={classes.icon}>
+											{props.iconText2[0]}
+										</Typography>
+										<Typography color={props.iconText2[2]} className={classes.text}>
+											{props.iconText2[1]}
+										</Typography>
+									</Box>
+								)}
+							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
@@ -123,10 +117,9 @@ const CardMediaSm = props => {
 };
 
 // Proptypes
-CardMediaSm.propTypes = {
+CardBookings.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	subtitle: PropTypes.string,
 	link: PropTypes.string,
 	onClick: PropTypes.func,
 	iconText0: PropTypes.array,
@@ -134,5 +127,5 @@ CardMediaSm.propTypes = {
 	iconText2: PropTypes.array
 };
 
-// export CardMediaSm Component
-export default CardMediaSm;
+// export CardBookings Component
+export default CardBookings;

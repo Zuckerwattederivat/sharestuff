@@ -42,5 +42,13 @@ const b64ToBlob = (content, contentType) => {
 	return blob;
 };
 
+// convert date
+const convertDate = input => {
+	const date = input.split('T')[0];
+	const timeWithSeconds = input.split('T')[1];
+
+	return date + ' at ' + timeWithSeconds.split('.')[0];
+};
+
 // export
-export default { stopScrolling, startScrolling, capitalizeFirstLetter, b64ToBlob };
+export default { stopScrolling, startScrolling, capitalizeFirstLetter, b64ToBlob, convertDate };
