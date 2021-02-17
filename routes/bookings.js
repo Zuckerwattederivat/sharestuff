@@ -13,6 +13,7 @@ const auth = require('../middleware/auth');
 // Models
 const Booking = require('../models/Booking');
 const Offer = require('../models/Offer');
+const User = require('../models/User');
 
 // @route     POST api/bookings/create
 // @desc      Create booking
@@ -171,9 +172,12 @@ router.get('/get/offered', auth, async (req, res) => {
 
 			for (let i = 0; i < bookings.length; i++) {
 				let offer = await Offer.findById(bookings[i].offerId);
+				let user = await User.findById(bookings[i].bookedBy);
+
 				bookedOffers.push({
 					bookingData: bookings[i],
-					offerData: offer
+					offerData: offer,
+					bookedBy: user.username
 				});
 			}
 
@@ -202,9 +206,12 @@ router.get('/get/booked', auth, async (req, res) => {
 
 			for (let i = 0; i < bookings.length; i++) {
 				let offer = await Offer.findById(bookings[i].offerId);
+				let user = await User.findById(offer.createdBy);
+
 				bookedOffers.push({
 					bookingData: bookings[i],
-					offerData: offer
+					offerData: offer,
+					offerOwner: user.username
 				});
 			}
 

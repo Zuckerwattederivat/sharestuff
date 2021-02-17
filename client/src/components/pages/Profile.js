@@ -7,7 +7,9 @@ import {
 	Delete as DeleteIcon,
 	Add as AddIcon,
 	Search as SearchIcon,
-	WatchLater as WatchLaterIcon
+	WatchLater as WatchLaterIcon,
+	LocationOn as LocationIcon,
+	Person as PersonIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -311,7 +313,13 @@ const Profile = props => {
 														<CardBookings
 															image={el.offerData.imagesThumb[0]}
 															title={el.offerData.title}
-															iconText0={[ <WatchLaterIcon />, utils.convertDate(el.bookingData.date), 'primary' ]}
+															iconText0={[
+																<WatchLaterIcon fontSize='small' />,
+																utils.convertDate(el.bookingData.date),
+																'primary'
+															]}
+															iconText1={[ <LocationIcon fontSize='small' />, el.offerData.location.label, 'primary' ]}
+															iconText2={[ <PersonIcon fontSize='small' />, el.offerOwner, 'primary' ]}
 														/>
 													</motion.div>
 												</Grid>
