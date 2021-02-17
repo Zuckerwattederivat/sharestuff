@@ -1,8 +1,7 @@
 // Node Modules
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Grid, Typography, CardActionArea, Card, Box } from '@material-ui/core';
+import { Grid, Typography, Card, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 // define styles
@@ -15,6 +14,9 @@ const useStyles = makeStyles(theme => ({
 		margin: 'auto',
 		maxWidth: 500,
 		background: theme.palette.background.paper
+	},
+	card: {
+		padding: theme.spacing(2)
 	},
 	image: {
 		marginTop: theme.spacing(1),
@@ -41,15 +43,17 @@ const useStyles = makeStyles(theme => ({
 	},
 	text: {
 		fontSize: '0.82rem'
+	},
+	btnContainer: {
+		color: theme.palette.edit.main
 	}
 }));
 
 // CardBookings Component
 const CardBookings = props => {
 	const classes = useStyles();
-
-	const returnContent = () => {
-		return (
+	return (
+		<Card className={classes.card}>
 			<Grid container spacing={2}>
 				<Grid item>
 					<div className={classes.image}>
@@ -95,23 +99,12 @@ const CardBookings = props => {
 								)}
 							</Grid>
 						</Grid>
+						<Grid item xs className={classes.btnContainer}>
+							{props.button}
+						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
-		);
-	};
-
-	return (
-		<Card className={classes.root}>
-			{props.link ? (
-				<CardActionArea className={classes.paper} component={Link} to={props.link}>
-					{returnContent()}
-				</CardActionArea>
-			) : (
-				<CardActionArea className={classes.paper} onClick={props.onClick}>
-					{returnContent()}
-				</CardActionArea>
-			)}
 		</Card>
 	);
 };
@@ -120,8 +113,7 @@ const CardBookings = props => {
 CardBookings.propTypes = {
 	image: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	link: PropTypes.string,
-	onClick: PropTypes.func,
+	button: PropTypes.object.isRequired,
 	iconText0: PropTypes.array,
 	iconText1: PropTypes.array,
 	iconText2: PropTypes.array

@@ -14,8 +14,8 @@ function getTheme(theme) {
 				dark: '#089349'
 			},
 			edit: {
-				light: '#48929D',
-				main: '#318F9D',
+				light: '#0EFBFA',
+				main: '#0BD0CF',
 				dark: '#00899D'
 			},
 			background: {

@@ -9,7 +9,8 @@ import {
 	Search as SearchIcon,
 	WatchLater as WatchLaterIcon,
 	LocationOn as LocationIcon,
-	Person as PersonIcon
+	Person as PersonIcon,
+	Message as MessageIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
@@ -83,7 +84,8 @@ const useStyles = makeStyles(theme => ({
 		marginTop: theme.spacing(2)
 	},
 	bookingsGrid: {
-		marginTop: theme.spacing(0)
+		marginTop: theme.spacing(0),
+		marginBottom: theme.spacing(4)
 	}
 }));
 
@@ -210,7 +212,7 @@ const Profile = props => {
 														name: 'Edit',
 														colorExtra: 'edit',
 														size: 'small',
-														variant: 'contained',
+														variant: 'outlined',
 														color: 'inherit',
 														startIcon: <BuildIcon />,
 														onClick: () => setModal('edit', true, el)
@@ -267,13 +269,48 @@ const Profile = props => {
 							<Typography className={classes.title} width='100%' variant='h2'>
 								Your <span className={classes.textPrimary}>Booked Offers</span>
 							</Typography>
-							{typeof bookings.bookedFromUser === 'string' && (
+							{typeof bookings.bookedFromUser === 'string' ? (
 								<Box margin='2em 0 4em' width='100%' height='100%' textAlign='center'>
 									<Typography variant='h6' color='inherit'>
 										{bookings.bookedFromUser}
 									</Typography>
 									<Typography variant='body1'>If other users book your offers they will be displayed here.</Typography>
 								</Box>
+							) : (
+								<Grid className={classes.bookingsGrid} container width='100%' spacing={1}>
+									{bookings.bookedFromUser !== null &&
+										bookings.bookedFromUser.map((el, i) => {
+											return (
+												<Grid key={i} item xs={12} sm={6} md={4}>
+													<motion.div
+														transition={{
+															duration: 1,
+															type: 'tween'
+														}}
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+													>
+														<CardBookings
+															image={el.offerData.imagesThumb[0]}
+															title={el.offerData.title}
+															iconText0={[
+																<WatchLaterIcon fontSize='small' />,
+																utils.convertDate(el.bookingData.date),
+																'primary'
+															]}
+															iconText1={[ <LocationIcon fontSize='small' />, el.offerData.location.label, 'primary' ]}
+															iconText2={[ <PersonIcon fontSize='small' />, el.bookedBy, 'primary' ]}
+															button={
+																<Button size='small' color='inherit' variant='outlined' startIcon={<MessageIcon />}>
+																	Contact Rentee
+																</Button>
+															}
+														/>
+													</motion.div>
+												</Grid>
+											);
+										})}
+								</Grid>
 							)}
 							<Typography className={classes.title} width='100%' variant='h2'>
 								Your <span className={classes.textPrimary}>Personal Bookings</span>
@@ -320,6 +357,11 @@ const Profile = props => {
 															]}
 															iconText1={[ <LocationIcon fontSize='small' />, el.offerData.location.label, 'primary' ]}
 															iconText2={[ <PersonIcon fontSize='small' />, el.offerOwner, 'primary' ]}
+															button={
+																<Button size='small' color='inherit' variant='outlined' startIcon={<MessageIcon />}>
+																	Contact Vendor
+																</Button>
+															}
 														/>
 													</motion.div>
 												</Grid>
