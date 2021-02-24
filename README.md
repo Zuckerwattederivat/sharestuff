@@ -43,6 +43,12 @@ $ open default.json
 -> add your MongoDB Atlas database cluster link to "mongoURI"
 -> add your random JSON Webtoken secret
 
+# Geocode API Key from geocodeapi.com is needed for search functionality
+$ cd sharestuff/client
+$ touch .env.local
+$ code .env.local
+-> add REACT_APP_GEOCODE_API_KEY=<Your API KEy>
+
 # install dependencies client
 $ cd sharestuff/client
 $ npm install
@@ -50,6 +56,7 @@ $ npm install
 # launch client and server in dev mode
 $ cd sharestuff
 $ npm run dev
+
 ```
 
 ## Support :ambulance:
