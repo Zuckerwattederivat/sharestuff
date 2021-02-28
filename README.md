@@ -37,6 +37,10 @@ $ gh repo clone Zuckerwattederivat/sharestuff
 $ cd sharestuff
 $ npm install
 
+# install dependencies client
+$ cd sharestuff
+$ npm clientinstall
+
 # connect your db and add jwt secret
 $ cd sharestuff/config
 $ open default.json
@@ -48,10 +52,6 @@ $ cd sharestuff/client
 $ touch .env.local
 $ code .env.local
 -> add REACT_APP_GEOCODE_API_KEY=<Your API KEy>
-
-# install dependencies client
-$ cd sharestuff/client
-$ npm install
 
 # launch client and server in dev mode
 $ cd sharestuff
