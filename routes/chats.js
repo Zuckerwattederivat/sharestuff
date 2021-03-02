@@ -12,6 +12,7 @@ const auth = require('../middleware/auth');
 // Models
 const Offer = require('../models/Offer');
 const Booking = require('../models/Booking');
+const Chat = require('../models/Chat');
 
 // @route     GET api/chats/get/all
 // @desc      Get overview of all chats
@@ -24,7 +25,7 @@ router.get('/get/all', auth, async (req, res) => {});
 router.get('/get/single', auth, async (req, res) => {});
 
 // @route     POST api/chats/create
-// @desc      Create new chat and send message
+// @desc      Create new chat
 // @access    Private
 router.post('/post', [ auth, check('message', 'Please type in a message').notEmpty() ], async (req, res) => {
 	// check if validation errors exist and response with 400 if true
