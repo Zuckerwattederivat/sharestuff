@@ -1,4 +1,4 @@
-# ShareStuff - A Rent And Let Communtiy Platform
+# ShareStuff - A Rent And Let Communtiy Platform (Early Alpha)
 
 ShareStuff is a free to use platform to rent and let retail items. 
 Registered users are able to search for retail items to rent anywhere in the world. They are also able to offer their own retail items for rent.
@@ -51,7 +51,7 @@ $ open default.json
 $ cd sharestuff/client
 $ touch .env.local
 $ code .env.local
--> add REACT_APP_GEOCODE_API_KEY=<Your API KEy>
+-> add REACT_APP_GEOCODE_API_KEY=<Your API Key>
 
 # launch client and server in dev mode
 $ cd sharestuff

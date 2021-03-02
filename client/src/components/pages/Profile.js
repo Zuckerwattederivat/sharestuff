@@ -274,14 +274,14 @@ const Profile = props => {
 									<Typography variant='h6' color='inherit'>
 										{bookings.bookedFromUser}
 									</Typography>
-									<Typography variant='body1'>If other users book your offers they will be displayed here.</Typography>
+									<Typography variant='body1'>If other users booked your items they will be displayed here.</Typography>
 								</Box>
 							) : (
 								<Grid className={classes.bookingsGrid} container width='100%' spacing={1}>
 									{bookings.bookedFromUser !== null &&
 										bookings.bookedFromUser.map((el, i) => {
 											return (
-												<Grid key={i} item xs={12} sm={6} md={4}>
+												<Grid key={i} item xs={12} sm={6} md={4} lg={3}>
 													<motion.div
 														transition={{
 															duration: 1,
@@ -338,7 +338,7 @@ const Profile = props => {
 									{bookings.bookedByUser !== null &&
 										bookings.bookedByUser.map((el, i) => {
 											return (
-												<Grid key={i} item xs={12} sm={6} md={4}>
+												<Grid key={i} item xs={12} sm={6} md={4} lg={3}>
 													<motion.div
 														transition={{
 															duration: 1,
