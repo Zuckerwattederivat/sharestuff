@@ -14,13 +14,13 @@ const Offer = require('../models/Offer');
 const Booking = require('../models/Booking');
 const Chat = require('../models/Chat');
 
-// @route     GET api/chats/get/all
+// @route     GET api/chats/get/overview
 // @desc      Get overview of all chats
 // @access    Private
 router.get('/get/all', auth, async (req, res) => {});
 
-// @route     GET api/chats/get/single
-// @desc      Get chats from specific chat
+// @route     GET api/chats/open/single
+// @desc      Open specific chat
 // @access    Private
 router.get('/get/single', auth, async (req, res) => {});
 

@@ -14,30 +14,11 @@ const ChatSchema = mongoose.Schema({
 		required: true
 	},
 	messages: {
-		type: Object,
-		message: {
-			type: Object,
-			messageId: {
-				type: String,
-				required: true
-			},
-			from: {
-				type: String,
-				required: true
-			},
-			to: {
-				type: String,
-				required: true
-			},
-			body: {
-				type: String,
-				required: true
-			},
-			date: {
-				type: Date,
-				default: Date.now
-			}
-		}
+		type: Object
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now
 	}
 });
 
