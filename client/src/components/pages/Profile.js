@@ -86,6 +86,9 @@ const useStyles = makeStyles(theme => ({
 	bookingsGrid: {
 		marginTop: theme.spacing(0),
 		marginBottom: theme.spacing(4)
+	},
+	bookingCard: {
+		height: '100%'
 	}
 }));
 
@@ -283,6 +286,7 @@ const Profile = props => {
 											return (
 												<Grid key={i} item xs={12} sm={6} md={4} lg={3}>
 													<motion.div
+														className={classes.bookingCard}
 														transition={{
 															duration: 1,
 															type: 'tween'
@@ -340,6 +344,7 @@ const Profile = props => {
 											return (
 												<Grid key={i} item xs={12} sm={6} md={4} lg={3}>
 													<motion.div
+														className={classes.bookingCard}
 														transition={{
 															duration: 1,
 															type: 'tween'

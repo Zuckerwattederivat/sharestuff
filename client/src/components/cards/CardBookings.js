@@ -6,17 +6,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // define styles
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
-	},
-	paper: {
-		padding: theme.spacing(2),
-		margin: 'auto',
-		maxWidth: 500,
-		background: theme.palette.background.paper
-	},
 	card: {
-		padding: theme.spacing(2)
+		padding: theme.spacing(2),
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between'
+	},
+	cardContent: {
+		marginBottom: theme.spacing(1)
 	},
 	image: {
 		marginTop: theme.spacing(1),
@@ -45,7 +43,9 @@ const useStyles = makeStyles(theme => ({
 		fontSize: '0.82rem'
 	},
 	btnContainer: {
-		color: theme.palette.edit.main
+		color: theme.palette.edit.main,
+		display: 'flex',
+		justifyContent: 'flex-end'
 	}
 }));
 
@@ -54,7 +54,7 @@ const CardBookings = props => {
 	const classes = useStyles();
 	return (
 		<Card className={classes.card}>
-			<Grid container spacing={2}>
+			<Grid className={classes.cardContent} container spacing={2}>
 				<Grid item>
 					<div className={classes.image}>
 						<img className={classes.img} alt='product' src={props.image} />
@@ -99,12 +99,12 @@ const CardBookings = props => {
 								)}
 							</Grid>
 						</Grid>
-						<Grid item xs className={classes.btnContainer}>
-							{props.button}
-						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
+			<div item xs className={classes.btnContainer}>
+				{props.button}
+			</div>
 		</Card>
 	);
 };
