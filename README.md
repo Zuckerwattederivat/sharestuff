@@ -1,12 +1,14 @@
-# <p align="center"><img height="100px" src="https://github.com/Zuckerwattederivat/sharestuff/blob/master/client/src/assets/logo/logo-primary.svg" /></p><br><p align="center">ShareStuff - A Rent And Let Communtiy Platform</p>
+# <p align="center"><img height="100px" src="https://github.com/Zuckerwattederivat/sharestuff/blob/master/client/src/assets/logo/logo-primary.svg" alt="Logo"/></p><br><p align="center">ShareStuff - A Rent And Let Communtiy Platform</p>
+
+<p align="center">
+  <img height="100px" src="https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif" alt="Homescreen Preview Gif"/>
+</p>
 
 ShareStuff is a free to use platform to rent and let retail items. 
 Registered users are able to search for retail items to rent anywhere in the world. They are also able to offer their own retail items for rent.
 Transactions are completed via chat after booking an item. ShareStuff will not be taking part in the facilitation of transactions between users at this point.
 
 This SPA is build with the MERN Stack. If any of you guys want to fork this project to build something similar or just need parts of it feel free to do so. :+1:
-
-![Homescreen](https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif)
 
 
 ## Contents :file_folder:
