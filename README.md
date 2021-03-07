@@ -1,6 +1,10 @@
 # ShareStuff - A Rent And Let Communtiy Platform
 
-<div style="text-align:center;width:100%"><img height="100px" src="https://github.com/Zuckerwattederivat/sharestuff/blob/master/client/src/assets/logo/logo-primary.svg" /><br>ShareStuff</div>
+<p align="center">
+  <img height="100px" src="https://github.com/Zuckerwattederivat/sharestuff/blob/master/client/src/assets/logo/logo-primary.svg" />
+  <br>
+  ShareStuff
+</p>
 
 ShareStuff is a free to use platform to rent and let retail items. 
 Registered users are able to search for retail items to rent anywhere in the world. They are also able to offer their own retail items for rent.
