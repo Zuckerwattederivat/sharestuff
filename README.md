@@ -39,7 +39,7 @@ $ npm install
 
 # install dependencies client
 $ cd sharestuff
-$ npm clientinstall
+$ npm run clientinstall
 
 # connect your db and add jwt secret
 $ cd sharestuff/config
