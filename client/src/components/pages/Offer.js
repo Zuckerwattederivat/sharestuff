@@ -236,7 +236,7 @@ const Offer = props => {
 									</Grid>
 									{offers[0] && (
 										<Typography className={classes.otherOffersHeading} variant='h3'>
-											More Offers by <span className={classes.spanPrimary}>{creator.username}</span>
+											More Offers <span className={classes.spanPrimary}>by {creator.username}</span>
 										</Typography>
 									)}
 									{offers.map((el, index) => {

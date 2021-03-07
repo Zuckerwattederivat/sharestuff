@@ -102,9 +102,7 @@ const CardBookings = props => {
 					</Grid>
 				</Grid>
 			</Grid>
-			<div item xs className={classes.btnContainer}>
-				{props.button}
-			</div>
+			<div className={classes.btnContainer}>{props.button}</div>
 		</Card>
 	);
 };
