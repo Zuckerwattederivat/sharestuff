@@ -181,7 +181,7 @@ const Offer = props => {
 												<div
 													key={`slide-${index}`}
 													className={classes.carouselSlide}
-													style={{ backgroundImage: `url(/${image})` }}
+													style={{ backgroundImage: `url(/${image})`, height: '70vh' }}
 												/>
 											);
 										})}

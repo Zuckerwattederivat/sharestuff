@@ -73,11 +73,10 @@ const Footer = props => {
 								About
 							</Typography>
 							<p className={classes.aboutText}>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, maxime. Enim officia magni aspernatur
-								repellat, distinctio ut porro repudiandae esse cupiditate consequuntur similique assumenda repellendus
-								quaerat quasi cumque? Sed, optio? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Natus
-								officiis nulla harum corrupti esse beatae obcaecati assumenda, ratione ea, unde eaque minima nobis
-								repellat illo eos, vero ipsam at debitis.
+								ShareStuff is a rent and let platform for everyday items like technical equipment, kitchen appliances,
+								tools or entertainment technology. Users are able to rent these items from and to people near them. The
+								mission of ShareStuff is to make renting items in a neighbourly manner as easy as buying something from
+								an online retailer.
 							</p>
 						</Box>
 					</Grid>
