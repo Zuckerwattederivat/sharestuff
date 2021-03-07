@@ -1,17 +1,18 @@
 // Node Modules
-import React, { Fragment, useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+//Fragment,
 import PropTypes from 'prop-types';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
-import { AppBar, Link, IconButton, Badge, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Link, IconButton, Toolbar, Typography } from '@material-ui/core';
 import {
 	Menu as MenuIcon,
-	Mail as MailIcon,
+	//Mail as MailIcon,
 	Home as HomeIcon,
 	LocalMall as LocalMallIcon,
 	Map as MapIcon,
 	Info as InfoIcon,
 	Help as HelpIcon,
-	Notifications as NotificationsIcon,
+	//Notifications as NotificationsIcon,
 	AccountCircle as AccountCircleIcon
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -134,7 +135,7 @@ const Navbar = props => {
 	// load auth context
 	const authContext = useContext(AuthContext);
 	// destructure auth context
-	const { isAuthenticated } = authContext;
+	const { user } = authContext;
 
 	// load navbar context
 	const navbarContext = useContext(NavbarContext);
@@ -243,7 +244,7 @@ const Navbar = props => {
 					</Link>
 					<div className={classes.grow} />
 					<div className={classes.sectionUser}>
-						{isAuthenticated && (
+						{/* {isAuthenticated && (
 							<Fragment>
 								<IconButton className={classes.itemsResponsivePosition} aria-label='show new messages' color='inherit'>
 									<Badge badgeContent={4} color='secondary'>
@@ -260,7 +261,7 @@ const Navbar = props => {
 									</Badge>
 								</IconButton>
 							</Fragment>
-						)}
+						)} */}
 						<IconButton
 							edge='end'
 							aria-label='account of current user'
@@ -269,7 +270,11 @@ const Navbar = props => {
 							onClick={handleUserMenuOpen}
 							color='inherit'
 						>
-							<AccountCircleIcon />
+							{user === null ? (
+								<AccountCircleIcon />
+							) : (
+								<img src={user.avatar} alt='avatar' width='24px' style={{ borderRadius: '100%' }} />
+							)}
 						</IconButton>
 						<IconButton
 							onClick={() => setMainMenuOpen(true)}
