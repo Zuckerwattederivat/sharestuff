@@ -1,7 +1,7 @@
 # <p align="center"><img height="100px" src="https://github.com/Zuckerwattederivat/sharestuff/blob/master/client/src/assets/logo/logo-primary.svg" alt="Logo"/></p><br><p align="center">ShareStuff - A Rent And Let Communtiy Platform</p>
 
 <p align="center">
-  <img height="100px" src="https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif" alt="Homescreen Preview Gif"/>
+  <img src="https://github.com/Zuckerwattederivat/public/blob/master/sharestuff_media/homescreen.gif" alt="Homescreen Preview Gif"/>
 </p>
 
 ShareStuff is a free to use platform to rent and let retail items. 
