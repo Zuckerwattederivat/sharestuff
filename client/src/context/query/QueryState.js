@@ -33,7 +33,6 @@ const QueryState = props => {
 			bookedFromUser: null,
 			bookedByUser: null
 		},
-		offerBooked: false,
 		loading: true,
 		categories: [],
 		category: [],
