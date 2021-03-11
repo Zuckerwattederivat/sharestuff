@@ -115,9 +115,9 @@ const UserMenu = props => {
 					<MenuItem key='profile' component={Link} to='/profile?tab=offers' onClick={() => handleUserMenuClose()}>
 						<PersonIcon fontSize='small' className={classes.dropdownIcons} /> Profile
 					</MenuItem>,
-					<MenuItem key='account' onClick={handleUserMenuClose}>
-						<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
-					</MenuItem>,
+					// <MenuItem key='account' onClick={handleUserMenuClose}>
+					// 	<SettingsIcon fontSize='small' className={classes.dropdownIcons} /> Settings
+					// </MenuItem>,
 					<MenuItem
 						key='logout'
 						className={classes.secondaryText}

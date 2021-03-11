@@ -116,7 +116,7 @@ const Footer = props => {
 										Find Offers
 									</Link>
 								</li>
-								<li>
+								{/* <li>
 									<Link component={RouterLink} color='inherit' to='/local'>
 										Near You
 									</Link>
@@ -130,7 +130,7 @@ const Footer = props => {
 									<Link component={RouterLink} color='inherit' to='/about'>
 										About
 									</Link>
-								</li>
+								</li> */}
 							</ul>
 						</Box>
 					</Grid>

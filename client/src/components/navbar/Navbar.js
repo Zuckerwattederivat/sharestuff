@@ -107,24 +107,24 @@ const mainMenuLinks = [
 		icon: <LocalMallIcon />,
 		linkName: 'Find Offers'
 	},
-	{
-		id: 'local',
-		href: '/local',
-		icon: <MapIcon />,
-		linkName: 'Near You'
-	},
-	{
-		id: 'help',
-		href: '/help',
-		icon: <HelpIcon />,
-		linkName: 'FAQ'
-	},
-	{
-		id: 'about',
-		href: '/about',
-		icon: <InfoIcon />,
-		linkName: 'About'
-	}
+	// {
+	// 	id: 'local',
+	// 	href: '/local',
+	// 	icon: <MapIcon />,
+	// 	linkName: 'Near You'
+	// },
+	// {
+	// 	id: 'help',
+	// 	href: '/help',
+	// 	icon: <HelpIcon />,
+	// 	linkName: 'FAQ'
+	// },
+	// {
+	// 	id: 'about',
+	// 	href: '/about',
+	// 	icon: <InfoIcon />,
+	// 	linkName: 'About'
+	// }
 ];
 
 // Navbar Component
