@@ -284,7 +284,7 @@ const Offer = props => {
 					loading={bookingLoading}
 					error={bookingError}
 					errorHeading={bookingError}
-					errorText='Please try again'
+					errorText='Please try again or choose another offer'
 					successHeading='You booked the offer successfully'
 					successText='Go to your messages to contact the vendor'
 				/>

@@ -7,7 +7,7 @@ import {
 	Message as MessageIcon,
 	Notifications as NotificationsIcon,
 	Person as PersonIcon,
-	Settings as SettingsIcon,
+	// Settings as SettingsIcon,
 	Lock as LockIcon,
 	LockOpen as LockOpenIcon,
 	PersonAdd as PersonAddIcon

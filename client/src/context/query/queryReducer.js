@@ -105,6 +105,7 @@ export default (state, action) => {
 					bookedByUser: null
 				},
 				offerBooked: false,
+				bookingError: null,
 				errors: null,
 				category: [],
 				offers: [],

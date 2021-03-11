@@ -9,9 +9,9 @@ import {
 	//Mail as MailIcon,
 	Home as HomeIcon,
 	LocalMall as LocalMallIcon,
-	Map as MapIcon,
-	Info as InfoIcon,
-	Help as HelpIcon,
+	// Map as MapIcon,
+	// Info as InfoIcon,
+	// Help as HelpIcon,
 	//Notifications as NotificationsIcon,
 	AccountCircle as AccountCircleIcon
 } from '@material-ui/icons';

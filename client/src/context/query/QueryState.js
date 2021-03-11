@@ -27,6 +27,8 @@ const QueryState = props => {
 	const initialState = {
 		errors: null,
 		bookingLoading: true,
+		bookingError: null,
+		offerBooked: false,
 		bookings: {
 			bookedFromUser: null,
 			bookedByUser: null
@@ -306,6 +308,7 @@ const QueryState = props => {
 				bookingLoading: state.bookingLoading,
 				bookings: state.bookings,
 				offerBooked: state.offerBooked,
+				bookingError: state.bookingError,
 				loading: state.loading,
 				categories: state.categories,
 				category: state.category,

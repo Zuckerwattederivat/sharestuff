@@ -34,6 +34,12 @@ router.post('/create', [ auth, check('offerId', 'No offer was given ').notEmpty(
 
 		// if offer exists
 		if (offer) {
+			// check if rentee and offer creator are the same
+			if (offer.createdBy === req.user.id) {
+				//console.log("Rentee and offer creator can not be the same.")
+				return res.status(500).json({msg: "You can not book your own offer"});
+			}
+
 			// set offer inactive
 			const updatedOffer = await Offer.updateOne({ _id: ObjectId(offerId) }, { active: false });
 
